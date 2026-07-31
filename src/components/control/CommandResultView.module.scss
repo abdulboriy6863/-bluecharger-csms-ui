@@ -1,0 +1,72 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.resultContainer {
+  @include flex-column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 10px 0;
+
+  .statusIconBox {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    @include flex-center;
+    animation: fadeIn 0.3s ease-out;
+
+    &.PENDING {
+      background-color: $color-brand-primary-light;
+      color: $color-brand-primary;
+    }
+
+    &.SUCCESS {
+      background-color: $color-status-available-bg;
+      color: $color-status-available;
+    }
+
+    &.FAILED {
+      background-color: $color-status-faulted-bg;
+      color: $color-status-faulted;
+    }
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $color-text-main;
+  }
+
+  .description {
+    font-size: 13.5px;
+    color: $color-text-muted;
+    max-width: 360px;
+    line-height: 1.4;
+  }
+
+  .metadataTable {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: $radius-sm;
+    background-color: $color-bg-subtle;
+    border: 1px solid $color-border;
+    font-size: 12.5px;
+    @include flex-column;
+    gap: 8px;
+
+    .row {
+      @include flex-between;
+
+      .key {
+        color: $color-text-muted;
+      }
+
+      .val {
+        font-weight: 600;
+        font-family: $font-family-mono;
+        color: $color-text-main;
+      }
+    }
+  }
+}

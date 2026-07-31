@@ -1,0 +1,48 @@
+import { AlertEvent } from '../types/dashboard';
+
+export const mockAlerts: AlertEvent[] = [
+  {
+    id: 'ALT-9041',
+    chargerId: 'CP-1006',
+    stationName: 'Busan Logistics E-Park',
+    type: 'ERROR',
+    code: 'GROUND_FAULT',
+    message: 'Ground fault error detected on Connector #1 (Leakage current > 30mA)',
+    timestamp: '14 mins ago',
+    severity: 'HIGH',
+    acknowledged: false,
+  },
+  {
+    id: 'ALT-9040',
+    chargerId: 'CP-1008',
+    stationName: 'Tashkent International Airport Depot',
+    type: 'WARNING',
+    code: 'COMM_TIMEOUT',
+    message: 'Heartbeat signal lost for 45 minutes (Cellular modem retry failed)',
+    timestamp: '45 mins ago',
+    severity: 'MEDIUM',
+    acknowledged: false,
+  },
+  {
+    id: 'ALT-9038',
+    chargerId: 'CP-1003',
+    stationName: 'Samarkand Silk Road Hub',
+    type: 'INFO',
+    code: 'FIRMWARE_OK',
+    message: 'Firmware updated successfully to v4.2.0-b3',
+    timestamp: '2 hrs ago',
+    severity: 'LOW',
+    acknowledged: true,
+  },
+  {
+    id: 'ALT-9035',
+    chargerId: 'CP-1005',
+    stationName: 'Seoul Gangnam Smart Station',
+    type: 'WARNING',
+    code: 'TEMP_HIGH',
+    message: 'Internal cabinet temperature elevated (48°C)',
+    timestamp: '3 hrs ago',
+    severity: 'MEDIUM',
+    acknowledged: true,
+  },
+];

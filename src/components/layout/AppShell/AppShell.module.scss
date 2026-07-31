@@ -1,0 +1,20 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: $color-bg-app;
+
+  .mainContainer {
+    flex: 1;
+    margin-left: 250px;
+    @include flex-column;
+    min-width: 0;
+
+    .contentArea {
+      flex: 1;
+      padding: 28px;
+    }
+  }
+}

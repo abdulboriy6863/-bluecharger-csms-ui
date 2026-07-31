@@ -1,0 +1,39 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.dashboard {
+  @include flex-column;
+  gap: 24px;
+
+  .headerArea {
+    @include flex-between;
+
+    .pageTitle {
+      font-family: $font-family-brand;
+      font-size: 22px;
+      font-weight: 700;
+      color: $color-text-main;
+    }
+
+    .pageSubtitle {
+      font-size: 13px;
+      color: $color-text-muted;
+      margin-top: 2px;
+    }
+  }
+
+  .contentGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .leftCol, .rightCol {
+    @include flex-column;
+    gap: 24px;
+  }
+}

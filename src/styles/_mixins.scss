@@ -1,0 +1,68 @@
+@import './variables';
+
+// Flexbox Utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Glassmorphism effect for cinematic overlays
+@mixin glass-panel($bg-opacity: 0.75, $blur: 16px) {
+  background: rgba($color-bg-dark-800, $bg-opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid $color-border-dark;
+}
+
+// Enterprise Card Styling
+@mixin enterprise-card {
+  background-color: $color-bg-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Custom Scrollbar styling
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: $radius-full;
+
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+// Truncate text with ellipsis
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,24 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.monitoringScreen {
+  @include flex-column;
+  gap: 20px;
+
+  .headerArea {
+    @include flex-between;
+
+    .title {
+      font-family: $font-family-brand;
+      font-size: 22px;
+      font-weight: 700;
+      color: $color-text-main;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: $color-text-muted;
+      margin-top: 2px;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.counterList {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .counterPill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background-color: $color-bg-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .label {
+      font-size: 13px;
+      font-weight: 500;
+      color: $color-text-muted;
+    }
+
+    .count {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: $font-family-mono;
+      color: $color-text-main;
+      background-color: $color-bg-subtle;
+      padding: 2px 8px;
+      border-radius: $radius-full;
+    }
+
+    &:hover {
+      border-color: darken($color-border, 10%);
+      transform: translateY(-1px);
+    }
+
+    &.active {
+      border-color: $color-brand-primary;
+      box-shadow: 0 0 0 2px rgba($color-brand-primary, 0.15);
+      background-color: $color-brand-primary-light;
+
+      .label {
+        color: $color-brand-primary;
+        font-weight: 600;
+      }
+    }
+  }
+}

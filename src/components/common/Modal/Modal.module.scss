@@ -1,0 +1,61 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(11, 19, 43, 0.6);
+  backdrop-filter: blur(4px);
+  @include flex-center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background-color: $color-bg-surface;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  border: 1px solid $color-border;
+  overflow: hidden;
+
+  .header {
+    @include flex-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid $color-border-subtle;
+    background-color: $color-bg-subtle;
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: $color-text-main;
+    }
+
+    .closeBtn {
+      color: $color-text-muted;
+      padding: 4px;
+      border-radius: $radius-sm;
+      transition: background $transition-fast;
+
+      &:hover {
+        background-color: $color-bg-hover;
+        color: $color-text-main;
+      }
+    }
+  }
+
+  .body {
+    padding: 24px;
+  }
+
+  .footer {
+    @include flex-between;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid $color-border-subtle;
+    background-color: $color-bg-app;
+  }
+}

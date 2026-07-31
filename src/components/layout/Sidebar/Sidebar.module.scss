@@ -1,0 +1,158 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: $color-bg-dark-900;
+  border-right: 1px solid $color-border-dark;
+  @include flex-column;
+  color: $color-text-white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+
+  .brandHeader {
+    padding: 20px 24px;
+    @include flex-between;
+    border-bottom: 1px solid $color-border-dark;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .iconBadge {
+        width: 36px;
+        height: 36px;
+        border-radius: $radius-md;
+        background: linear-gradient(135deg, $color-brand-primary, $color-brand-accent);
+        @include flex-center;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      }
+
+      .brandText {
+        @include flex-column;
+
+        .name {
+          font-family: $font-family-brand;
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: 0.02em;
+          color: #ffffff;
+        }
+
+        .subtitle {
+          font-size: 11px;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .navSection {
+    flex: 1;
+    padding: 16px 12px;
+    overflow-y: auto;
+    @include flex-column;
+    gap: 4px;
+    @include custom-scrollbar;
+
+    .sectionTitle {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #64748b;
+      padding: 12px 12px 6px 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .navItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: $radius-sm;
+      color: #94a3b8;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all $transition-fast;
+
+      .leftGroup {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .navIcon {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: $radius-full;
+        background-color: rgba(37, 99, 235, 0.2);
+        color: #60a5fa;
+      }
+
+      &:hover {
+        background-color: $color-bg-dark-800;
+        color: #ffffff;
+      }
+
+      &.active {
+        background-color: $color-brand-primary;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+
+        .navIcon {
+          color: #ffffff;
+        }
+
+        .badge {
+          background-color: rgba(255, 255, 255, 0.25);
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .footer {
+    padding: 16px;
+    border-top: 1px solid $color-border-dark;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .statusIndicator {
+      @include flex-between;
+      font-size: 12px;
+
+      .statusLabel {
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .liveDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: $color-status-available;
+          box-shadow: 0 0 8px $color-status-available;
+        }
+      }
+
+      .version {
+        color: #64748b;
+        font-family: $font-family-mono;
+        font-size: 11px;
+      }
+    }
+  }
+}
