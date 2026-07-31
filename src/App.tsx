@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage } from './components/layout/TopNavigation/TopNavigation';
+import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
@@ -41,6 +41,11 @@ import { TariffPlanManagementPage } from './pages/PaymentManagement/TariffPlanMa
 import { SettlementManagementPage } from './pages/PaymentManagement/SettlementManagement/SettlementManagementPage';
 import { ReceivablesManagementPage } from './pages/PaymentManagement/ReceivablesManagement/ReceivablesManagementPage';
 import { PrepaidManagementPage } from './pages/PaymentManagement/PrepaidManagement/PrepaidManagementPage';
+import { PurchaseManagementPage } from './pages/PurchaseSales/PurchaseManagement/PurchaseManagementPage';
+import { SalesManagementPage } from './pages/PurchaseSales/SalesManagement/SalesManagementPage';
+import { PurchaseSalesSummaryPage } from './pages/PurchaseSales/PurchaseSalesSummary/PurchaseSalesSummaryPage';
+import { PurchaseSalesPerformancePage } from './pages/PurchaseSales/PurchaseSalesPerformance/PurchaseSalesPerformancePage';
+import { NetProfitManagementPage } from './pages/PurchaseSales/NetProfitManagement/NetProfitManagementPage';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -52,6 +57,7 @@ export const App: React.FC = () => {
   const [infrastructurePage, setInfrastructurePage] = useState<InfrastructurePage>('manufacturers');
   const [historyManagementPage, setHistoryManagementPage] = useState<HistoryManagementPage>('charging');
   const [paymentManagementPage, setPaymentManagementPage] = useState<PaymentManagementPage>('tariffs');
+  const [purchaseSalesPage, setPurchaseSalesPage] = useState<PurchaseSalesPage>('purchases');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
@@ -138,6 +144,8 @@ export const App: React.FC = () => {
       onHistoryManagementPageChange={setHistoryManagementPage}
       paymentManagementPage={paymentManagementPage}
       onPaymentManagementPageChange={setPaymentManagementPage}
+      purchaseSalesPage={purchaseSalesPage}
+      onPurchaseSalesPageChange={setPurchaseSalesPage}
       user={user}
       language={language}
       onLanguageChange={setLanguage}
@@ -207,7 +215,13 @@ export const App: React.FC = () => {
       {activeTab === 'billing' && paymentManagementPage === 'receivables' && <ReceivablesManagementPage />}
       {activeTab === 'billing' && paymentManagementPage === 'prepaid' && <PrepaidManagementPage />}
 
-      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && activeTab !== 'stations' && activeTab !== 'sessions' && activeTab !== 'billing' && (
+      {activeTab === 'reports' && purchaseSalesPage === 'purchases' && <PurchaseManagementPage />}
+      {activeTab === 'reports' && purchaseSalesPage === 'sales' && <SalesManagementPage />}
+      {activeTab === 'reports' && purchaseSalesPage === 'summary' && <PurchaseSalesSummaryPage />}
+      {activeTab === 'reports' && purchaseSalesPage === 'performance' && <PurchaseSalesPerformancePage />}
+      {activeTab === 'reports' && purchaseSalesPage === 'net-profit' && <NetProfitManagementPage />}
+
+      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && activeTab !== 'stations' && activeTab !== 'sessions' && activeTab !== 'billing' && activeTab !== 'reports' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
             {activeTab.toUpperCase()} {t('nav.events')}

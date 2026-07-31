@@ -33,6 +33,7 @@ export type MemberManagementPage = 'groups' | 'information' | 'notifications' | 
 export type InfrastructurePage = 'manufacturers' | 'models' | 'stations' | 'chargers' | 'soc-limits' | 'power-limits';
 export type HistoryManagementPage = 'charging' | 'payments' | 'control' | 'communication' | 'errors' | 'charging-graph' | 'prepaid';
 export type PaymentManagementPage = 'tariffs' | 'settlement' | 'receivables' | 'prepaid';
+export type PurchaseSalesPage = 'purchases' | 'sales' | 'summary' | 'performance' | 'net-profit';
 
 type ModuleNavItem = {
   id: string;
@@ -56,6 +57,8 @@ interface TopNavigationProps {
   onHistoryManagementPageChange: (page: HistoryManagementPage) => void;
   paymentManagementPage: PaymentManagementPage;
   onPaymentManagementPageChange: (page: PaymentManagementPage) => void;
+  purchaseSalesPage: PurchaseSalesPage;
+  onPurchaseSalesPageChange: (page: PurchaseSalesPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -133,6 +136,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onHistoryManagementPageChange,
   paymentManagementPage,
   onPaymentManagementPageChange,
+  purchaseSalesPage,
+  onPurchaseSalesPageChange,
   user,
   language,
   onLanguageChange,
@@ -153,6 +158,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [isHistorySubnavClosing, setIsHistorySubnavClosing] = useState<boolean>(false);
   const [isPaymentSubnavOpen, setIsPaymentSubnavOpen] = useState<boolean>(false);
   const [isPaymentSubnavClosing, setIsPaymentSubnavClosing] = useState<boolean>(false);
+  const [isSalesSubnavOpen, setIsSalesSubnavOpen] = useState<boolean>(false);
+  const [isSalesSubnavClosing, setIsSalesSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const isSystemManagementActive = activeTab === 'settings';
@@ -160,6 +167,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const isInfrastructureActive = activeTab === 'stations';
   const isHistoryActive = activeTab === 'sessions';
   const isPaymentActive = activeTab === 'billing';
+  const isSalesActive = activeTab === 'reports';
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -209,6 +217,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     if (!isPaymentActive) {
       setIsPaymentSubnavOpen(false);
       setIsPaymentSubnavClosing(false);
+    }
+    if (!isSalesActive) {
+      setIsSalesSubnavOpen(false);
+      setIsSalesSubnavClosing(false);
     }
   }, [activeTab]);
 
@@ -285,6 +297,18 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     setIsPaymentSubnavOpen(true);
   };
 
+  const toggleSalesSubnav = () => {
+    if (isSalesSubnavOpen) {
+      setIsSalesSubnavClosing(true);
+      window.setTimeout(() => {
+        setIsSalesSubnavOpen(false);
+        setIsSalesSubnavClosing(false);
+      }, 320);
+      return;
+    }
+    setIsSalesSubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
@@ -333,6 +357,13 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     { id: 'settlement', labelKey: 'payment.settlement' },
     { id: 'receivables', labelKey: 'payment.receivables' },
     { id: 'prepaid', labelKey: 'payment.prepaid' },
+  ];
+  const purchaseSalesPages: Array<{ id: PurchaseSalesPage; labelKey: string }> = [
+    { id: 'purchases', labelKey: 'sales.purchases' },
+    { id: 'sales', labelKey: 'sales.sales' },
+    { id: 'summary', labelKey: 'sales.summary' },
+    { id: 'performance', labelKey: 'sales.performance' },
+    { id: 'net-profit', labelKey: 'sales.netProfit' },
   ];
 
   return (
@@ -437,6 +468,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                   onPaymentManagementPageChange('tariffs');
                   togglePaymentSubnav();
                 }
+                if (item.id === 'sales') {
+                  onPurchaseSalesPageChange('purchases');
+                  toggleSalesSubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -516,6 +551,16 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
         <nav className={clsx(styles.homeSubnav, isPaymentSubnavClosing && styles.closing)} aria-label="Payment Information pages">
           {paymentPages.map((page) => (
             <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, paymentManagementPage === page.id && styles.active)} onClick={() => { onPaymentManagementPageChange(page.id); onTabChange('billing'); }}>
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isSalesActive && (isSalesSubnavOpen || isSalesSubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isSalesSubnavClosing && styles.closing)} aria-label="Purchase and Sales pages">
+          {purchaseSalesPages.map((page) => (
+            <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, purchaseSalesPage === page.id && styles.active)} onClick={() => { onPurchaseSalesPageChange(page.id); onTabChange('reports'); }}>
               {t(page.labelKey)}
             </button>
           ))}

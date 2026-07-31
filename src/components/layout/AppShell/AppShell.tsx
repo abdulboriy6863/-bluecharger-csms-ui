@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './AppShell.module.scss';
-import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage } from '../TopNavigation/TopNavigation';
+import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from '../TopNavigation/TopNavigation';
 import { Language, User } from '../../../types/auth';
 
 interface AppShellProps {
@@ -18,6 +18,8 @@ interface AppShellProps {
   onHistoryManagementPageChange: (page: HistoryManagementPage) => void;
   paymentManagementPage: PaymentManagementPage;
   onPaymentManagementPageChange: (page: PaymentManagementPage) => void;
+  purchaseSalesPage: PurchaseSalesPage;
+  onPurchaseSalesPageChange: (page: PurchaseSalesPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -42,6 +44,8 @@ export const AppShell: React.FC<AppShellProps> = ({
   onHistoryManagementPageChange,
   paymentManagementPage,
   onPaymentManagementPageChange,
+  purchaseSalesPage,
+  onPurchaseSalesPageChange,
   user,
   language,
   onLanguageChange,
@@ -67,6 +71,8 @@ export const AppShell: React.FC<AppShellProps> = ({
         onHistoryManagementPageChange={onHistoryManagementPageChange}
         paymentManagementPage={paymentManagementPage}
         onPaymentManagementPageChange={onPaymentManagementPageChange}
+        purchaseSalesPage={purchaseSalesPage}
+        onPurchaseSalesPageChange={onPurchaseSalesPageChange}
         user={user}
         language={language}
         onLanguageChange={onLanguageChange}
