@@ -122,7 +122,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onToggleDarkMode,
 }) => {
   const [dateTime, setDateTime] = useState<string>('');
+  const [isHomeSubnavOpen, setIsHomeSubnavOpen] = useState<boolean>(true);
+  const [isHomeSubnavClosing, setIsHomeSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
+  const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -148,12 +151,31 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     return () => window.clearInterval(timer);
   }, [activeLanguage]);
 
+  useEffect(() => {
+    if (!isSystemHomeActive) {
+      setIsHomeSubnavOpen(false);
+      setIsHomeSubnavClosing(false);
+    }
+  }, [activeTab]);
+
+  const toggleHomeSubnav = () => {
+    if (isHomeSubnavOpen) {
+      setIsHomeSubnavClosing(true);
+      window.setTimeout(() => {
+        setIsHomeSubnavOpen(false);
+        setIsHomeSubnavClosing(false);
+      }, 320);
+      return;
+    }
+
+    setIsHomeSubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
   );
 
-  const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const systemHomePages: Array<{ id: SystemHomePage; labelKey: string }> = [
     { id: 'dashboard', labelKey: 'home.dashboard' },
     { id: 'solar', labelKey: 'home.solar' },
@@ -240,7 +262,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               type="button"
               className={clsx(styles.moduleItem, isActive && styles.active)}
               onClick={() => {
-                if (item.id === 'system-home') onSystemHomePageChange('dashboard');
+                if (item.id === 'system-home') {
+                  onSystemHomePageChange('dashboard');
+                  toggleHomeSubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -250,8 +275,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
         })}
       </nav>
 
-      {isSystemHomeActive && (
-        <nav className={styles.homeSubnav} aria-label="System Home pages">
+      {isSystemHomeActive && (isHomeSubnavOpen || isHomeSubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isHomeSubnavClosing && styles.closing)} aria-label="System Home pages">
           {systemHomePages.map((page) => (
             <button
               key={page.id}
