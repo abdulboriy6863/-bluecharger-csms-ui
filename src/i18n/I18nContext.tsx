@@ -4,6 +4,10 @@ import { Language } from '../types/auth';
 type TranslationMap = Record<string, string>;
 
 const english: TranslationMap = {
+  'payment.tariffs': 'Tariff Plan Management',
+  'payment.settlement': 'Settlement Management',
+  'payment.receivables': 'Outstanding Receivables',
+  'payment.prepaid': 'Prepaid Management',
   'history.charging': 'Charging History',
   'history.payments': 'Payment History',
   'history.control': 'Control History',
@@ -103,6 +107,7 @@ const translations: Record<Language, TranslationMap> = {
   en: english,
   ko: {
     ...english,
+    'payment.tariffs': '요금제관리', 'payment.settlement': '정산관리', 'payment.receivables': '미수관리', 'payment.prepaid': '선결제관리',
     'history.charging': '충전이력', 'history.payments': '결제이력', 'history.control': '제어이력', 'history.communication': '통신이력',
     'history.errors': '에러이력', 'history.chargingGraph': '충전이력 그래프', 'history.prepaid': '선결제충전이력',
     'infrastructure.manufacturers': '제조사관리', 'infrastructure.models': '모델관리', 'infrastructure.stations': '충전소 관리',

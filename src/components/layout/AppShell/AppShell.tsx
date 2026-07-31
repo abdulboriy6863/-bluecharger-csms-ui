@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './AppShell.module.scss';
-import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage } from '../TopNavigation/TopNavigation';
+import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage } from '../TopNavigation/TopNavigation';
 import { Language, User } from '../../../types/auth';
 
 interface AppShellProps {
@@ -16,6 +16,8 @@ interface AppShellProps {
   onInfrastructurePageChange: (page: InfrastructurePage) => void;
   historyManagementPage: HistoryManagementPage;
   onHistoryManagementPageChange: (page: HistoryManagementPage) => void;
+  paymentManagementPage: PaymentManagementPage;
+  onPaymentManagementPageChange: (page: PaymentManagementPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -38,6 +40,8 @@ export const AppShell: React.FC<AppShellProps> = ({
   onInfrastructurePageChange,
   historyManagementPage,
   onHistoryManagementPageChange,
+  paymentManagementPage,
+  onPaymentManagementPageChange,
   user,
   language,
   onLanguageChange,
@@ -61,6 +65,8 @@ export const AppShell: React.FC<AppShellProps> = ({
         onInfrastructurePageChange={onInfrastructurePageChange}
         historyManagementPage={historyManagementPage}
         onHistoryManagementPageChange={onHistoryManagementPageChange}
+        paymentManagementPage={paymentManagementPage}
+        onPaymentManagementPageChange={onPaymentManagementPageChange}
         user={user}
         language={language}
         onLanguageChange={onLanguageChange}
