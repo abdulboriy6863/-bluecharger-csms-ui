@@ -275,13 +275,15 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  min-height: 58px;
+  height: 58px;
+  min-height: 0;
   padding: 8px 24px 9px;
-  overflow-x: auto;
+  overflow: hidden auto;
   border-top: 0;
   border-bottom: 1px solid #e8eef5;
   background: #ffffff;
   animation: homeSubnavEnter 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: height, opacity, transform;
 
   &.closing {
     animation: homeSubnavExit 320ms cubic-bezier(0.4, 0, 0.6, 1) forwards;
@@ -326,8 +328,8 @@
 }
 
 @keyframes homeSubnavEnter {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; transform: translateY(-8px); }
+  to { height: 58px; padding-top: 8px; padding-bottom: 9px; opacity: 1; transform: translateY(0); }
 }
 
 @keyframes activeSubnavIndicator {
@@ -336,8 +338,8 @@
 }
 
 @keyframes homeSubnavExit {
-  from { opacity: 1; transform: scaleY(1); transform-origin: top; }
-  to { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  from { height: 58px; padding-top: 8px; padding-bottom: 9px; opacity: 1; transform: scaleY(1); transform-origin: top; }
+  to { height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; transform: scaleY(0); transform-origin: top; }
 }
 
 :global(.darkAppMode) {
