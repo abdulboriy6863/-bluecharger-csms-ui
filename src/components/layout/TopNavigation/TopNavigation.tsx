@@ -30,6 +30,7 @@ export type NavTab =
 export type SystemHomePage = 'dashboard' | 'solar' | 'locations' | 'charger-status' | 'charger-control';
 export type SystemManagementPage = 'companies' | 'users' | 'permissions' | 'common-codes' | 'notice-faq';
 export type MemberManagementPage = 'groups' | 'information' | 'notifications' | 'support' | 'grades';
+export type InfrastructurePage = 'manufacturers' | 'models' | 'stations' | 'chargers' | 'soc-limits' | 'power-limits';
 
 type ModuleNavItem = {
   id: string;
@@ -47,6 +48,8 @@ interface TopNavigationProps {
   onSystemManagementPageChange: (page: SystemManagementPage) => void;
   memberManagementPage: MemberManagementPage;
   onMemberManagementPageChange: (page: MemberManagementPage) => void;
+  infrastructurePage: InfrastructurePage;
+  onInfrastructurePageChange: (page: InfrastructurePage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -124,6 +127,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onSystemManagementPageChange,
   memberManagementPage,
   onMemberManagementPageChange,
+  infrastructurePage,
+  onInfrastructurePageChange,
   user,
   language,
   onLanguageChange,
@@ -138,10 +143,13 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [isManagementSubnavClosing, setIsManagementSubnavClosing] = useState<boolean>(false);
   const [isMemberSubnavOpen, setIsMemberSubnavOpen] = useState<boolean>(false);
   const [isMemberSubnavClosing, setIsMemberSubnavClosing] = useState<boolean>(false);
+  const [isInfrastructureSubnavOpen, setIsInfrastructureSubnavOpen] = useState<boolean>(false);
+  const [isInfrastructureSubnavClosing, setIsInfrastructureSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const isSystemManagementActive = activeTab === 'settings';
   const isMemberManagementActive = activeTab === 'customers';
+  const isInfrastructureActive = activeTab === 'stations';
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -179,6 +187,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     if (!isMemberManagementActive) {
       setIsMemberSubnavOpen(false);
       setIsMemberSubnavClosing(false);
+    }
+    if (!isInfrastructureActive) {
+      setIsInfrastructureSubnavOpen(false);
+      setIsInfrastructureSubnavClosing(false);
     }
   }, [activeTab]);
 
@@ -219,6 +231,18 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     setIsMemberSubnavOpen(true);
   };
 
+  const toggleInfrastructureSubnav = () => {
+    if (isInfrastructureSubnavOpen) {
+      setIsInfrastructureSubnavClosing(true);
+      window.setTimeout(() => {
+        setIsInfrastructureSubnavOpen(false);
+        setIsInfrastructureSubnavClosing(false);
+      }, 320);
+      return;
+    }
+    setIsInfrastructureSubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
@@ -244,6 +268,14 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     { id: 'notifications', labelKey: 'members.notifications' },
     { id: 'support', labelKey: 'members.support' },
     { id: 'grades', labelKey: 'members.grades' },
+  ];
+  const infrastructurePages: Array<{ id: InfrastructurePage; labelKey: string }> = [
+    { id: 'manufacturers', labelKey: 'infrastructure.manufacturers' },
+    { id: 'models', labelKey: 'infrastructure.models' },
+    { id: 'stations', labelKey: 'infrastructure.stations' },
+    { id: 'chargers', labelKey: 'infrastructure.chargers' },
+    { id: 'soc-limits', labelKey: 'infrastructure.socLimits' },
+    { id: 'power-limits', labelKey: 'infrastructure.powerLimits' },
   ];
 
   return (
@@ -336,6 +368,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                   onMemberManagementPageChange('groups');
                   toggleMemberSubnav();
                 }
+                if (item.id === 'infrastructure') {
+                  onInfrastructurePageChange('manufacturers');
+                  toggleInfrastructureSubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -385,6 +421,16 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
         <nav className={clsx(styles.homeSubnav, isMemberSubnavClosing && styles.closing)} aria-label="Member Management pages">
           {memberManagementPages.map((page) => (
             <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, memberManagementPage === page.id && styles.active)} onClick={() => { onMemberManagementPageChange(page.id); onTabChange('customers'); }}>
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isInfrastructureActive && (isInfrastructureSubnavOpen || isInfrastructureSubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isInfrastructureSubnavClosing && styles.closing)} aria-label="Infrastructure pages">
+          {infrastructurePages.map((page) => (
+            <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, infrastructurePage === page.id && styles.active)} onClick={() => { onInfrastructurePageChange(page.id); onTabChange('stations'); }}>
               {t(page.labelKey)}
             </button>
           ))}

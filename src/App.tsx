@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage } from './components/layout/TopNavigation/TopNavigation';
+import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
@@ -24,6 +24,12 @@ import { MemberInformationPage } from './pages/MemberManagement/MemberInformatio
 import { MemberNotificationsPage } from './pages/MemberManagement/MemberNotifications/MemberNotificationsPage';
 import { MemberSupportPage } from './pages/MemberManagement/MemberSupport/MemberSupportPage';
 import { MemberGradesPage } from './pages/MemberManagement/MemberGrades/MemberGradesPage';
+import { ManufacturerManagementPage } from './pages/Infrastructure/ManufacturerManagement/ManufacturerManagementPage';
+import { ModelManagementPage } from './pages/Infrastructure/ModelManagement/ModelManagementPage';
+import { ChargingStationManagementPage } from './pages/Infrastructure/ChargingStationManagement/ChargingStationManagementPage';
+import { ChargerManagementPage } from './pages/Infrastructure/ChargerManagement/ChargerManagementPage';
+import { SocLimitManagementPage } from './pages/Infrastructure/SocLimitManagement/SocLimitManagementPage';
+import { PowerLimitManagementPage } from './pages/Infrastructure/PowerLimitManagement/PowerLimitManagementPage';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -32,6 +38,7 @@ export const App: React.FC = () => {
   const [systemHomePage, setSystemHomePage] = useState<SystemHomePage>('dashboard');
   const [systemManagementPage, setSystemManagementPage] = useState<SystemManagementPage>('companies');
   const [memberManagementPage, setMemberManagementPage] = useState<MemberManagementPage>('groups');
+  const [infrastructurePage, setInfrastructurePage] = useState<InfrastructurePage>('manufacturers');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
@@ -112,6 +119,8 @@ export const App: React.FC = () => {
       onSystemManagementPageChange={setSystemManagementPage}
       memberManagementPage={memberManagementPage}
       onMemberManagementPageChange={setMemberManagementPage}
+      infrastructurePage={infrastructurePage}
+      onInfrastructurePageChange={setInfrastructurePage}
       user={user}
       language={language}
       onLanguageChange={setLanguage}
@@ -161,7 +170,14 @@ export const App: React.FC = () => {
       {activeTab === 'customers' && memberManagementPage === 'support' && <MemberSupportPage />}
       {activeTab === 'customers' && memberManagementPage === 'grades' && <MemberGradesPage />}
 
-      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && (
+      {activeTab === 'stations' && infrastructurePage === 'manufacturers' && <ManufacturerManagementPage />}
+      {activeTab === 'stations' && infrastructurePage === 'models' && <ModelManagementPage />}
+      {activeTab === 'stations' && infrastructurePage === 'stations' && <ChargingStationManagementPage />}
+      {activeTab === 'stations' && infrastructurePage === 'chargers' && <ChargerManagementPage />}
+      {activeTab === 'stations' && infrastructurePage === 'soc-limits' && <SocLimitManagementPage />}
+      {activeTab === 'stations' && infrastructurePage === 'power-limits' && <PowerLimitManagementPage />}
+
+      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && activeTab !== 'stations' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
             {activeTab.toUpperCase()} {t('nav.events')}
