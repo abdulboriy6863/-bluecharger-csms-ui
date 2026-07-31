@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage } from './components/layout/TopNavigation/TopNavigation';
+import { NavTab, SystemHomePage, SystemManagementPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
@@ -14,12 +14,18 @@ import { SolarDashboardPage } from './pages/SystemHome/SolarDashboard/SolarDashb
 import { InstallationLocationsPage } from './pages/SystemHome/InstallationLocations/InstallationLocationsPage';
 import { ChargerStatusPage } from './pages/SystemHome/ChargerStatus/ChargerStatusPage';
 import { ChargerControlPage } from './pages/SystemHome/ChargerControl/ChargerControlPage';
+import { CompanyManagementPage } from './pages/SystemManagement/CompanyManagement/CompanyManagementPage';
+import { UserManagementPage } from './pages/SystemManagement/UserManagement/UserManagementPage';
+import { MenuPermissionGroupsPage } from './pages/SystemManagement/MenuPermissionGroups/MenuPermissionGroupsPage';
+import { CommonCodeManagementPage } from './pages/SystemManagement/CommonCodeManagement/CommonCodeManagementPage';
+import { NoticeFaqPage } from './pages/SystemManagement/NoticeFaq/NoticeFaqPage';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const { language, setLanguage, t } = useI18n();
   const [activeTab, setActiveTab] = useState<NavTab>('overview');
   const [systemHomePage, setSystemHomePage] = useState<SystemHomePage>('dashboard');
+  const [systemManagementPage, setSystemManagementPage] = useState<SystemManagementPage>('companies');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
@@ -96,6 +102,8 @@ export const App: React.FC = () => {
       onTabChange={handleTabChange}
       systemHomePage={systemHomePage}
       onSystemHomePageChange={setSystemHomePage}
+      systemManagementPage={systemManagementPage}
+      onSystemManagementPageChange={setSystemManagementPage}
       user={user}
       language={language}
       onLanguageChange={setLanguage}
@@ -133,7 +141,13 @@ export const App: React.FC = () => {
         />
       )}
 
-      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && (
+      {activeTab === 'settings' && systemManagementPage === 'companies' && <CompanyManagementPage />}
+      {activeTab === 'settings' && systemManagementPage === 'users' && <UserManagementPage />}
+      {activeTab === 'settings' && systemManagementPage === 'permissions' && <MenuPermissionGroupsPage />}
+      {activeTab === 'settings' && systemManagementPage === 'common-codes' && <CommonCodeManagementPage />}
+      {activeTab === 'settings' && systemManagementPage === 'notice-faq' && <NoticeFaqPage />}
+
+      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
             {activeTab.toUpperCase()} {t('nav.events')}

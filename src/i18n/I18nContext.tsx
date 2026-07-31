@@ -4,6 +4,11 @@ import { Language } from '../types/auth';
 type TranslationMap = Record<string, string>;
 
 const english: TranslationMap = {
+  'management.companies': 'Company Management',
+  'management.users': 'User Management',
+  'management.permissions': 'Menu Permission Groups',
+  'management.commonCodes': 'Common Code Management',
+  'management.noticeFaq': 'Notice / FAQ',
   'home.dashboard': 'Dashboard',
   'home.solar': 'Solar Dashboard',
   'home.locations': 'Installation Locations',

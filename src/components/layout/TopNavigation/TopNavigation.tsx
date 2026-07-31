@@ -28,6 +28,7 @@ export type NavTab =
   | 'settings';
 
 export type SystemHomePage = 'dashboard' | 'solar' | 'locations' | 'charger-status' | 'charger-control';
+export type SystemManagementPage = 'companies' | 'users' | 'permissions' | 'common-codes' | 'notice-faq';
 
 type ModuleNavItem = {
   id: string;
@@ -41,6 +42,8 @@ interface TopNavigationProps {
   onTabChange: (tab: NavTab) => void;
   systemHomePage: SystemHomePage;
   onSystemHomePageChange: (page: SystemHomePage) => void;
+  systemManagementPage: SystemManagementPage;
+  onSystemManagementPageChange: (page: SystemManagementPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -114,6 +117,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onTabChange,
   systemHomePage,
   onSystemHomePageChange,
+  systemManagementPage,
+  onSystemManagementPageChange,
   user,
   language,
   onLanguageChange,
@@ -124,8 +129,11 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [dateTime, setDateTime] = useState<string>('');
   const [isHomeSubnavOpen, setIsHomeSubnavOpen] = useState<boolean>(true);
   const [isHomeSubnavClosing, setIsHomeSubnavClosing] = useState<boolean>(false);
+  const [isManagementSubnavOpen, setIsManagementSubnavOpen] = useState<boolean>(false);
+  const [isManagementSubnavClosing, setIsManagementSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
+  const isSystemManagementActive = activeTab === 'settings';
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -156,6 +164,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       setIsHomeSubnavOpen(false);
       setIsHomeSubnavClosing(false);
     }
+    if (!isSystemManagementActive) {
+      setIsManagementSubnavOpen(false);
+      setIsManagementSubnavClosing(false);
+    }
   }, [activeTab]);
 
   const toggleHomeSubnav = () => {
@@ -171,6 +183,18 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     setIsHomeSubnavOpen(true);
   };
 
+  const toggleManagementSubnav = () => {
+    if (isManagementSubnavOpen) {
+      setIsManagementSubnavClosing(true);
+      window.setTimeout(() => {
+        setIsManagementSubnavOpen(false);
+        setIsManagementSubnavClosing(false);
+      }, 320);
+      return;
+    }
+    setIsManagementSubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
@@ -182,6 +206,13 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     { id: 'locations', labelKey: 'home.locations' },
     { id: 'charger-status', labelKey: 'home.chargerStatus' },
     { id: 'charger-control', labelKey: 'home.chargerControl' },
+  ];
+  const systemManagementPages: Array<{ id: SystemManagementPage; labelKey: string }> = [
+    { id: 'companies', labelKey: 'management.companies' },
+    { id: 'users', labelKey: 'management.users' },
+    { id: 'permissions', labelKey: 'management.permissions' },
+    { id: 'common-codes', labelKey: 'management.commonCodes' },
+    { id: 'notice-faq', labelKey: 'management.noticeFaq' },
   ];
 
   return (
@@ -266,6 +297,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                   onSystemHomePageChange('dashboard');
                   toggleHomeSubnav();
                 }
+                if (item.id === 'system-admin') {
+                  onSystemManagementPageChange('companies');
+                  toggleManagementSubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -285,6 +320,24 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               onClick={() => {
                 onSystemHomePageChange(page.id);
                 onTabChange(page.id === 'charger-status' ? 'monitoring' : page.id === 'charger-control' ? 'control' : 'overview');
+              }}
+            >
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isSystemManagementActive && (isManagementSubnavOpen || isManagementSubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isManagementSubnavClosing && styles.closing)} aria-label="System Management pages">
+          {systemManagementPages.map((page) => (
+            <button
+              key={page.id}
+              type="button"
+              className={clsx(styles.homeSubnavItem, systemManagementPage === page.id && styles.active)}
+              onClick={() => {
+                onSystemManagementPageChange(page.id);
+                onTabChange('settings');
               }}
             >
               {t(page.labelKey)}

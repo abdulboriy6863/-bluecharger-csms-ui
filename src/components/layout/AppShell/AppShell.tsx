@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './AppShell.module.scss';
-import { TopNavigation, NavTab, SystemHomePage } from '../TopNavigation/TopNavigation';
+import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage } from '../TopNavigation/TopNavigation';
 import { Language, User } from '../../../types/auth';
 
 interface AppShellProps {
@@ -8,6 +8,8 @@ interface AppShellProps {
   onTabChange: (tab: NavTab) => void;
   systemHomePage: SystemHomePage;
   onSystemHomePageChange: (page: SystemHomePage) => void;
+  systemManagementPage: SystemManagementPage;
+  onSystemManagementPageChange: (page: SystemManagementPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -22,6 +24,8 @@ export const AppShell: React.FC<AppShellProps> = ({
   onTabChange,
   systemHomePage,
   onSystemHomePageChange,
+  systemManagementPage,
+  onSystemManagementPageChange,
   user,
   language,
   onLanguageChange,
@@ -37,6 +41,8 @@ export const AppShell: React.FC<AppShellProps> = ({
         onTabChange={onTabChange}
         systemHomePage={systemHomePage}
         onSystemHomePageChange={onSystemHomePageChange}
+        systemManagementPage={systemManagementPage}
+        onSystemManagementPageChange={onSystemManagementPageChange}
         user={user}
         language={language}
         onLanguageChange={onLanguageChange}
