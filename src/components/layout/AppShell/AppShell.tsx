@@ -34,6 +34,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       />
       <div className={styles.mainContainer}>
         <TopBar
+          activeTab={activeTab}
           user={user}
           language={language}
           onLanguageChange={onLanguageChange}

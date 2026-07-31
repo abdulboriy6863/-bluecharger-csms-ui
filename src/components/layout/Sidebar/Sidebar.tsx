@@ -17,6 +17,14 @@ import {
 
 export type NavTab = 'overview' | 'monitoring' | 'control' | 'stations' | 'customers' | 'sessions' | 'billing' | 'tariffs' | 'reports' | 'settings';
 
+type NavItem = {
+  id: NavTab;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+  badge?: number | string;
+};
+
 interface SidebarProps {
   activeTab: NavTab;
   onTabChange: (tab: NavTab) => void;
@@ -28,26 +36,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onTabChange,
   liveChargerCount = 142
 }) => {
-  const mainNav = [
-    { id: 'overview' as NavTab, label: 'Overview', icon: <LayoutDashboard size={18} /> },
-    { id: 'monitoring' as NavTab, label: 'Live Monitoring', icon: <Activity size={18} />, badge: liveChargerCount },
-    { id: 'control' as NavTab, label: 'Control Center', icon: <Sliders size={18} /> },
+  const mainNav: NavItem[] = [
+    { id: 'overview', label: 'Overview', description: 'Network health', icon: <LayoutDashboard size={18} /> },
+    { id: 'monitoring', label: 'Live Monitoring', description: 'Real-time chargers', icon: <Activity size={18} />, badge: liveChargerCount },
+    { id: 'control', label: 'Control Center', description: 'Remote commands', icon: <Sliders size={18} /> },
   ];
 
-  const operationalNav = [
-    { id: 'stations' as NavTab, label: 'Stations & Chargers', icon: <MapPin size={18} /> },
-    { id: 'customers' as NavTab, label: 'Customers & Tokens', icon: <Users size={18} /> },
-    { id: 'sessions' as NavTab, label: 'Charging Sessions', icon: <Clock size={18} /> },
+  const operationalNav: NavItem[] = [
+    { id: 'stations', label: 'Stations & Chargers', description: 'Sites and hardware', icon: <MapPin size={18} /> },
+    { id: 'customers', label: 'Customers & Tokens', description: 'Drivers and auth', icon: <Users size={18} /> },
+    { id: 'sessions', label: 'Charging Sessions', description: 'History and logs', icon: <Clock size={18} /> },
   ];
 
-  const businessNav = [
-    { id: 'billing' as NavTab, label: 'Billing & Settlement', icon: <CreditCard size={18} /> },
-    { id: 'tariffs' as NavTab, label: 'Tariffs & Promotions', icon: <Tag size={18} /> },
-    { id: 'reports' as NavTab, label: 'Analytics & Reports', icon: <BarChart3 size={18} /> },
-    { id: 'settings' as NavTab, label: 'Admin Settings', icon: <Settings size={18} /> },
+  const businessNav: NavItem[] = [
+    { id: 'billing', label: 'Billing & Settlement', description: 'Payments and invoices', icon: <CreditCard size={18} /> },
+    { id: 'tariffs', label: 'Tariffs & Promotions', description: 'Plans and campaigns', icon: <Tag size={18} /> },
+    { id: 'reports', label: 'Analytics & Reports', description: 'Performance views', icon: <BarChart3 size={18} /> },
+    { id: 'settings', label: 'Admin Settings', description: 'Users and roles', icon: <Settings size={18} /> },
   ];
 
-  const renderNavGroup = (title: string, items: typeof mainNav) => (
+  const renderNavGroup = (title: string, items: NavItem[]) => (
     <>
       <div className={styles.sectionTitle}>{title}</div>
       {items.map((item) => {
@@ -60,7 +68,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <div className={styles.leftGroup}>
               <span className={styles.navIcon}>{item.icon}</span>
-              <span>{item.label}</span>
+              <span className={styles.navCopy}>
+                <span className={styles.navLabel}>{item.label}</span>
+                <span className={styles.navDescription}>{item.description}</span>
+              </span>
             </div>
             {item.badge !== undefined && (
               <span className={styles.badge}>{item.badge}</span>
@@ -79,10 +90,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <Zap size={22} color="#ffffff" />
           </div>
           <div className={styles.brandText}>
-            <span className={styles.name}>BLUENETWORK</span>
-            <span className={styles.subtitle}>CSMS Platform</span>
+            <span className={styles.name}>BlueNetwork</span>
+            <span className={styles.subtitle}>EV Operations</span>
           </div>
         </div>
+      </div>
+
+      <div className={styles.networkCard}>
+        <span className={styles.networkLabel}>Network status</span>
+        <strong>1,284 online</strong>
+        <span className={styles.networkMeta}>342 active sessions</span>
       </div>
 
       <nav className={styles.navSection}>

@@ -8,13 +8,35 @@
 
   .mainContainer {
     flex: 1;
-    margin-left: 250px;
+    margin-left: 272px;
     @include flex-column;
     min-width: 0;
+    transition: margin-left $transition-normal;
 
     .contentArea {
       flex: 1;
       padding: 28px;
+    }
+  }
+}
+
+@media (max-width: 1180px) {
+  .shell {
+    .mainContainer {
+      margin-left: 88px;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .shell {
+    .mainContainer {
+      margin-left: 0;
+
+      .contentArea {
+        padding: 18px;
+        padding-bottom: 92px;
+      }
     }
   }
 }

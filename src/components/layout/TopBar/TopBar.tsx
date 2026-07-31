@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TopBar.module.scss';
-import { Search, Bell, Clock, LogOut } from 'lucide-react';
+import { Search, Bell, Clock, LogOut, Building2, ChevronDown } from 'lucide-react';
 import { Input } from '../../common/Input/Input';
 import { Select } from '../../common/Select/Select';
 import { Language, User } from '../../../types/auth';
+import { NavTab } from '../Sidebar/Sidebar';
 
 interface TopBarProps {
+  activeTab: NavTab;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -13,6 +15,7 @@ interface TopBarProps {
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
+  activeTab,
   user,
   language,
   onLanguageChange,
@@ -37,18 +40,43 @@ export const TopBar: React.FC<TopBarProps> = ({
     { value: 'ko', label: '한국어' },
   ];
 
+  const pageMeta: Record<NavTab, { title: string; eyebrow: string }> = {
+    overview: { title: 'Overview', eyebrow: 'Network command dashboard' },
+    monitoring: { title: 'Live Monitoring', eyebrow: 'Real-time charger visibility' },
+    control: { title: 'Control Center', eyebrow: 'Remote operations and commands' },
+    stations: { title: 'Stations & Chargers', eyebrow: 'Infrastructure management' },
+    customers: { title: 'Customers & Tokens', eyebrow: 'Driver and authentication records' },
+    sessions: { title: 'Charging Sessions', eyebrow: 'Session history and activity' },
+    billing: { title: 'Billing & Settlement', eyebrow: 'Payments, invoices, and settlement' },
+    tariffs: { title: 'Tariffs & Promotions', eyebrow: 'Plans, schedules, and campaigns' },
+    reports: { title: 'Analytics & Reports', eyebrow: 'Performance and exports' },
+    settings: { title: 'Admin Settings', eyebrow: 'Users, roles, and platform setup' },
+  };
+
+  const currentPage = pageMeta[activeTab];
+
   return (
     <header className={styles.topBar}>
       <div className={styles.leftSection}>
+        <div className={styles.pageTitleBlock}>
+          <span className={styles.eyebrow}>{currentPage.eyebrow}</span>
+          <h1>{currentPage.title}</h1>
+        </div>
         <div className={styles.searchBox}>
           <Input
-            placeholder="Search chargers, stations, serial no, IP..."
+            placeholder="Search chargers, stations, customers..."
             icon={<Search size={16} />}
           />
         </div>
       </div>
 
       <div className={styles.rightSection}>
+        <button className={styles.companyPicker} type="button">
+          <Building2 size={16} />
+          <span>BlueNetworks Global</span>
+          <ChevronDown size={14} />
+        </button>
+
         <div className={styles.liveTime}>
           <Clock size={14} className={styles.clockIcon} />
           <span>UTC+5:</span>
