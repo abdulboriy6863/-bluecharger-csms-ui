@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   Bell,
-  ChevronDown,
   Globe2,
   Lock,
   LogOut,
@@ -113,12 +112,12 @@ const moduleNavItems: ModuleNavItem[] = [
 ];
 
 const languageOptions: Array<{ value: Language; label: string; title: string }> = [
-  { value: 'en', label: 'English', title: 'English' },
-  { value: 'ko', label: '한국어', title: '한국어' },
-  { value: 'ru', label: 'Русский', title: 'Русский' },
-  { value: 'hi', label: 'हिन्दी', title: 'हिन्दी' },
-  { value: 'id', label: 'Bahasa Indonesia', title: 'Bahasa Indonesia' },
-  { value: 'ky', label: 'Кыргызча', title: 'Кыргызча' },
+  { value: 'en', label: 'ENG', title: 'English' },
+  { value: 'ko', label: 'KOR', title: '한국어' },
+  { value: 'ru', label: 'RUS', title: 'Русский' },
+  { value: 'hi', label: 'HIN', title: 'हिन्दी' },
+  { value: 'id', label: 'IDN', title: 'Bahasa Indonesia' },
+  { value: 'ky', label: 'KYR', title: 'Кыргызча' },
 ];
 
 export const TopNavigation: React.FC<TopNavigationProps> = ({
@@ -161,6 +160,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [isSalesSubnavOpen, setIsSalesSubnavOpen] = useState<boolean>(false);
   const [isSalesSubnavClosing, setIsSalesSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
+  const languageSelectRef = useRef<HTMLDivElement>(null);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState<boolean>(false);
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const isSystemManagementActive = activeTab === 'settings';
   const isMemberManagementActive = activeTab === 'customers';
@@ -223,6 +224,14 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       setIsSalesSubnavClosing(false);
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    const closeLanguageMenu = (event: MouseEvent) => {
+      if (!languageSelectRef.current?.contains(event.target as Node)) setIsLanguageMenuOpen(false);
+    };
+    document.addEventListener('mousedown', closeLanguageMenu);
+    return () => document.removeEventListener('mousedown', closeLanguageMenu);
+  }, []);
 
   const toggleHomeSubnav = () => {
     if (isHomeSubnavOpen) {
@@ -387,21 +396,20 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
             </span>
           </div>
 
-          <div className={styles.languageSelect}>
+          <div className={styles.languageSelect} ref={languageSelectRef}>
             <Globe2 size={15} />
-            <select
-              value={language}
-              aria-label="Select language"
-              onChange={(event) => onLanguageChange(event.target.value as Language)}
-              title={selectedLanguage.title}
-            >
-              {languageOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} />
+            <button type="button" className={styles.languageTrigger} aria-label="Select language" aria-expanded={isLanguageMenuOpen} onClick={() => setIsLanguageMenuOpen((open) => !open)} title={selectedLanguage.title}>
+              {selectedLanguage.label}
+            </button>
+            {isLanguageMenuOpen && (
+              <div className={styles.languageMenu} role="menu">
+                {languageOptions.map((option) => (
+                  <button key={option.value} type="button" className={styles.languageOption} data-active={option.value === language} onClick={() => { onLanguageChange(option.value); setIsLanguageMenuOpen(false); }}>
+                    <span>{option.label}</span><small>{option.title}</small>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <button className={styles.iconAction} type="button" title={t('nav.profile')}>

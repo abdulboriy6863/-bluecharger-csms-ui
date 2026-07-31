@@ -137,6 +137,7 @@
 }
 
 .languageSelect {
+  position: relative;
   height: 36px;
   display: flex;
   align-items: center;
@@ -152,16 +153,62 @@
     flex: 0 0 auto;
   }
 
-  select {
-    width: 116px;
+  .languageTrigger {
+    width: 50px;
+    min-height: 28px;
+    padding: 0;
     border: 0;
     outline: 0;
-    appearance: none;
     background: transparent;
     color: #0f172a;
     font-size: 12px;
     font-weight: 900;
+    text-align: left;
     cursor: pointer;
+  }
+
+  .languageMenu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 90;
+    min-width: 156px;
+    padding: 6px;
+    border: 1px solid rgba(148, 163, 184, 0.42);
+    border-radius: $radius-sm;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+  }
+
+  .languageOption {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 9px;
+    border: 0;
+    border-radius: $radius-xs;
+    background: transparent;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: left;
+    cursor: pointer;
+    transition: background $transition-fast, color $transition-fast;
+
+    &:hover,
+    &[data-active='true'] {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    small {
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
   }
 }
 
@@ -360,8 +407,28 @@
     background: rgba(15, 23, 42, 0.8);
     border-color: rgba(148, 163, 184, 0.22);
 
-    select {
+    .languageTrigger {
       color: #f8fafc;
+    }
+
+    .languageMenu {
+      border-color: rgba(148, 163, 184, 0.22);
+      background: #172338;
+      box-shadow: 0 12px 28px rgba(2, 6, 23, 0.34);
+    }
+
+    .languageOption {
+      color: #e2e8f0;
+
+      &:hover,
+      &[data-active='true'] {
+        background: rgba(37, 99, 235, 0.2);
+        color: #bfdbfe;
+      }
+
+      small {
+        color: #94a3b8;
+      }
     }
   }
 
@@ -482,8 +549,8 @@
   .languageSelect {
     max-width: min(190px, 100%);
 
-    select {
-      width: min(116px, 42vw);
+    .languageTrigger {
+      width: 50px;
     }
   }
 
