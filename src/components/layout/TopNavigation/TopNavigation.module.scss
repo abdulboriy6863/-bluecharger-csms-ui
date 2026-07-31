@@ -309,8 +309,9 @@
   }
 
   &.active {
-    color: #2f587d;
-    box-shadow: 0 4px 14px rgba(47, 88, 125, 0.12);
+    background: #f8fafc;
+    color: #475569;
+    box-shadow: none;
   }
 }
 
@@ -377,7 +378,7 @@
     color: #94a3b8;
 
     &:hover { background: rgba(148, 163, 184, 0.08); color: #e2e8f0; }
-    &.active { background: rgba(148, 163, 184, 0.08); color: #cbd5e1; box-shadow: 0 4px 14px rgba(127, 167, 207, 0.16); }
+    &.active { background: rgba(148, 163, 184, 0.08); color: #e2e8f0; box-shadow: none; }
   }
 
   .moduleItem {
