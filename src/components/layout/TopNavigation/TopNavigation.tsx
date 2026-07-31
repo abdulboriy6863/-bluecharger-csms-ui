@@ -2,14 +2,21 @@ import React, { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import {
   Bell,
+  BarChart3,
+  Cable,
   ChevronDown,
   Globe2,
+  History,
+  LayoutDashboard,
   Lock,
   LogOut,
   Moon,
+  ReceiptText,
   Settings,
   Sun,
   UserRound,
+  UsersRound,
+  Zap,
 } from 'lucide-react';
 import { Language, User } from '../../../types/auth';
 import styles from './TopNavigation.module.scss';
@@ -31,6 +38,7 @@ type ModuleNavItem = {
   label: string;
   tab: NavTab;
   matches: NavTab[];
+  icon: React.ElementType;
 };
 
 interface TopNavigationProps {
@@ -50,48 +58,56 @@ const moduleNavItems: ModuleNavItem[] = [
     label: 'Tizim bosh sahifasi',
     tab: 'overview',
     matches: ['overview', 'monitoring', 'control'],
+    icon: LayoutDashboard,
   },
   {
     id: 'system-admin',
     label: 'Tizim boshqaruvi',
     tab: 'settings',
     matches: ['settings'],
+    icon: Settings,
   },
   {
     id: 'members',
     label: "A'zolar boshqaruvi",
     tab: 'customers',
     matches: ['customers'],
+    icon: UsersRound,
   },
   {
     id: 'infrastructure',
     label: 'Infratuzilma',
     tab: 'stations',
     matches: ['stations'],
+    icon: Cable,
   },
   {
     id: 'history',
     label: "Tarix ma'lumotlari",
     tab: 'sessions',
     matches: ['sessions'],
+    icon: History,
   },
   {
     id: 'events',
     label: '이벤트',
     tab: 'tariffs',
     matches: ['tariffs'],
+    icon: Zap,
   },
   {
     id: 'payments',
     label: "To'lov ma'lumotlari",
     tab: 'billing',
     matches: ['billing'],
+    icon: ReceiptText,
   },
   {
     id: 'sales',
     label: 'Harid sotuv',
     tab: 'reports',
     matches: ['reports'],
+    icon: BarChart3,
   },
 ];
 
@@ -221,6 +237,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               className={clsx(styles.moduleItem, isActive && styles.active)}
               onClick={() => onTabChange(item.tab)}
             >
+              <item.icon size={17} strokeWidth={2.1} aria-hidden="true" />
               {item.label}
             </button>
           );
