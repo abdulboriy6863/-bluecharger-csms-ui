@@ -115,9 +115,9 @@ const languageOptions: Array<{ value: Language; label: string; title: string }> 
   { value: 'en', label: 'ENG', title: 'English' },
   { value: 'ko', label: 'KOR', title: 'Korean' },
   { value: 'ru', label: 'RUS', title: 'Russian' },
-  { value: 'hi', label: 'IND', title: 'Indian' },
+  { value: 'hi', label: 'HIN', title: 'Hindi' },
   { value: 'id', label: 'IDN', title: 'Indonesian' },
-  { value: 'ky', label: 'KRG', title: 'Kyrgyz' },
+  { value: 'ky', label: 'KYR', title: 'Kyrgyz' },
 ];
 
 export const TopNavigation: React.FC<TopNavigationProps> = ({
