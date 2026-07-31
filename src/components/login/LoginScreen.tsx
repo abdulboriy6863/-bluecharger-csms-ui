@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './LoginScreen.module.scss';
 import { Eye, EyeOff, ShieldCheck, Lock, HelpCircle, Zap } from 'lucide-react';
 import { Language } from '../../types/auth';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface LoginScreenProps {
   onLoginSuccess: () => void;
@@ -10,6 +11,7 @@ interface LoginScreenProps {
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
+  const { t } = useI18n();
   const [email, setEmail] = useState<string>('operator@bluenetwork.com');
   const [password, setPassword] = useState<string>('••••••••••••');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -41,7 +43,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         <div className={styles.brandSection}>
           <div className={styles.brandOverline}>BLUENETWORKS</div>
           <h1 className={styles.brandTitle}>BLUENETWORK</h1>
-          <p className={styles.brandSubtitle}>EV Operations Platform</p>
+          <p className={styles.brandSubtitle}>{t('login.platform')}</p>
         </div>
 
         {/* Login Form */}
@@ -49,7 +51,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           {/* User ID or Email */}
           <div className={`${styles.fieldGroup} ${styles.emailField}`}>
             <div className={styles.labelRow}>
-              <label className={styles.label}>USER ID OR EMAIL</label>
+              <label className={styles.label}>{t('login.userId')}</label>
             </div>
             <div className={styles.inputContainer}>
               <input
@@ -65,9 +67,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           {/* Password & Forgot Link */}
           <div className={`${styles.fieldGroup} ${styles.passwordField}`}>
             <div className={styles.labelRow}>
-              <label className={styles.label}>PASSWORD</label>
+              <label className={styles.label}>{t('login.password')}</label>
               <a href="#forgot" className={styles.forgotLink}>
-                Forgot password?
+                {t('login.forgot')}
               </a>
             </div>
             <div className={styles.inputContainer}>
@@ -75,7 +77,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder={t('login.passwordPlaceholder')}
                 className={styles.hasRightIcon}
                 required
               />
@@ -97,12 +99,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
               checked={rememberId}
               onChange={(e) => setRememberId(e.target.checked)}
             />
-            <span className={styles.rememberText}>Remember my ID</span>
+            <span className={styles.rememberText}>{t('login.remember')}</span>
           </label>
 
           {/* Sign In Submit Button */}
           <button type="submit" className={styles.signInSubmitBtn} disabled={loading}>
-            {loading ? 'Authenticating...' : 'Sign In'}
+            {loading ? t('login.authenticating') : t('login.signIn')}
           </button>
         </form>
 
@@ -111,26 +113,26 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           <div className={styles.metricsLine}>
             <span className={styles.metricItem}>
               <span className={styles.livePulseDot} />
-              1,284 chargers online
+              1,284 {t('login.chargersOnline')}
             </span>
             <span className={styles.divider}>|</span>
             <span className={styles.metricItem}>
               <Zap size={14} className={styles.boltIcon} />
-              342 active sessions
+              342 {t('login.activeSessions')}
             </span>
           </div>
 
           <div className={styles.securityLine}>
             <span className={styles.secItem}>
-              <ShieldCheck size={14} color="#10b981" /> TLS 1.3 Encrypted
+              <ShieldCheck size={14} color="#10b981" /> {t('login.encrypted')}
             </span>
             <span className={styles.divider}>|</span>
             <span className={styles.secItem}>
-              <Lock size={13} color="#94a3b8" /> Authorized access only
+              <Lock size={13} color="#94a3b8" /> {t('login.authorized')}
             </span>
             <span className={styles.divider}>|</span>
             <a href="#help" className={styles.secItem}>
-              <HelpCircle size={13} color="#94a3b8" /> Help
+              <HelpCircle size={13} color="#94a3b8" /> {t('login.help')}
             </a>
           </div>
         </div>

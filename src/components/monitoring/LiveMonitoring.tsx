@@ -4,6 +4,7 @@ import { Charger } from '../../types/charger';
 import { StatusCounters } from './StatusCounters';
 import { FilterBar } from './FilterBar';
 import { ChargerTable } from './ChargerTable';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface LiveMonitoringProps {
   chargers: Charger[];
@@ -16,6 +17,7 @@ export const LiveMonitoring: React.FC<LiveMonitoringProps> = ({
   onSelectCharger,
   onOpenControlModal
 }) => {
+  const { t } = useI18n();
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRegion, setSelectedRegion] = useState<string>('ALL');
@@ -63,9 +65,9 @@ export const LiveMonitoring: React.FC<LiveMonitoringProps> = ({
     <div className={styles.monitoringScreen}>
       <div className={styles.headerArea}>
         <div>
-          <h1 className={styles.title}>Live Charger Monitoring</h1>
+          <h1 className={styles.title}>{t('monitoring.title')}</h1>
           <p className={styles.subtitle}>
-            Real-time status tracking and remote management ({filteredChargers.length} of {chargers.length} chargers displayed)
+            {t('monitoring.subtitle')} ({filteredChargers.length} of {chargers.length} {t('monitoring.displayed')})
           </p>
         </div>
       </div>

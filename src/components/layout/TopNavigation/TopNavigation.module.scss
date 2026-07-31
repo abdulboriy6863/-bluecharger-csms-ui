@@ -410,6 +410,14 @@
     gap: 8px;
   }
 
+  .languageSelect {
+    max-width: min(190px, 100%);
+
+    select {
+      width: min(116px, 42vw);
+    }
+  }
+
   .moduleItem {
     min-height: 48px;
     min-width: max-content;

@@ -20,6 +20,17 @@
       color: $color-text-muted;
       margin-top: 2px;
     }
+
+    @media (max-width: 720px) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+
+      > div:last-child {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+    }
   }
 
   .contentGrid {

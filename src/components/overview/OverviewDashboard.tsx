@@ -9,6 +9,7 @@ import { Button } from '../common/Button/Button';
 import { mockKpis, mockEnergyTrend, mockStatusDistribution } from '../../data/mockDashboard';
 import { mockAlerts } from '../../data/mockEvents';
 import { ArrowRight, RefreshCw } from 'lucide-react';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface OverviewDashboardProps {
   onNavigateMonitoring: () => void;
@@ -19,19 +20,20 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onNavigateMonitoring,
   onSelectCharger
 }) => {
+  const { t } = useI18n();
   return (
     <div className={styles.dashboard}>
       <div className={styles.headerArea}>
         <div>
-          <h1 className={styles.pageTitle}>Network Operations Overview</h1>
-          <p className={styles.pageSubtitle}>Real-time telemetry and network performance monitoring</p>
+          <h1 className={styles.pageTitle}>{t('overview.title')}</h1>
+          <p className={styles.pageSubtitle}>{t('overview.subtitle')}</p>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <Button variant="secondary" icon={<RefreshCw size={15} />}>
-            Refresh Telemetry
+            {t('overview.refresh')}
           </Button>
           <Button variant="primary" icon={<ArrowRight size={15} />} iconPosition="right" onClick={onNavigateMonitoring}>
-            Live Monitoring Grid
+            {t('overview.monitoring')}
           </Button>
         </div>
       </div>
@@ -41,18 +43,18 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       <div className={styles.contentGrid}>
         <div className={styles.leftCol}>
           <Card
-            title="24-Hour Energy Delivery Trend"
-            subtitle="Hourly power output (kWh) across all active chargers"
+            title={t('overview.energyTitle')}
+            subtitle={t('overview.energySubtitle')}
           >
             <EnergyTrendChart data={mockEnergyTrend} />
           </Card>
 
           <Card
-            title="Recent Network Alerts & Faults"
-            subtitle="High & Medium priority OCPP error events requiring attention"
+            title={t('overview.alertsTitle')}
+            subtitle={t('overview.alertsSubtitle')}
             action={
               <Button variant="ghost" size="sm" onClick={onNavigateMonitoring}>
-                View All Chargers
+                {t('overview.viewChargers')}
               </Button>
             }
           >
@@ -62,13 +64,13 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
         <div className={styles.rightCol}>
           <Card
-            title="Charger Status Distribution"
-            subtitle="Current operational breakdown"
+            title={t('overview.statusTitle')}
+            subtitle={t('overview.statusSubtitle')}
           >
             <StatusDistribution data={mockStatusDistribution} />
           </Card>
 
-          <Card title="Regional Hub Status">
+          <Card title={t('overview.regionalTitle')}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '8px', borderBottom: '1px solid #f1f5f9' }}>
                 <span style={{ fontWeight: 600 }}>Tashkent Central Hub</span>

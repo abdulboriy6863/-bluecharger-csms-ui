@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './StatusCounters.module.scss';
 import clsx from 'clsx';
 import { ChargerStatus } from '../../types/charger';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface StatusCountersProps {
   selectedStatus: string; // 'ALL' or specific ChargerStatus
@@ -14,13 +15,14 @@ export const StatusCounters: React.FC<StatusCountersProps> = ({
   onSelectStatus,
   statusCounts
 }) => {
+  const { t } = useI18n();
   const items = [
-    { id: 'ALL', label: 'All Chargers', count: statusCounts.ALL || 0, color: '#2563eb' },
-    { id: 'Available', label: 'Available', count: statusCounts.Available || 0, color: '#10b981' },
-    { id: 'Charging', label: 'Charging', count: statusCounts.Charging || 0, color: '#06b6d4' },
-    { id: 'Reserved', label: 'Reserved', count: statusCounts.Reserved || 0, color: '#f59e0b' },
-    { id: 'Faulted', label: 'Faulted', count: statusCounts.Faulted || 0, color: '#ef4444' },
-    { id: 'Offline', label: 'Offline', count: statusCounts.Offline || 0, color: '#64748b' },
+    { id: 'ALL', label: t('monitoring.allChargers'), count: statusCounts.ALL || 0, color: '#2563eb' },
+    { id: 'Available', label: t('monitoring.available'), count: statusCounts.Available || 0, color: '#10b981' },
+    { id: 'Charging', label: t('monitoring.charging'), count: statusCounts.Charging || 0, color: '#06b6d4' },
+    { id: 'Reserved', label: t('monitoring.reserved'), count: statusCounts.Reserved || 0, color: '#f59e0b' },
+    { id: 'Faulted', label: t('monitoring.faulted'), count: statusCounts.Faulted || 0, color: '#ef4444' },
+    { id: 'Offline', label: t('monitoring.offline'), count: statusCounts.Offline || 0, color: '#64748b' },
   ];
 
   return (

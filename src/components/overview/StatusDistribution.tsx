@@ -1,13 +1,19 @@
 import React from 'react';
 import styles from './StatusDistribution.module.scss';
 import { StatusDistributionPoint } from '../../types/dashboard';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface StatusDistributionProps {
   data: StatusDistributionPoint[];
 }
 
 export const StatusDistribution: React.FC<StatusDistributionProps> = ({ data }) => {
+  const { t } = useI18n();
   const total = data.reduce((acc, curr) => acc + curr.count, 0);
+  const statusKeys: Record<string, string> = {
+    Available: 'monitoring.available', Charging: 'monitoring.charging', Reserved: 'monitoring.reserved',
+    Faulted: 'monitoring.faulted', Offline: 'monitoring.offline',
+  };
 
   return (
     <div className={styles.container}>
@@ -19,7 +25,7 @@ export const StatusDistribution: React.FC<StatusDistributionProps> = ({ data }) 
               key={idx}
               className={styles.segment}
               style={{ width: `${percent}%`, backgroundColor: item.color }}
-              title={`${item.name}: ${item.count} (${percent}%)`}
+              title={`${t(statusKeys[item.name] || item.name)}: ${item.count} (${percent}%)`}
             />
           );
         })}
@@ -32,7 +38,7 @@ export const StatusDistribution: React.FC<StatusDistributionProps> = ({ data }) 
             <div key={idx} className={styles.legendItem}>
               <div className={styles.left}>
                 <span className={styles.dot} style={{ backgroundColor: item.color }} />
-                <span className={styles.name}>{item.name}</span>
+                <span className={styles.name}>{t(statusKeys[item.name] || item.name)}</span>
               </div>
               <div className={styles.right}>
                 <span className={styles.count}>{item.count}</span>

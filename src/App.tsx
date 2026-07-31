@@ -9,11 +9,12 @@ import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDra
 import { ControlCommandModal } from './components/control/ControlCommandModal';
 import { mockChargers } from './data/mockChargers';
 import { Charger, CommandType, CommandResult } from './types/charger';
-import { User, Language } from './types/auth';
+import { User } from './types/auth';
+import { useI18n } from './i18n/I18nContext';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [language, setLanguage] = useState<Language>('en');
+  const { language, setLanguage, t } = useI18n();
   const [activeTab, setActiveTab] = useState<NavTab>('overview');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
@@ -114,10 +115,10 @@ export const App: React.FC = () => {
       {activeTab !== 'overview' && activeTab !== 'monitoring' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
-            {activeTab.toUpperCase()} Module
+            {activeTab.toUpperCase()} {t('nav.events')}
           </h2>
           <p style={{ color: '#64748b', fontSize: '14px' }}>
-            This operational module will be integrated after approval of the P0 flow.
+            {t('overview.subtitle')}
           </p>
         </div>
       )}

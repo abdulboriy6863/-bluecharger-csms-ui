@@ -4,6 +4,7 @@ import { Search, RotateCcw } from 'lucide-react';
 import { Input } from '../common/Input/Input';
 import { Select } from '../common/Select/Select';
 import { Button } from '../common/Button/Button';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface FilterBarProps {
   searchQuery: string;
@@ -28,8 +29,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onToggleAutoRefresh,
   onResetFilters
 }) => {
+  const { t } = useI18n();
   const regionOptions = [
-    { value: 'ALL', label: 'All Regions' },
+    { value: 'ALL', label: t('monitoring.allRegions') },
     { value: 'Tashkent', label: 'Tashkent' },
     { value: 'Samarkand', label: 'Samarkand' },
     { value: 'Seoul', label: 'Seoul' },
@@ -37,7 +39,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   ];
 
   const connectorOptions = [
-    { value: 'ALL', label: 'All Connectors' },
+    { value: 'ALL', label: t('monitoring.allConnectors') },
     { value: 'CCS2', label: 'CCS2' },
     { value: 'GB/T', label: 'GB/T' },
     { value: 'CHAdeMO', label: 'CHAdeMO' },
@@ -48,7 +50,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     <div className={styles.filterCard}>
       <div className={styles.searchInput}>
         <Input
-          placeholder="Filter by Charger ID, Station Name, Model..."
+          placeholder={t('monitoring.filter')}
           icon={<Search size={16} />}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
@@ -71,7 +73,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           />
         </div>
         <Button variant="ghost" icon={<RotateCcw size={14} />} onClick={onResetFilters}>
-          Reset
+          {t('monitoring.reset')}
         </Button>
       </div>
 
@@ -83,7 +85,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           onChange={onToggleAutoRefresh}
         />
         <label htmlFor="autoRefreshCheck" style={{ cursor: 'pointer' }}>
-          Auto-refresh (10s)
+          {t('monitoring.autoRefresh')}
         </label>
       </div>
     </div>

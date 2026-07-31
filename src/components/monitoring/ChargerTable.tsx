@@ -4,6 +4,7 @@ import { Charger } from '../../types/charger';
 import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';
 import { Sliders, Wifi, Eye } from 'lucide-react';
+import { useI18n } from '../../i18n/I18nContext';
 
 interface ChargerTableProps {
   chargers: Charger[];
@@ -16,12 +17,13 @@ export const ChargerTable: React.FC<ChargerTableProps> = ({
   onSelectCharger,
   onOpenControlModal
 }) => {
+  const { t } = useI18n();
   if (chargers.length === 0) {
     return (
       <div className={styles.tableContainer}>
         <div className={styles.emptyState}>
           <Wifi size={36} color="#94a3b8" />
-          <p>No chargers matched your current filter criteria.</p>
+          <p>{t('monitoring.noResults')}</p>
         </div>
       </div>
     );
@@ -32,13 +34,13 @@ export const ChargerTable: React.FC<ChargerTableProps> = ({
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Charger ID & Name</th>
-            <th>Station & Region</th>
-            <th>Status</th>
-            <th>Connectors</th>
-            <th>Manufacturer / Model</th>
-            <th>Heartbeat</th>
-            <th>Actions</th>
+            <th>{t('monitoring.charger')}</th>
+            <th>{t('monitoring.station')}</th>
+            <th>{t('monitoring.status')}</th>
+            <th>{t('monitoring.connectors')}</th>
+            <th>{t('monitoring.manufacturer')}</th>
+            <th>{t('monitoring.heartbeat')}</th>
+            <th>{t('monitoring.actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -88,7 +90,7 @@ export const ChargerTable: React.FC<ChargerTableProps> = ({
                     icon={<Eye size={13} />}
                     onClick={() => onSelectCharger(c)}
                   >
-                    Detail
+                    {t('monitoring.detail')}
                   </Button>
                   <Button
                     variant="primary"
@@ -96,7 +98,7 @@ export const ChargerTable: React.FC<ChargerTableProps> = ({
                     icon={<Sliders size={13} />}
                     onClick={() => onOpenControlModal(c)}
                   >
-                    Control
+                    {t('monitoring.control')}
                   </Button>
                 </div>
               </td>

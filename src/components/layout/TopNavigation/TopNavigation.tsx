@@ -12,6 +12,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import { Language, User } from '../../../types/auth';
+import { useI18n } from '../../../i18n/I18nContext';
 import styles from './TopNavigation.module.scss';
 
 export type NavTab =
@@ -28,7 +29,7 @@ export type NavTab =
 
 type ModuleNavItem = {
   id: string;
-  label: string;
+  labelKey: string;
   tab: NavTab;
   matches: NavTab[];
 };
@@ -47,49 +48,49 @@ interface TopNavigationProps {
 const moduleNavItems: ModuleNavItem[] = [
   {
     id: 'system-home',
-    label: 'Tizim bosh sahifasi',
+    labelKey: 'nav.home',
     tab: 'overview',
     matches: ['overview', 'monitoring', 'control'],
   },
   {
     id: 'system-admin',
-    label: 'Tizim boshqaruvi',
+    labelKey: 'nav.admin',
     tab: 'settings',
     matches: ['settings'],
   },
   {
     id: 'members',
-    label: "A'zolar boshqaruvi",
+    labelKey: 'nav.members',
     tab: 'customers',
     matches: ['customers'],
   },
   {
     id: 'infrastructure',
-    label: 'Infratuzilma',
+    labelKey: 'nav.infrastructure',
     tab: 'stations',
     matches: ['stations'],
   },
   {
     id: 'history',
-    label: "Tarix ma'lumotlari",
+    labelKey: 'nav.history',
     tab: 'sessions',
     matches: ['sessions'],
   },
   {
     id: 'events',
-    label: '이벤트',
+    labelKey: 'nav.events',
     tab: 'tariffs',
     matches: ['tariffs'],
   },
   {
     id: 'payments',
-    label: "To'lov ma'lumotlari",
+    labelKey: 'nav.payments',
     tab: 'billing',
     matches: ['billing'],
   },
   {
     id: 'sales',
-    label: 'Harid sotuv',
+    labelKey: 'nav.sales',
     tab: 'reports',
     matches: ['reports'],
   },
@@ -115,16 +116,20 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onToggleDarkMode,
 }) => {
   const [dateTime, setDateTime] = useState<string>('');
+  const { t, language: activeLanguage } = useI18n();
 
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      const date = now.toLocaleDateString('ko-KR', {
+      const localeByLanguage: Record<Language, string> = {
+        en: 'en-US', ko: 'ko-KR', ru: 'ru-RU', hi: 'hi-IN', id: 'id-ID', ky: 'ky-KG', uz: 'uz-UZ',
+      };
+      const date = now.toLocaleDateString(localeByLanguage[activeLanguage], {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
       });
-      const time = now.toLocaleTimeString('en-US', {
+      const time = now.toLocaleTimeString(localeByLanguage[activeLanguage], {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
@@ -135,7 +140,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     updateDateTime();
     const timer = window.setInterval(updateDateTime, 30000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [activeLanguage]);
 
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
@@ -158,7 +163,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
           <div className={styles.welcomeBlock}>
             <UserRound size={24} />
             <span>
-              <strong>Welcome!</strong>
+              <strong>{t('nav.welcome')}</strong>
               <small>{user?.role ?? 'Operator'} | {user?.company ?? 'BlueNetworks'}</small>
             </span>
           </div>
@@ -180,21 +185,21 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
             <ChevronDown size={14} />
           </div>
 
-          <button className={styles.iconAction} type="button" title="User profile">
+          <button className={styles.iconAction} type="button" title={t('nav.profile')}>
             <Settings size={22} />
-            <span>User</span>
+            <span>{t('nav.user')}</span>
           </button>
 
-          <button className={styles.iconOnlyAction} type="button" title="Security lock">
+          <button className={styles.iconOnlyAction} type="button" title={t('nav.security')}>
             <Lock size={22} />
           </button>
 
-          <button className={styles.iconAction} type="button" onClick={onLogout} title="Logout">
+          <button className={styles.iconAction} type="button" onClick={onLogout} title={t('nav.logout')}>
             <LogOut size={22} />
-            <span>Logout</span>
+            <span>{t('nav.logout')}</span>
           </button>
 
-          <button className={styles.iconOnlyAction} type="button" title="Notifications">
+          <button className={styles.iconOnlyAction} type="button" title={t('nav.notifications')}>
             <Bell size={23} />
             <span className={styles.alertDot} />
           </button>
@@ -203,7 +208,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
             className={clsx(styles.iconOnlyAction, styles.themeToggle, isDarkMode && styles.active)}
             type="button"
             onClick={onToggleDarkMode}
-            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDarkMode ? t('nav.lightMode') : t('nav.darkMode')}
           >
             {isDarkMode ? <Sun size={22} /> : <Moon size={22} />}
           </button>
@@ -221,7 +226,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               className={clsx(styles.moduleItem, isActive && styles.active)}
               onClick={() => onTabChange(item.tab)}
             >
-              {item.label}
+              {t(item.labelKey)}
             </button>
           );
         })}
