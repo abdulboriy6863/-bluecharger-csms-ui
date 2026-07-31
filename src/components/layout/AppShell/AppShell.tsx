@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './AppShell.module.scss';
-import { Sidebar, NavTab } from '../Sidebar/Sidebar';
-import { TopBar } from '../TopBar/TopBar';
+import { TopNavigation, NavTab } from '../TopNavigation/TopNavigation';
 import { Language, User } from '../../../types/auth';
 
 interface AppShellProps {
@@ -11,7 +10,8 @@ interface AppShellProps {
   language: Language;
   onLanguageChange: (lang: Language) => void;
   onLogout: () => void;
-  liveChargerCount?: number;
+  isDarkMode: boolean;
+  onToggleDarkMode: () => void;
   children: React.ReactNode;
 }
 
@@ -22,26 +22,23 @@ export const AppShell: React.FC<AppShellProps> = ({
   language,
   onLanguageChange,
   onLogout,
-  liveChargerCount,
+  isDarkMode,
+  onToggleDarkMode,
   children
 }) => {
   return (
-    <div className={styles.shell}>
-      <Sidebar
+    <div className={`${styles.shell} ${isDarkMode ? 'darkAppMode' : ''}`}>
+      <TopNavigation
         activeTab={activeTab}
         onTabChange={onTabChange}
-        liveChargerCount={liveChargerCount}
+        user={user}
+        language={language}
+        onLanguageChange={onLanguageChange}
+        onLogout={onLogout}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={onToggleDarkMode}
       />
-      <div className={styles.mainContainer}>
-        <TopBar
-          activeTab={activeTab}
-          user={user}
-          language={language}
-          onLanguageChange={onLanguageChange}
-          onLogout={onLogout}
-        />
-        <main className={styles.contentArea}>{children}</main>
-      </div>
+      <main className={styles.contentArea}>{children}</main>
     </div>
   );
 };

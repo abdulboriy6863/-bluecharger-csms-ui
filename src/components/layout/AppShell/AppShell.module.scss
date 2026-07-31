@@ -2,41 +2,27 @@
 @import '../../../styles/mixins';
 
 .shell {
-  display: flex;
+  @include flex-column;
   min-height: 100vh;
   background-color: $color-bg-app;
+  transition: background-color $transition-normal;
 
-  .mainContainer {
-    flex: 1;
-    margin-left: 272px;
-    @include flex-column;
-    min-width: 0;
-    transition: margin-left $transition-normal;
-
-    .contentArea {
-      flex: 1;
-      padding: 28px;
-    }
+  &:global(.darkAppMode) {
+    background-color: #0f172a;
   }
-}
 
-@media (max-width: 1180px) {
-  .shell {
-    .mainContainer {
-      margin-left: 88px;
-    }
+  .contentArea {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 28px;
   }
 }
 
 @media (max-width: 760px) {
   .shell {
-    .mainContainer {
-      margin-left: 0;
-
-      .contentArea {
-        padding: 18px;
-        padding-bottom: 92px;
-      }
+    .contentArea {
+      padding: 18px;
     }
   }
 }

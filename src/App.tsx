@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab } from './components/layout/Sidebar/Sidebar';
+import { NavTab } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { OverviewDashboard } from './components/overview/OverviewDashboard';
 import { LiveMonitoring } from './components/monitoring/LiveMonitoring';
@@ -15,6 +15,7 @@ export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [language, setLanguage] = useState<Language>('en');
   const [activeTab, setActiveTab] = useState<NavTab>('overview');
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
     id: 'USR-8821',
@@ -88,7 +89,8 @@ export const App: React.FC = () => {
       language={language}
       onLanguageChange={setLanguage}
       onLogout={() => setIsAuthenticated(false)}
-      liveChargerCount={chargers.length}
+      isDarkMode={isDarkMode}
+      onToggleDarkMode={() => setIsDarkMode((current) => !current)}
     >
       {activeTab === 'overview' && (
         <OverviewDashboard

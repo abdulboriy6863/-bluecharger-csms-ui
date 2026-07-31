@@ -1,4 +1,4 @@
-export type Language = 'en' | 'uz' | 'ru' | 'ko';
+export type Language = 'en' | 'ko' | 'ru' | 'hi' | 'id' | 'ky' | 'uz';
 
 export interface User {
   id: string;
