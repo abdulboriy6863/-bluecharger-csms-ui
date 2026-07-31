@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage, SystemManagementPage } from './components/layout/TopNavigation/TopNavigation';
+import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
@@ -19,6 +19,11 @@ import { UserManagementPage } from './pages/SystemManagement/UserManagement/User
 import { MenuPermissionGroupsPage } from './pages/SystemManagement/MenuPermissionGroups/MenuPermissionGroupsPage';
 import { CommonCodeManagementPage } from './pages/SystemManagement/CommonCodeManagement/CommonCodeManagementPage';
 import { NoticeFaqPage } from './pages/SystemManagement/NoticeFaq/NoticeFaqPage';
+import { MemberGroupsPage } from './pages/MemberManagement/MemberGroups/MemberGroupsPage';
+import { MemberInformationPage } from './pages/MemberManagement/MemberInformation/MemberInformationPage';
+import { MemberNotificationsPage } from './pages/MemberManagement/MemberNotifications/MemberNotificationsPage';
+import { MemberSupportPage } from './pages/MemberManagement/MemberSupport/MemberSupportPage';
+import { MemberGradesPage } from './pages/MemberManagement/MemberGrades/MemberGradesPage';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -26,6 +31,7 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavTab>('overview');
   const [systemHomePage, setSystemHomePage] = useState<SystemHomePage>('dashboard');
   const [systemManagementPage, setSystemManagementPage] = useState<SystemManagementPage>('companies');
+  const [memberManagementPage, setMemberManagementPage] = useState<MemberManagementPage>('groups');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
@@ -104,6 +110,8 @@ export const App: React.FC = () => {
       onSystemHomePageChange={setSystemHomePage}
       systemManagementPage={systemManagementPage}
       onSystemManagementPageChange={setSystemManagementPage}
+      memberManagementPage={memberManagementPage}
+      onMemberManagementPageChange={setMemberManagementPage}
       user={user}
       language={language}
       onLanguageChange={setLanguage}
@@ -147,7 +155,13 @@ export const App: React.FC = () => {
       {activeTab === 'settings' && systemManagementPage === 'common-codes' && <CommonCodeManagementPage />}
       {activeTab === 'settings' && systemManagementPage === 'notice-faq' && <NoticeFaqPage />}
 
-      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && (
+      {activeTab === 'customers' && memberManagementPage === 'groups' && <MemberGroupsPage />}
+      {activeTab === 'customers' && memberManagementPage === 'information' && <MemberInformationPage />}
+      {activeTab === 'customers' && memberManagementPage === 'notifications' && <MemberNotificationsPage />}
+      {activeTab === 'customers' && memberManagementPage === 'support' && <MemberSupportPage />}
+      {activeTab === 'customers' && memberManagementPage === 'grades' && <MemberGradesPage />}
+
+      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
             {activeTab.toUpperCase()} {t('nav.events')}

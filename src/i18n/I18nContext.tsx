@@ -4,6 +4,11 @@ import { Language } from '../types/auth';
 type TranslationMap = Record<string, string>;
 
 const english: TranslationMap = {
+  'members.groups': 'Member Groups',
+  'members.information': 'Member Information',
+  'members.notifications': 'Member Notifications',
+  'members.support': 'Member Support',
+  'members.grades': 'Member Grades',
   'management.companies': 'Company Management',
   'management.users': 'User Management',
   'management.permissions': 'Menu Permission Groups',
@@ -85,6 +90,8 @@ const translations: Record<Language, TranslationMap> = {
   en: english,
   ko: {
     ...english,
+    'members.groups': '회원그룹관리', 'members.information': '회원정보관리', 'members.notifications': '회원알림관리',
+    'members.support': '회원상담관리', 'members.grades': '회원등급관리',
     'home.dashboard': '대시보드', 'home.solar': '태양광 대시보드', 'home.locations': '설치위치',
     'home.chargerStatus': '충전기 상태', 'home.chargerControl': '충전기 제어',
     'nav.home': '시스템 홈', 'nav.admin': '시스템 관리', 'nav.members': '회원 관리',

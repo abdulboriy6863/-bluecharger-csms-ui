@@ -29,6 +29,7 @@ export type NavTab =
 
 export type SystemHomePage = 'dashboard' | 'solar' | 'locations' | 'charger-status' | 'charger-control';
 export type SystemManagementPage = 'companies' | 'users' | 'permissions' | 'common-codes' | 'notice-faq';
+export type MemberManagementPage = 'groups' | 'information' | 'notifications' | 'support' | 'grades';
 
 type ModuleNavItem = {
   id: string;
@@ -44,6 +45,8 @@ interface TopNavigationProps {
   onSystemHomePageChange: (page: SystemHomePage) => void;
   systemManagementPage: SystemManagementPage;
   onSystemManagementPageChange: (page: SystemManagementPage) => void;
+  memberManagementPage: MemberManagementPage;
+  onMemberManagementPageChange: (page: MemberManagementPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -119,6 +122,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onSystemHomePageChange,
   systemManagementPage,
   onSystemManagementPageChange,
+  memberManagementPage,
+  onMemberManagementPageChange,
   user,
   language,
   onLanguageChange,
@@ -131,9 +136,12 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [isHomeSubnavClosing, setIsHomeSubnavClosing] = useState<boolean>(false);
   const [isManagementSubnavOpen, setIsManagementSubnavOpen] = useState<boolean>(false);
   const [isManagementSubnavClosing, setIsManagementSubnavClosing] = useState<boolean>(false);
+  const [isMemberSubnavOpen, setIsMemberSubnavOpen] = useState<boolean>(false);
+  const [isMemberSubnavClosing, setIsMemberSubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const isSystemManagementActive = activeTab === 'settings';
+  const isMemberManagementActive = activeTab === 'customers';
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -168,6 +176,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       setIsManagementSubnavOpen(false);
       setIsManagementSubnavClosing(false);
     }
+    if (!isMemberManagementActive) {
+      setIsMemberSubnavOpen(false);
+      setIsMemberSubnavClosing(false);
+    }
   }, [activeTab]);
 
   const toggleHomeSubnav = () => {
@@ -195,6 +207,18 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     setIsManagementSubnavOpen(true);
   };
 
+  const toggleMemberSubnav = () => {
+    if (isMemberSubnavOpen) {
+      setIsMemberSubnavClosing(true);
+      window.setTimeout(() => {
+        setIsMemberSubnavOpen(false);
+        setIsMemberSubnavClosing(false);
+      }, 320);
+      return;
+    }
+    setIsMemberSubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
@@ -213,6 +237,13 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     { id: 'permissions', labelKey: 'management.permissions' },
     { id: 'common-codes', labelKey: 'management.commonCodes' },
     { id: 'notice-faq', labelKey: 'management.noticeFaq' },
+  ];
+  const memberManagementPages: Array<{ id: MemberManagementPage; labelKey: string }> = [
+    { id: 'groups', labelKey: 'members.groups' },
+    { id: 'information', labelKey: 'members.information' },
+    { id: 'notifications', labelKey: 'members.notifications' },
+    { id: 'support', labelKey: 'members.support' },
+    { id: 'grades', labelKey: 'members.grades' },
   ];
 
   return (
@@ -301,6 +332,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                   onSystemManagementPageChange('companies');
                   toggleManagementSubnav();
                 }
+                if (item.id === 'members') {
+                  onMemberManagementPageChange('groups');
+                  toggleMemberSubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -340,6 +375,16 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                 onTabChange('settings');
               }}
             >
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isMemberManagementActive && (isMemberSubnavOpen || isMemberSubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isMemberSubnavClosing && styles.closing)} aria-label="Member Management pages">
+          {memberManagementPages.map((page) => (
+            <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, memberManagementPage === page.id && styles.active)} onClick={() => { onMemberManagementPageChange(page.id); onTabChange('customers'); }}>
               {t(page.labelKey)}
             </button>
           ))}
