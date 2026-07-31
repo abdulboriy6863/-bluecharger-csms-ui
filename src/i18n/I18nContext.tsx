@@ -4,6 +4,13 @@ import { Language } from '../types/auth';
 type TranslationMap = Record<string, string>;
 
 const english: TranslationMap = {
+  'history.charging': 'Charging History',
+  'history.payments': 'Payment History',
+  'history.control': 'Control History',
+  'history.communication': 'Communication History',
+  'history.errors': 'Error History',
+  'history.chargingGraph': 'Charging History Graph',
+  'history.prepaid': 'Prepaid Charging History',
   'infrastructure.manufacturers': 'Manufacturer Management',
   'infrastructure.models': 'Model Management',
   'infrastructure.stations': 'Charging Station Management',
@@ -96,6 +103,8 @@ const translations: Record<Language, TranslationMap> = {
   en: english,
   ko: {
     ...english,
+    'history.charging': '충전이력', 'history.payments': '결제이력', 'history.control': '제어이력', 'history.communication': '통신이력',
+    'history.errors': '에러이력', 'history.chargingGraph': '충전이력 그래프', 'history.prepaid': '선결제충전이력',
     'infrastructure.manufacturers': '제조사관리', 'infrastructure.models': '모델관리', 'infrastructure.stations': '충전소 관리',
     'infrastructure.chargers': '충전기 관리', 'infrastructure.socLimits': 'SoC 제한 관리', 'infrastructure.powerLimits': '전력제한관리',
     'members.groups': '회원그룹관리', 'members.information': '회원정보관리', 'members.notifications': '회원알림관리',

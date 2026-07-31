@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage } from './components/layout/TopNavigation/TopNavigation';
+import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
@@ -30,6 +30,13 @@ import { ChargingStationManagementPage } from './pages/Infrastructure/ChargingSt
 import { ChargerManagementPage } from './pages/Infrastructure/ChargerManagement/ChargerManagementPage';
 import { SocLimitManagementPage } from './pages/Infrastructure/SocLimitManagement/SocLimitManagementPage';
 import { PowerLimitManagementPage } from './pages/Infrastructure/PowerLimitManagement/PowerLimitManagementPage';
+import { ChargingHistoryPage } from './pages/HistoryManagement/ChargingHistory/ChargingHistoryPage';
+import { PaymentHistoryPage } from './pages/HistoryManagement/PaymentHistory/PaymentHistoryPage';
+import { ControlHistoryPage } from './pages/HistoryManagement/ControlHistory/ControlHistoryPage';
+import { CommunicationHistoryPage } from './pages/HistoryManagement/CommunicationHistory/CommunicationHistoryPage';
+import { ErrorHistoryPage } from './pages/HistoryManagement/ErrorHistory/ErrorHistoryPage';
+import { ChargingHistoryGraphPage } from './pages/HistoryManagement/ChargingHistoryGraph/ChargingHistoryGraphPage';
+import { PrepaidChargingHistoryPage } from './pages/HistoryManagement/PrepaidChargingHistory/PrepaidChargingHistoryPage';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -39,6 +46,7 @@ export const App: React.FC = () => {
   const [systemManagementPage, setSystemManagementPage] = useState<SystemManagementPage>('companies');
   const [memberManagementPage, setMemberManagementPage] = useState<MemberManagementPage>('groups');
   const [infrastructurePage, setInfrastructurePage] = useState<InfrastructurePage>('manufacturers');
+  const [historyManagementPage, setHistoryManagementPage] = useState<HistoryManagementPage>('charging');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const [user] = useState<User>({
@@ -121,6 +129,8 @@ export const App: React.FC = () => {
       onMemberManagementPageChange={setMemberManagementPage}
       infrastructurePage={infrastructurePage}
       onInfrastructurePageChange={setInfrastructurePage}
+      historyManagementPage={historyManagementPage}
+      onHistoryManagementPageChange={setHistoryManagementPage}
       user={user}
       language={language}
       onLanguageChange={setLanguage}
@@ -177,7 +187,15 @@ export const App: React.FC = () => {
       {activeTab === 'stations' && infrastructurePage === 'soc-limits' && <SocLimitManagementPage />}
       {activeTab === 'stations' && infrastructurePage === 'power-limits' && <PowerLimitManagementPage />}
 
-      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && activeTab !== 'stations' && (
+      {activeTab === 'sessions' && historyManagementPage === 'charging' && <ChargingHistoryPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'payments' && <PaymentHistoryPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'control' && <ControlHistoryPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'communication' && <CommunicationHistoryPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'errors' && <ErrorHistoryPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'charging-graph' && <ChargingHistoryGraphPage />}
+      {activeTab === 'sessions' && historyManagementPage === 'prepaid' && <PrepaidChargingHistoryPage />}
+
+      {activeTab !== 'overview' && activeTab !== 'monitoring' && activeTab !== 'control' && activeTab !== 'settings' && activeTab !== 'customers' && activeTab !== 'stations' && activeTab !== 'sessions' && (
         <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
             {activeTab.toUpperCase()} {t('nav.events')}

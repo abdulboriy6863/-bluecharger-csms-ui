@@ -31,6 +31,7 @@ export type SystemHomePage = 'dashboard' | 'solar' | 'locations' | 'charger-stat
 export type SystemManagementPage = 'companies' | 'users' | 'permissions' | 'common-codes' | 'notice-faq';
 export type MemberManagementPage = 'groups' | 'information' | 'notifications' | 'support' | 'grades';
 export type InfrastructurePage = 'manufacturers' | 'models' | 'stations' | 'chargers' | 'soc-limits' | 'power-limits';
+export type HistoryManagementPage = 'charging' | 'payments' | 'control' | 'communication' | 'errors' | 'charging-graph' | 'prepaid';
 
 type ModuleNavItem = {
   id: string;
@@ -50,6 +51,8 @@ interface TopNavigationProps {
   onMemberManagementPageChange: (page: MemberManagementPage) => void;
   infrastructurePage: InfrastructurePage;
   onInfrastructurePageChange: (page: InfrastructurePage) => void;
+  historyManagementPage: HistoryManagementPage;
+  onHistoryManagementPageChange: (page: HistoryManagementPage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -129,6 +132,8 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onMemberManagementPageChange,
   infrastructurePage,
   onInfrastructurePageChange,
+  historyManagementPage,
+  onHistoryManagementPageChange,
   user,
   language,
   onLanguageChange,
@@ -145,11 +150,14 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   const [isMemberSubnavClosing, setIsMemberSubnavClosing] = useState<boolean>(false);
   const [isInfrastructureSubnavOpen, setIsInfrastructureSubnavOpen] = useState<boolean>(false);
   const [isInfrastructureSubnavClosing, setIsInfrastructureSubnavClosing] = useState<boolean>(false);
+  const [isHistorySubnavOpen, setIsHistorySubnavOpen] = useState<boolean>(false);
+  const [isHistorySubnavClosing, setIsHistorySubnavClosing] = useState<boolean>(false);
   const { t, language: activeLanguage } = useI18n();
   const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
   const isSystemManagementActive = activeTab === 'settings';
   const isMemberManagementActive = activeTab === 'customers';
   const isInfrastructureActive = activeTab === 'stations';
+  const isHistoryActive = activeTab === 'sessions';
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -191,6 +199,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     if (!isInfrastructureActive) {
       setIsInfrastructureSubnavOpen(false);
       setIsInfrastructureSubnavClosing(false);
+    }
+    if (!isHistoryActive) {
+      setIsHistorySubnavOpen(false);
+      setIsHistorySubnavClosing(false);
     }
   }, [activeTab]);
 
@@ -243,6 +255,18 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     setIsInfrastructureSubnavOpen(true);
   };
 
+  const toggleHistorySubnav = () => {
+    if (isHistorySubnavOpen) {
+      setIsHistorySubnavClosing(true);
+      window.setTimeout(() => {
+        setIsHistorySubnavOpen(false);
+        setIsHistorySubnavClosing(false);
+      }, 320);
+      return;
+    }
+    setIsHistorySubnavOpen(true);
+  };
+
   const selectedLanguage = useMemo(
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
@@ -276,6 +300,15 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     { id: 'chargers', labelKey: 'infrastructure.chargers' },
     { id: 'soc-limits', labelKey: 'infrastructure.socLimits' },
     { id: 'power-limits', labelKey: 'infrastructure.powerLimits' },
+  ];
+  const historyPages: Array<{ id: HistoryManagementPage; labelKey: string }> = [
+    { id: 'charging', labelKey: 'history.charging' },
+    { id: 'payments', labelKey: 'history.payments' },
+    { id: 'control', labelKey: 'history.control' },
+    { id: 'communication', labelKey: 'history.communication' },
+    { id: 'errors', labelKey: 'history.errors' },
+    { id: 'charging-graph', labelKey: 'history.chargingGraph' },
+    { id: 'prepaid', labelKey: 'history.prepaid' },
   ];
 
   return (
@@ -372,6 +405,10 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                   onInfrastructurePageChange('manufacturers');
                   toggleInfrastructureSubnav();
                 }
+                if (item.id === 'history') {
+                  onHistoryManagementPageChange('charging');
+                  toggleHistorySubnav();
+                }
                 onTabChange(item.tab);
               }}
             >
@@ -431,6 +468,16 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
         <nav className={clsx(styles.homeSubnav, isInfrastructureSubnavClosing && styles.closing)} aria-label="Infrastructure pages">
           {infrastructurePages.map((page) => (
             <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, infrastructurePage === page.id && styles.active)} onClick={() => { onInfrastructurePageChange(page.id); onTabChange('stations'); }}>
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isHistoryActive && (isHistorySubnavOpen || isHistorySubnavClosing) && (
+        <nav className={clsx(styles.homeSubnav, isHistorySubnavClosing && styles.closing)} aria-label="History Management pages">
+          {historyPages.map((page) => (
+            <button key={page.id} type="button" className={clsx(styles.homeSubnavItem, historyManagementPage === page.id && styles.active)} onClick={() => { onHistoryManagementPageChange(page.id); onTabChange('sessions'); }}>
               {t(page.labelKey)}
             </button>
           ))}
