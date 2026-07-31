@@ -4,6 +4,11 @@ import { Language } from '../types/auth';
 type TranslationMap = Record<string, string>;
 
 const english: TranslationMap = {
+  'home.dashboard': 'Dashboard',
+  'home.solar': 'Solar Dashboard',
+  'home.locations': 'Installation Locations',
+  'home.chargerStatus': 'Charger Status',
+  'home.chargerControl': 'Charger Control',
   'nav.home': 'System Home',
   'nav.admin': 'System Management',
   'nav.members': 'Member Management',
@@ -75,6 +80,8 @@ const translations: Record<Language, TranslationMap> = {
   en: english,
   ko: {
     ...english,
+    'home.dashboard': '대시보드', 'home.solar': '태양광 대시보드', 'home.locations': '설치위치',
+    'home.chargerStatus': '충전기 상태', 'home.chargerControl': '충전기 제어',
     'nav.home': '시스템 홈', 'nav.admin': '시스템 관리', 'nav.members': '회원 관리',
     'nav.infrastructure': '인프라 관리', 'nav.history': '이력 정보', 'nav.events': '이벤트',
     'nav.payments': '결제 정보', 'nav.sales': '구매 및 판매', 'nav.welcome': '환영합니다!',
@@ -100,6 +107,8 @@ const translations: Record<Language, TranslationMap> = {
   },
   ru: {
     ...english,
+    'home.dashboard': 'Панель управления', 'home.solar': 'Солнечная панель', 'home.locations': 'Места установки',
+    'home.chargerStatus': 'Состояние зарядных устройств', 'home.chargerControl': 'Управление зарядными устройствами',
     'nav.home': 'Главная системы', 'nav.admin': 'Управление системой', 'nav.members': 'Управление участниками',
     'nav.infrastructure': 'Инфраструктура', 'nav.history': 'История', 'nav.events': 'События',
     'nav.payments': 'Платежная информация', 'nav.sales': 'Покупки и продажи', 'nav.welcome': 'Добро пожаловать!',
@@ -124,6 +133,8 @@ const translations: Record<Language, TranslationMap> = {
   },
   hi: {
     ...english,
+    'home.dashboard': 'डैशबोर्ड', 'home.solar': 'सौर डैशबोर्ड', 'home.locations': 'स्थापना स्थान',
+    'home.chargerStatus': 'चार्जर स्थिति', 'home.chargerControl': 'चार्जर नियंत्रण',
     'nav.home': 'सिस्टम होम', 'nav.admin': 'सिस्टम प्रबंधन', 'nav.members': 'सदस्य प्रबंधन', 'nav.infrastructure': 'इंफ्रास्ट्रक्चर',
     'nav.history': 'इतिहास', 'nav.events': 'इवेंट', 'nav.payments': 'भुगतान जानकारी', 'nav.sales': 'खरीद और बिक्री', 'nav.welcome': 'स्वागत है!',
     'nav.user': 'उपयोगकर्ता', 'nav.logout': 'लॉग आउट', 'login.userId': 'यूज़र ID या ईमेल', 'login.password': 'पासवर्ड',
@@ -143,6 +154,8 @@ const translations: Record<Language, TranslationMap> = {
   },
   id: {
     ...english,
+    'home.dashboard': 'Dasbor', 'home.solar': 'Dasbor Surya', 'home.locations': 'Lokasi Instalasi',
+    'home.chargerStatus': 'Status Pengisi Daya', 'home.chargerControl': 'Kontrol Pengisi Daya',
     'nav.home': 'Beranda Sistem', 'nav.admin': 'Manajemen Sistem', 'nav.members': 'Manajemen Anggota', 'nav.infrastructure': 'Infrastruktur',
     'nav.history': 'Riwayat', 'nav.events': 'Acara', 'nav.payments': 'Informasi Pembayaran', 'nav.sales': 'Pembelian & Penjualan', 'nav.welcome': 'Selamat datang!',
     'nav.user': 'Pengguna', 'nav.logout': 'Keluar', 'login.userId': 'ID Pengguna atau Email', 'login.password': 'KATA SANDI', 'login.forgot': 'Lupa kata sandi?',
@@ -161,6 +174,8 @@ const translations: Record<Language, TranslationMap> = {
   },
   ky: {
     ...english,
+    'home.dashboard': 'Башкаруу панели', 'home.solar': 'Күн панелинин панели', 'home.locations': 'Орнотуу жайлары',
+    'home.chargerStatus': 'Кубаттагычтын абалы', 'home.chargerControl': 'Кубаттагычты башкаруу',
     'nav.home': 'Системанын башкы бети', 'nav.admin': 'Системаны башкаруу', 'nav.members': 'Мүчөлөрдү башкаруу', 'nav.infrastructure': 'Инфраструктура',
     'nav.history': 'Тарых', 'nav.events': 'Окуялар', 'nav.payments': 'Төлөм маалыматы', 'nav.sales': 'Сатып алуу жана сатуу', 'nav.welcome': 'Кош келиңиз!',
     'nav.user': 'Колдонуучу', 'nav.logout': 'Чыгуу', 'login.userId': 'Колдонуучу ID же email', 'login.password': 'СЫРСӨЗ', 'login.forgot': 'Сырсөздү унуттуңузбу?',

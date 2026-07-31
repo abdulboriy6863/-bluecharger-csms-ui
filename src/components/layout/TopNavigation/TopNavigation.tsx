@@ -27,6 +27,8 @@ export type NavTab =
   | 'reports'
   | 'settings';
 
+export type SystemHomePage = 'dashboard' | 'solar' | 'locations' | 'charger-status' | 'charger-control';
+
 type ModuleNavItem = {
   id: string;
   labelKey: string;
@@ -37,6 +39,8 @@ type ModuleNavItem = {
 interface TopNavigationProps {
   activeTab: NavTab;
   onTabChange: (tab: NavTab) => void;
+  systemHomePage: SystemHomePage;
+  onSystemHomePageChange: (page: SystemHomePage) => void;
   user: User | null;
   language: Language;
   onLanguageChange: (lang: Language) => void;
@@ -108,6 +112,8 @@ const languageOptions: Array<{ value: Language; label: string; title: string }> 
 export const TopNavigation: React.FC<TopNavigationProps> = ({
   activeTab,
   onTabChange,
+  systemHomePage,
+  onSystemHomePageChange,
   user,
   language,
   onLanguageChange,
@@ -146,6 +152,15 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
     () => languageOptions.find((option) => option.value === language) ?? languageOptions[0],
     [language]
   );
+
+  const isSystemHomeActive = moduleNavItems[0].matches.includes(activeTab);
+  const systemHomePages: Array<{ id: SystemHomePage; labelKey: string }> = [
+    { id: 'dashboard', labelKey: 'home.dashboard' },
+    { id: 'solar', labelKey: 'home.solar' },
+    { id: 'locations', labelKey: 'home.locations' },
+    { id: 'charger-status', labelKey: 'home.chargerStatus' },
+    { id: 'charger-control', labelKey: 'home.chargerControl' },
+  ];
 
   return (
     <header className={styles.navigationShell}>
@@ -224,13 +239,34 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               key={item.id}
               type="button"
               className={clsx(styles.moduleItem, isActive && styles.active)}
-              onClick={() => onTabChange(item.tab)}
+              onClick={() => {
+                if (item.id === 'system-home') onSystemHomePageChange('dashboard');
+                onTabChange(item.tab);
+              }}
             >
               {t(item.labelKey)}
             </button>
           );
         })}
       </nav>
+
+      {isSystemHomeActive && (
+        <nav className={styles.homeSubnav} aria-label="System Home pages">
+          {systemHomePages.map((page) => (
+            <button
+              key={page.id}
+              type="button"
+              className={clsx(styles.homeSubnavItem, systemHomePage === page.id && styles.active)}
+              onClick={() => {
+                onSystemHomePageChange(page.id);
+                onTabChange(page.id === 'charger-status' ? 'monitoring' : page.id === 'charger-control' ? 'control' : 'overview');
+              }}
+            >
+              {t(page.labelKey)}
+            </button>
+          ))}
+        </nav>
+      )}
     </header>
   );
 };
