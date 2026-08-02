@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import { GeneralStatisticsCard } from './GeneralStatisticsCard';
 import { mockGeneralStatistics } from '../../../data/mockGeneralStatistics';
-import { BatteryCharging, Fuel, UsersRound, Zap } from 'lucide-react';
+import { BatteryCharging, Calendar, Car, Download, Fuel, UsersRound, Zap } from 'lucide-react';
 import { useI18n } from '../../../i18n/I18nContext';
 
 export const GeneralStatisticsSection: React.FC = () => {
@@ -11,90 +11,100 @@ export const GeneralStatisticsSection: React.FC = () => {
 
   return (
     <section className={styles.sectionWrapper} aria-label="General Statistics Section">
+      {/* Top Header Row matching Stitch Reference Image */}
+      <div className={styles.headerBar}>
+        <div className={styles.titleGroup}>
+          <span className={styles.headerSubtitle}>{t('dashboard.header.networkOverview')}</span>
+          <h1 className={styles.headerTitle}>{t('dashboard.header.operationsDashboard')}</h1>
+        </div>
+        <div className={styles.headerActions}>
+          <button type="button" className={styles.dateFilterButton}>
+            <Calendar size={15} />
+            <span>{t('dashboard.header.last7Days')}</span>
+          </button>
+          <button type="button" className={styles.exportReportButton}>
+            <Download size={15} />
+            <span>{t('dashboard.header.exportReport')}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 4 Cards Grid */}
       <div className={styles.cardGrid}>
+        {/* Card 1: STATIONS */}
         <GeneralStatisticsCard
-          title={t('dashboard.stats.stationsTitle')}
-          subTitle={t('dashboard.stats.prevMonthBasis')}
-          badgeText={t('dashboard.stats.badges.realtime')}
-          icon={<Zap size={22} />}
-          palette="primary"
-          metrics={[
-            {
-              value: data.station.count.toLocaleString(),
-              unit: t('dashboard.stats.units.locations'),
-              trend: {
-                direction: data.station.trendDirection,
-                value: String(data.station.momChange),
-                tone: 'danger',
-              },
-            },
-          ]}
-        />
+          topLabel={t('dashboard.stats.stations')}
+          accentTone="blue"
+          watermarkIcon={<Zap className={styles.watermarkIcon} />}
+        >
+          <div className={styles.singleMetricLayout}>
+            <div className={styles.metricBigRow}>
+              <span className={styles.bigValue}>{data.station.count.toLocaleString()}</span>
+              <span className={styles.unitText}>{t('dashboard.stats.locations')}</span>
+            </div>
+            <div className={styles.trendRow}>
+              <span className={styles.greenTrend}>↗ +{data.station.momChange} MoM</span>
+            </div>
+          </div>
+        </GeneralStatisticsCard>
 
+        {/* Card 2: CONNECTOR FLEET */}
         <GeneralStatisticsCard
-          title={t('dashboard.stats.chargersTitle')}
-          badgeText={t('dashboard.stats.badges.sessions')}
-          icon={<Fuel size={22} />}
-          palette="sky"
-          metrics={[
-            {
-              label: t('dashboard.stats.rapid'),
-              value: data.charger.rapidCount.toLocaleString(),
-              unit: t('dashboard.stats.units.chargers'),
-              trailing: '-',
-            },
-            {
-              label: t('dashboard.stats.slow'),
-              value: data.charger.slowCount.toLocaleString(),
-              unit: t('dashboard.stats.units.chargers'),
-              trailing: '-',
-            },
-          ]}
-        />
+          topLabel={t('dashboard.stats.connectorFleet')}
+          accentTone="blue"
+          watermarkIcon={<Car className={styles.watermarkIcon} />}
+        >
+          <div className={styles.listMetricsLayout}>
+            <div className={styles.metricDetailRow}>
+              <span className={styles.metricName}>{t('dashboard.stats.fastCharge')}</span>
+              <span className={styles.metricNumber}>{data.charger.rapidCount.toLocaleString()}</span>
+            </div>
+            <div className={styles.metricDetailRow}>
+              <span className={styles.metricName}>{t('dashboard.stats.slowCharge')}</span>
+              <span className={styles.metricNumber}>{data.charger.slowCount.toLocaleString()}</span>
+            </div>
+          </div>
+        </GeneralStatisticsCard>
 
+        {/* Card 3: ENERGY (KWH) */}
         <GeneralStatisticsCard
-          title={t('dashboard.stats.energyTitle')}
-          badgeText={t('dashboard.stats.badges.energy')}
-          icon={<BatteryCharging size={22} />}
-          size="wide"
-          palette="mint"
-          metrics={[
-            {
-              label: t('dashboard.stats.rapid'),
-              value: data.energy.rapid.kwh.toLocaleString(),
-              unit: 'kWh',
-              trend: {
-                direction: data.energy.rapid.trendDirection,
-                value: `${data.energy.rapid.changeKwh.toLocaleString()} kWh (${data.energy.rapid.changePercent}%)`,
-                tone: 'info',
-              },
-            },
-            {
-              label: t('dashboard.stats.slow'),
-              value: data.energy.slow.kwh.toLocaleString(),
-              unit: 'kWh',
-              trend: {
-                direction: data.energy.slow.trendDirection,
-                value: `${data.energy.slow.changeKwh.toLocaleString()} kWh (${data.energy.slow.changePercent}%)`,
-                tone: 'info',
-              },
-            },
-          ]}
-        />
+          topLabel={t('dashboard.stats.energyKwh')}
+          accentTone="red"
+          watermarkIcon={<BatteryCharging className={styles.watermarkIcon} />}
+        >
+          <div className={styles.listMetricsLayout}>
+            <div className={styles.metricDetailRow}>
+              <span className={styles.metricNumber}>{data.energy.rapid.kwh.toLocaleString()}</span>
+              <span className={styles.redBadge}>(-{data.energy.rapid.changePercent}%)</span>
+            </div>
+            <div className={styles.metricDetailRow}>
+              <span className={styles.metricNumber}>{data.energy.slow.kwh.toLocaleString()}</span>
+              <span className={styles.redBadge}>(-{data.energy.slow.changePercent}%)</span>
+            </div>
+          </div>
+        </GeneralStatisticsCard>
 
+        {/* Card 4: ACTIVE MEMBERS */}
         <GeneralStatisticsCard
-          title={t('dashboard.stats.membersTitle')}
-          badgeText={t('dashboard.stats.badges.all')}
-          icon={<UsersRound size={22} />}
-          palette="violet"
-          metrics={[
-            {
-              value: data.member.count.toLocaleString(),
-              unit: t('dashboard.stats.units.members'),
-              trailing: '-',
-            },
-          ]}
-        />
+          topLabel={t('dashboard.stats.activeMembers')}
+          accentTone="navy"
+          watermarkIcon={<UsersRound className={styles.watermarkIcon} />}
+        >
+          <div className={styles.singleMetricLayout}>
+            <div className={styles.metricBigRow}>
+              <span className={styles.bigValue}>{data.member.count.toLocaleString()}</span>
+              <span className={styles.unitText}>{t('dashboard.stats.onlineNow')}</span>
+            </div>
+            <div className={styles.avatarsRow}>
+              <div className={styles.avatarGroup}>
+                <div className={styles.avatar} style={{ backgroundColor: '#bfdbfe' }} />
+                <div className={styles.avatar} style={{ backgroundColor: '#93c5fd' }} />
+                <div className={styles.avatar} style={{ backgroundColor: '#60a5fa' }} />
+                <div className={styles.avatarMore}>+12</div>
+              </div>
+            </div>
+          </div>
+        </GeneralStatisticsCard>
       </div>
     </section>
   );

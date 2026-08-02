@@ -3,35 +3,114 @@
 
 .sectionWrapper {
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.titleGroup {
+  min-width: 0;
+
+  .headerSubtitle {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted, #7A91BF);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .headerTitle {
+    margin: 4px 0 0;
+    color: var(--text-primary, #2E56A6);
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dateFilterButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: var(--bg-tertiary, #f8f9fa);
+  color: var(--text-secondary, #416CA6);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background $transition-fast, border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--text-primary, #2E56A6);
+  }
+}
+
+.exportReportButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 0;
+  background: var(--primary-color, #2E56A6);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(46, 86, 166, 0.25);
+  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    background: var(--primary-light, #3F61A6);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(46, 86, 166, 0.32);
+  }
+}
+
+/* Card Grid */
 .cardGrid {
   display: grid;
-  grid-template-columns:
-    minmax(240px, 0.85fr)
-    minmax(320px, 1.15fr)
-    minmax(420px, 1.5fr)
-    minmax(240px, 0.85fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
   width: 100%;
 
-  @media (max-width: 1480px) {
+  @media (max-width: 1280px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 }
 
+/* Stat Card */
 .statCard {
   position: relative;
   overflow: hidden;
   min-width: 0;
-  min-height: 160px;
-  padding: 22px 24px;
+  min-height: 142px;
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,371 +120,238 @@
   box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
   transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: -40px;
-    right: -30px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    pointer-events: none;
+  &.blue {
+    border-left: 4px solid var(--primary-color, #2E56A6);
+  }
+
+  &.red {
+    border: 1.5px solid #ef4444;
+  }
+
+  &.navy {
+    border-left: 4px solid #1c2541;
   }
 
   &:hover {
     border-color: var(--primary-soft, #7A91BF);
-    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.15));
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.14));
     transform: translateY(-2px);
   }
 }
 
-/* Card 1: Primary Royal Blue Highlight Card */
-.primary {
-  background: var(--gradient-primary, linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%)) !important;
-  border-color: var(--primary-color, #2E56A6) !important;
-  box-shadow: 0 10px 28px rgba(46, 86, 166, 0.3) !important;
-
-  .cardIcon {
-    background: rgba(255, 255, 255, 0.22) !important;
-    color: #ffffff !important;
-  }
-
-  .topBadge {
-    background: rgba(255, 255, 255, 0.25) !important;
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  }
-
-  /* Large number: Pure Bold White */
-  .metricValue {
-    color: #ffffff !important;
-    font-weight: 900 !important;
-  }
-
-  .metricLabel,
-  .metricUnit {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-weight: 800 !important;
-  }
-
-  /* Medium subtitle: Soft White */
-  .cardTitleGroup {
-    .title,
-    .subTitle {
-      color: rgba(255, 255, 255, 0.88) !important;
-      font-weight: 700 !important;
-    }
-  }
-
-  /* Small footer: Light Muted White */
-  .trendBadge,
-  .metricTrailing {
-    color: rgba(255, 255, 255, 0.78) !important;
-    font-weight: 600 !important;
-
-    &.danger,
-    &.info,
-    &.neutral {
-      color: rgba(255, 255, 255, 0.88) !important;
-    }
-  }
+/* Watermark Icon */
+.watermarkWrapper {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  pointer-events: none;
 }
 
-/* Cards 2, 3, 4: Clean Crisp White Cards matching reference image */
-.sky,
-.mint,
-.violet,
-.peach {
-  background: var(--bg-secondary, #ffffff);
-
-  /* Solid Royal Blue Icon Badge matching reference image */
-  .cardIcon {
-    background: var(--primary-color, #2E56A6);
-    color: #ffffff;
-    box-shadow: 0 4px 10px rgba(46, 86, 166, 0.2);
-  }
-
-  /* Light Muted Grey Top Pill Badge matching reference image */
-  .topBadge {
-    background: #f1f5f9;
-    color: var(--text-muted, #7A91BF);
-    border: 1px solid #e2e8f0;
-    font-weight: 700;
-  }
-
-  /* KATTA SIZE (Large numbers / Primary focus): text-primary: #2E56A6 */
-  .metricValue {
-    color: var(--text-primary, #2E56A6);
-    font-size: 38px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* O'RTA SIZE (Subtitles & Headers): text-secondary: #416CA6 */
-  .cardTitleGroup {
-    .title {
-      color: var(--text-secondary, #416CA6);
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.2;
-      margin: 0;
-    }
-
-    .subTitle {
-      color: var(--text-muted, #7A91BF);
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .metricLabel {
-    color: var(--text-secondary, #416CA6);
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .metricUnit {
-    color: var(--text-muted, #7A91BF);
-    font-size: 14px;
-    font-weight: 700;
-  }
-
-  /* KICHIK SIZE (Footer text, notes & badges): text-muted: #7A91BF */
-  .topBadge {
-    background: #f1f5f9;
-    color: var(--text-muted, #7A91BF);
-    border: 1px solid #e2e8f0;
-    font-weight: 700;
-  }
-
-  .cardFooterGroup {
-    .trendBadge {
-      color: var(--text-muted, #7A91BF);
-      font-size: 12px;
-      font-weight: 600;
-
-      &.danger {
-        color: #dc2626;
-      }
-
-      &.info {
-        color: var(--text-secondary, #416CA6);
-      }
-    }
-
-    .metricTrailing {
-      color: var(--text-muted, #7A91BF);
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
+.watermarkIcon {
+  width: 76px;
+  height: 76px;
+  opacity: 0.07;
+  color: var(--primary-color, #2E56A6);
+  stroke-width: 1.5;
 }
 
-/* Layout Parts */
-.cardHeader {
+/* Top Label */
+.topLabelRow {
   position: relative;
   z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
 }
 
-.cardIcon {
-  flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  transition: transform $transition-fast;
-
-  svg {
-    stroke-width: 2.2;
-  }
+.topLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #7A91BF);
+  text-transform: uppercase;
 }
 
-.topBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 0;
-}
-
-.cardBody {
+/* Card Content */
+.cardContent {
   position: relative;
   z-index: 1;
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  margin-top: 12px;
   width: 100%;
 }
 
-.metricRow {
-  min-width: 0;
+.singleMetricLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metricBigRow {
   display: flex;
   align-items: baseline;
-  justify-content: flex-start;
   gap: 8px;
   white-space: nowrap;
 }
 
-.cardTitleGroup {
-  margin-top: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  min-width: 0;
+.bigValue {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--text-primary, #2E56A6);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
-.cardFooterGroup {
+.unitText {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted, #7A91BF);
+}
+
+.trendRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  flex-wrap: wrap;
+}
+
+.greenTrend {
+  font-size: 12px;
+  font-weight: 800;
+  color: #16a34a;
+  background: #f0fdf4;
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #bbf7d0;
+}
+
+/* List Metrics Layout (Connector fleet & Energy) */
+.listMetricsLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metricDetailRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.metricName {
+  color: var(--text-secondary, #416CA6);
+  font-weight: 600;
+}
+
+.metricNumber {
+  color: var(--text-primary, #2E56A6);
+  font-weight: 800;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.redBadge {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+/* Avatars Row for Members */
+.avatarsRow {
+  margin-top: 4px;
+}
+
+.avatarGroup {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  margin-right: -6px;
+}
+
+.avatarMore {
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--text-muted, #7A91BF);
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 /* ==========================================================================
-   Dark Mode Styles (:global(.darkAppMode))
+   Dark Mode Overrides (:global(.darkAppMode))
    ========================================================================== */
 :global(.darkAppMode) {
-  .statCard {
+  .headerTitle {
+    color: #ffffff;
+  }
+
+  .dateFilterButton {
+    background: #172033;
+    color: #7A91BF;
     border-color: rgba(255, 255, 255, 0.12);
-    background: #1c2541;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 
     &:hover {
-      border-color: var(--primary-light, #3F61A6);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+      background: rgba(46, 86, 166, 0.3);
+      color: #ffffff;
     }
   }
 
-  .sky,
-  .mint,
-  .violet,
-  .peach {
+  .statCard {
     background: #1c2541;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 
-    .cardIcon {
-      background: var(--primary-color, #2E56A6);
-      color: #ffffff;
+    &.blue {
+      border-left-color: var(--primary-color, #2E56A6);
     }
 
-    .topBadge {
-      background: rgba(255, 255, 255, 0.08);
-      color: #7A91BF;
-      border-color: rgba(255, 255, 255, 0.1);
+    &.red {
+      border-color: #ef4444;
     }
 
-    .metricValue {
-      color: #ffffff;
-    }
-
-    .metricLabel,
-    .metricUnit {
-      color: #94a3b8;
-    }
-
-    .cardTitleGroup {
-      .title {
-        color: #e8f0ff;
-      }
-
-      .subTitle {
-        color: #7A91BF;
-      }
-    }
-
-    .metricTrailing {
-      color: #7A91BF;
+    &.navy {
+      border-left-color: #93c5fd;
     }
   }
 
-  .primary {
-    background: var(--gradient-primary, linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%)) !important;
-    border-color: rgba(147, 197, 253, 0.4) !important;
-    box-shadow: 0 10px 30px rgba(46, 86, 166, 0.4) !important;
-
-    .cardIcon {
-      background: rgba(255, 255, 255, 0.25) !important;
-      color: #ffffff !important;
-    }
-
-    .topBadge {
-      background: rgba(255, 255, 255, 0.25) !important;
-      color: #ffffff !important;
-    }
-
-    .metricValue,
-    .title,
-    .subTitle,
-    .metricLabel,
-    .metricUnit,
-    .trendBadge {
-      color: #ffffff !important;
-    }
-  }
-}
-
-/* Media Queries */
-@media (max-width: 1480px) {
-  .wideCard {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 900px) {
-  .sectionWrapper {
-    padding: 20px;
+  .bigValue,
+  .metricNumber {
+    color: #ffffff;
   }
 
-  .statCard {
-    min-height: 144px;
-    padding: 20px;
+  .metricName {
+    color: #94a3b8;
   }
 
-  .sky,
-  .mint,
-  .violet,
-  .peach {
-    .metricValue {
-      font-size: 32px;
-    }
-  }
-}
-
-@media (max-width: 760px) {
-  .wideCard {
-    grid-column: auto;
-  }
-}
-
-@media (max-width: 520px) {
-  .sectionWrapper {
-    padding: 16px;
-    border-radius: 16px;
+  .topLabel,
+  .unitText {
+    color: #7A91BF;
   }
 
-  .statCard {
-    padding: 16px 18px;
+  .watermarkIcon {
+    color: #ffffff;
+    opacity: 0.08;
   }
 
-  .sky,
-  .mint,
-  .violet,
-  .peach {
-    .metricValue {
-      font-size: 28px;
-    }
+  .avatar {
+    border-color: #1c2541;
+  }
+
+  .avatarMore {
+    background: #172033;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #7A91BF;
   }
 }

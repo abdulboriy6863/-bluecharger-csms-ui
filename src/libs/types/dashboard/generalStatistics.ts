@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
 export type GeneralStatisticTrendDirection = 'up' | 'down' | 'flat';
-export type GeneralStatisticTrendTone = 'danger' | 'info' | 'neutral';
-export type GeneralStatisticPalette = 'primary' | 'peach' | 'sky' | 'mint' | 'violet';
+export type GeneralStatisticTrendTone = 'danger' | 'info' | 'neutral' | 'success';
+export type GeneralStatisticAccentTone = 'blue' | 'red' | 'navy';
 
 export interface GeneralStatisticTrend {
   direction: GeneralStatisticTrendDirection;
@@ -19,11 +19,9 @@ export interface GeneralStatisticMetric {
 }
 
 export interface GeneralStatisticsCardProps {
-  title: string;
-  subTitle?: string;
-  badgeText?: string;
-  icon: ReactNode;
-  metrics: GeneralStatisticMetric[];
-  size?: 'standard' | 'wide';
-  palette?: GeneralStatisticPalette;
+  topLabel: string;
+  watermarkIcon?: ReactNode;
+  accentTone?: GeneralStatisticAccentTone;
+  metrics?: GeneralStatisticMetric[];
+  children?: ReactNode;
 }
