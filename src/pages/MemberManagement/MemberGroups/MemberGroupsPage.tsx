@@ -1,6 +1,8 @@
 import React from 'react';
-import { useI18n } from '../../../i18n/I18nContext';
-import { ManagementPageFrame } from '../../SystemManagement/shared/ManagementPageFrame';
-import styles from './MemberGroupsPage.module.scss';
+import { MemberGroupsView } from '../../../components/memberManagement/memberGroups/MemberGroupsView';
 
-export const MemberGroupsPage: React.FC = () => { const { t } = useI18n(); return <div className={styles.page}><ManagementPageFrame title={t('members.groups')} description="Organize members into operational and service groups." actionLabel="Add group" columns={['Group', 'Members', 'Service region', 'Status']} rows={[['Fleet Partners', '128', 'Global', 'Active'], ['Retail Customers', '2,846', 'Global', 'Active'], ['Premium Network', '412', 'South Korea', 'Active']]} /></div>; };
+export const MemberGroupsPage: React.FC = () => (
+  <section style={{ padding: '24px' }}>
+    <MemberGroupsView />
+  </section>
+);

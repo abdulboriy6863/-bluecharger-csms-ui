@@ -1,5 +1,8 @@
 import React from 'react';
-import { Card } from '../../../components/common/Card/Card';
-import { useI18n } from '../../../i18n/I18nContext';
-import styles from './ChargingHistoryGraphPage.module.scss';
-export const ChargingHistoryGraphPage: React.FC = () => { const { t } = useI18n(); return <section className={styles.page}><div className={styles.header}><div><p className={styles.eyebrow}>HISTORY / ANALYTICS</p><h1>{t('history.chargingGraph')}</h1><p className={styles.subtitle}>Compare session volume, energy delivery and utilization over time.</p></div></div><div className={styles.metricGrid}><div><strong>1,284</strong><span>Sessions today</span></div><div><strong>18.42 MWh</strong><span>Energy delivered</span></div><div><strong>68%</strong><span>Average utilization</span></div></div><Card title="Charging activity trend" subtitle="Sessions and energy delivery across the selected period"><div className={styles.chart}><div className={styles.line} /><div className={styles.axis}><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div></Card></section>; };
+import { ChargingHistoryGraphView } from '../../../components/history/chargingHistoryGraph/ChargingHistoryGraphView';
+
+export const ChargingHistoryGraphPage: React.FC = () => (
+  <section style={{ padding: '24px' }}>
+    <ChargingHistoryGraphView />
+  </section>
+);
