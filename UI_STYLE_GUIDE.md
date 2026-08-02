@@ -48,6 +48,8 @@ Until lower dashboard sections receive final product UI, render them as simple m
 `ChargerStatusSection.tsx` is the reference pattern for pie-chart status sections:
 
 - Mock/API data must live outside the component and feed both the pie chart and detail table.
+- `ChargerStatusSection.tsx` must stay a thin section container: selected-panel state, tabs, grid/expanded layout, and card rendering only.
+- Card-level display mapping, chart math, hover/pin state, tooltip state, and detail table rendering belong in `ChargerStatusSectionCard.tsx`.
 - The summary view uses two stable chart cards for operation status and connector status.
 - Both operation-status and connector-status charts use the same custom SVG infographic donut with equal-height segments; percentages control slice angle, not segment outer radius.
 - Charger-status chart segments and legend items must be interactive: hover/focus previews the selected category in the center KPI, click pins/unpins it, and keyboard Enter/Space must work.
