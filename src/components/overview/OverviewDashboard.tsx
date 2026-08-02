@@ -3,9 +3,7 @@ import styles from '../../scss/systemHome/OverviewDashboard.module.scss';
 import { Button } from '../common/Button/Button';
 import { GeneralStatisticsSection } from '../systemHome/dashboard/GeneralStatisticsSection';
 import { ChargerStatusSection } from '../systemHome/dashboard/ChargerStatusSection';
-import { AdvertisementSection } from '../systemHome/dashboard/AdvertisementSection';
 import { InfrastructureUsageSection } from '../systemHome/dashboard/InfrastructureUsageSection';
-import { FooterSection } from '../systemHome/dashboard/FooterSection';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 import { useI18n } from '../../i18n/I18nContext';
 import type { OverviewDashboardProps } from '../../libs/types/overview/overview';
@@ -35,9 +33,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
       <div className={styles.sectionStack}>
         <ChargerStatusSection />
-        <AdvertisementSection />
         <InfrastructureUsageSection />
-        <FooterSection />
       </div>
     </div>
   );
