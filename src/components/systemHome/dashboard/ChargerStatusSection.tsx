@@ -43,9 +43,12 @@ const RADIAN = Math.PI / 180;
 const OPERATION_CHART_INNER_RADIUS = 88;
 const OPERATION_CHART_OUTER_RADIUS = 252;
 const OPERATION_CHART_VIEWBOX_SIZE = 620;
+const OPERATION_TOOLTIP_WIDTH = 164;
+const OPERATION_TOOLTIP_HEIGHT = 82;
 
 const formatPercent = (value: number): string => `${(value * 100).toFixed(1)} %`;
 const classNames = (...values: Array<string | false | undefined>) => values.filter(Boolean).join(' ');
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 const mixHexColor = (hexColor: string, mixWith: string, amount: number) => {
   const parseHex = (value: string) => {
@@ -135,6 +138,7 @@ const OperationInfographicPie: React.FC<{
   total: number;
   unit: string;
   totalLabel: string;
+  tooltipLabel: string;
   fastLabel: string;
   slowLabel: string;
   activeId: string;
@@ -148,6 +152,7 @@ const OperationInfographicPie: React.FC<{
   total,
   unit,
   totalLabel,
+  tooltipLabel,
   fastLabel,
   slowLabel,
   activeId,
@@ -161,6 +166,7 @@ const OperationInfographicPie: React.FC<{
   const segmentShadowId = `${gradientPrefix}-segmentShadow`;
   const centerShadowId = `${gradientPrefix}-centerShadow`;
   const activeItem = data.find((item) => item.id === activeId) ?? data[0];
+  let tooltipPoint = { x: 0, y: -148 };
   let cursorAngle = -86;
 
   return (
@@ -214,8 +220,16 @@ const OperationInfographicPie: React.FC<{
         const showLabel = item.percent >= 0.065;
         const isActive = item.id === activeItem.id;
         const isDimmed = isInteracting && !isActive;
-        const explode = isActive ? polarPoint(10, startAngle + (endAngle - startAngle) / 2) : { x: 0, y: 0 };
+        const midAngle = startAngle + (endAngle - startAngle) / 2;
+        const explode = isActive ? polarPoint(10, midAngle) : { x: 0, y: 0 };
         const ariaLabel = `${item.name}: ${item.total.toLocaleString()}${unit}, ${formatPercent(item.percent)}`;
+
+        if (isActive) {
+          tooltipPoint = polarPoint(
+            OPERATION_CHART_INNER_RADIUS + (OPERATION_CHART_OUTER_RADIUS - OPERATION_CHART_INNER_RADIUS) * 0.58,
+            midAngle,
+          );
+        }
 
         cursorAngle += sweep;
 
@@ -289,6 +303,32 @@ const OperationInfographicPie: React.FC<{
           {totalLabel} {total.toLocaleString()}{unit}
         </tspan>
       </text>
+
+      {isInteracting && (
+        <foreignObject
+          className={styles.infographicTooltipObject}
+          x={clamp(
+            tooltipPoint.x + (tooltipPoint.x >= 0 ? 18 : -OPERATION_TOOLTIP_WIDTH - 18),
+            -OPERATION_CHART_VIEWBOX_SIZE / 2 + 18,
+            OPERATION_CHART_VIEWBOX_SIZE / 2 - OPERATION_TOOLTIP_WIDTH - 18,
+          )}
+          y={clamp(
+            tooltipPoint.y - OPERATION_TOOLTIP_HEIGHT / 2,
+            -OPERATION_CHART_VIEWBOX_SIZE / 2 + 18,
+            OPERATION_CHART_VIEWBOX_SIZE / 2 - OPERATION_TOOLTIP_HEIGHT - 18,
+          )}
+          width={OPERATION_TOOLTIP_WIDTH}
+          height={OPERATION_TOOLTIP_HEIGHT}
+        >
+          <div className={styles.infographicTooltip}>
+            <span className={styles.infographicTooltipTitle}>{activeItem.name}</span>
+            <span className={styles.infographicTooltipValue}>
+              <span>{tooltipLabel}:</span>
+              <strong>{formatPercent(activeItem.percent)}</strong>
+            </span>
+          </div>
+        </foreignObject>
+      )}
     </svg>
   );
 };
@@ -368,6 +408,7 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
                 total={totals.total}
                 unit={unit}
                 totalLabel={t('dashboard.chargerStatus.total')}
+                tooltipLabel={t('dashboard.chargerStatus.tooltip.status')}
                 fastLabel={t('dashboard.chargerStatus.table.fast')}
                 slowLabel={t('dashboard.chargerStatus.table.slow')}
                 activeId={activeOperationItemId}
