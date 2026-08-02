@@ -67,7 +67,7 @@ Until lower dashboard sections receive final product UI, render them as simple m
 
 ## Infrastructure Chart Pattern
 
-The infrastructure distribution chart uses clean stacked columns with restrained rounded corners, light horizontal gridlines, clear series colors, and a compact legend. Preserve real stacked values, hover/tooltips, responsive sizing, and CSV export. Do not replace chart data with a static image or decorative chart illustration.
+The infrastructure distribution chart uses clean stacked columns with restrained rounded corners, light horizontal gridlines, and a compact legend. Use the new signal palette for chart series: electric blue `#3B82F6`, violet `#7C3AED`, coral `#F43F5E`, mint `#0F9D8A`, and amber `#D97706`. Preserve real stacked values, hover/tooltips, responsive sizing, and CSV export. Do not replace chart data with a static image or decorative chart illustration.
 
 ## i18n Rules
 

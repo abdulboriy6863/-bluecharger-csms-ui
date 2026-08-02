@@ -350,11 +350,11 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                 }}
               />
               <Legend verticalAlign="bottom" height={34} iconType="circle" wrapperStyle={{ fontWeight: 800 }} />
-              <Bar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#f97316" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Bar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#f7b500" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Bar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#a7c900" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Line yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#ef003b" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-              <Line yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#24b5d5" strokeWidth={3} strokeDasharray="8 7" dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <Bar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#3B82F6" radius={[6, 6, 0, 0]} maxBarSize={30} />
+              <Bar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#0F9D8A" radius={[6, 6, 0, 0]} maxBarSize={30} />
+              <Bar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#7C3AED" radius={[6, 6, 0, 0]} maxBarSize={30} />
+              <Line yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#F43F5E" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <Line yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#D97706" strokeWidth={3} strokeDasharray="8 7" dot={{ r: 4 }} activeDot={{ r: 6 }} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
