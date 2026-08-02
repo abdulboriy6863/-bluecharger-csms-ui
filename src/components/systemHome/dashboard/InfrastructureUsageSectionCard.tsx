@@ -18,7 +18,6 @@ import type {
   InfrastructureChartMenuProps,
   InfrastructureDistributionChartRow,
   InfrastructureDistributionMode,
-  InfrastructurePrismaticBarProps,
   InfrastructureUsageChartPoint,
   InfrastructureUsageSectionCardProps,
 } from '../../../libs/types/dashboard/infrastructureUsage';
@@ -29,57 +28,6 @@ const formatCount = (value: number): string => value.toLocaleString();
 const normalizeTooltipValue = (value: unknown): number => {
   if (Array.isArray(value)) return Number(value[0] ?? 0);
   return Number(value);
-};
-
-const shadeHex = (hex: string, amount: number): string => {
-  const value = hex.replace('#', '');
-  const channels = [0, 2, 4].map((offset) => parseInt(value.slice(offset, offset + 2), 16));
-  const adjusted = channels.map((channel) => Math.max(0, Math.min(255, channel + amount)));
-  return `#${adjusted.map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
-};
-
-const PrismaticBarShape: React.FC<InfrastructurePrismaticBarProps> = ({
-  x = 0,
-  y = 0,
-  width = 0,
-  height = 0,
-  fill = '#24b5d5',
-}) => {
-  if (width <= 0 || height <= 0) return null;
-
-  const depth = Math.min(9, Math.max(5, width * 0.22));
-  const frontHeight = Math.max(1, height - depth);
-  const frontFill = fill;
-  const topFill = shadeHex(fill, 26);
-  const sideFill = shadeHex(fill, -30);
-
-  return (
-    <g className={styles.infrastructurePrismaticBar}>
-      <polygon
-        points={`${x},${y + depth} ${x + width - depth},${y} ${x + width},${y} ${x + depth},${y + depth}`}
-        fill={topFill}
-        opacity={0.95}
-      />
-      <polygon
-        points={`${x + width - depth},${y} ${x + width},${y} ${x + width},${y + height} ${x + width - depth},${y + frontHeight}`}
-        fill={sideFill}
-        opacity={0.94}
-      />
-      <rect
-        x={x}
-        y={y + depth}
-        width={Math.max(1, width - depth)}
-        height={frontHeight}
-        fill={frontFill}
-        rx={2}
-      />
-      <path
-        d={`M ${x + 2} ${y + depth + 2} L ${x + width - depth - 2} ${y + depth + 2}`}
-        stroke="rgba(255,255,255,0.34)"
-        strokeWidth={1.5}
-      />
-    </g>
-  );
 };
 
 const downloadCsv = (fileName: string, rows: string[][]) => {
@@ -248,10 +196,10 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={distributionChartData}
-              margin={{ top: 20, right: 18, left: 4, bottom: 16 }}
-              barCategoryGap="18%"
+              margin={{ top: 12, right: 18, left: 4, bottom: 16 }}
+              barCategoryGap="24%"
             >
-              <CartesianGrid stroke="#d9e6ef" strokeDasharray="2 5" vertical />
+              <CartesianGrid stroke="#e6edf4" strokeDasharray="3 5" vertical={false} />
               <XAxis
                 dataKey="name"
                 interval={0}
@@ -293,8 +241,8 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   stackId="installed"
                   name={t(series.labelKey)}
                   fill={series.color}
-                  shape={<PrismaticBarShape />}
-                  maxBarSize={42}
+                  radius={[5, 5, 0, 0]}
+                  maxBarSize={36}
                 />
               ))}
             </BarChart>

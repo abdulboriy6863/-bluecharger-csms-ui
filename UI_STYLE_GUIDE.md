@@ -67,7 +67,7 @@ Until lower dashboard sections receive final product UI, render them as simple m
 
 ## Infrastructure Chart Pattern
 
-The infrastructure distribution chart may use a restrained prismatic/3D bar treatment to communicate depth while remaining an operational chart. The effect must stay data-driven: use a custom SVG bar shape over the real chart series, preserve stacked values, hover/tooltips, responsive sizing, and CSV export. Do not replace chart data with a static image or decorative chart illustration.
+The infrastructure distribution chart uses clean stacked columns with restrained rounded corners, light horizontal gridlines, clear series colors, and a compact legend. Preserve real stacked values, hover/tooltips, responsive sizing, and CSV export. Do not replace chart data with a static image or decorative chart illustration.
 
 ## i18n Rules
 

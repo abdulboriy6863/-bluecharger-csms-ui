@@ -756,15 +756,6 @@
   padding: 10px 18px 0 22px;
 }
 
-.infrastructurePrismaticBar {
-  transform-origin: center bottom;
-  transition: filter 0.16s ease, opacity 0.16s ease;
-
-  &:hover {
-    filter: brightness(1.08) saturate(1.08);
-  }
-}
-
 .infrastructureLegend {
   min-height: 54px;
   display: flex;

@@ -54,14 +54,6 @@ export interface InfrastructureUsageChartPoint extends InfrastructureUsageTrendP
   name: string;
 }
 
-export interface InfrastructurePrismaticBarProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  fill?: string;
-}
-
 export interface InfrastructureUsageSectionCardProps {
   data: InfrastructureUsageData;
 }
