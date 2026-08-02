@@ -193,60 +193,57 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
         </div>
 
         <div className={styles.infrastructureChartFrame}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={300}>
             <BarChart
               data={distributionChartData}
-              margin={{ top: 12, right: 18, left: 4, bottom: 16 }}
-              barCategoryGap="8%"
+              margin={{ top: 16, right: 16, left: -12, bottom: 4 }}
+              barCategoryGap="10%"
             >
-              <CartesianGrid stroke="#e6edf4" strokeDasharray="3 5" vertical={false} />
+              <CartesianGrid stroke="var(--border-color, #e0e0e0)" strokeDasharray="3 5" vertical={false} />
               <XAxis
                 dataKey="name"
                 interval={0}
-                angle={-38}
+                angle={-25}
                 textAnchor="end"
-                height={82}
-                tick={{ fill: '#687386', fontSize: 11, fontWeight: 700 }}
+                height={52}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 10, fontWeight: 600 }}
                 tickLine={false}
-                axisLine={{ stroke: '#d9e4f0' }}
+                axisLine={{ stroke: 'var(--border-color, #e0e0e0)' }}
               />
               <YAxis
-                tick={{ fill: '#687386', fontSize: 12, fontWeight: 800 }}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
                 tickFormatter={(value) => formatCount(Number(value))}
                 axisLine={false}
                 tickLine={false}
-                label={{
-                  value: t(distributionPanel.yAxisLabelKey),
-                  angle: -90,
-                  position: 'insideLeft',
-                  fill: '#667085',
-                  fontSize: 12,
-                  fontWeight: 800,
-                }}
               />
               <Tooltip
-                cursor={{ fill: 'rgba(15, 23, 42, 0.04)' }}
+                cursor={{ fill: 'rgba(46, 86, 166, 0.04)' }}
                 contentStyle={{
-                  border: '1px solid #d5e0ee',
+                  backgroundColor: 'var(--bg-secondary, #ffffff)',
+                  border: '1px solid var(--border-color, #e0e0e0)',
                   borderRadius: 8,
-                  boxShadow: '0 12px 28px rgba(31, 49, 73, 0.12)',
-                  fontWeight: 800,
+                  boxShadow: '0 8px 20px var(--shadow, rgba(46, 86, 166, 0.12))',
+                  fontWeight: 700,
+                  fontSize: 12,
+                  color: 'var(--text-primary, #2E56A6)',
                 }}
                 formatter={(value, name) => [formatNumber(normalizeTooltipValue(value)), String(name)]}
               />
-              {distributionPanel.series.map((series) => (
-              <Bar
-                  key={series.id}
-                  dataKey={series.id}
-                  stackId="installed"
-                  name={t(series.labelKey)}
-                  fill={series.color}
-                  radius={[0, 0, 0, 0]}
-                  maxBarSize={46}
-                  animationDuration={700}
-                  activeBar={{ stroke: '#172033', strokeWidth: 1.5, fillOpacity: 0.92 }}
-                />
-              ))}
+              {distributionPanel.series.map((series, index) => {
+                const isLast = index === distributionPanel.series.length - 1;
+                return (
+                  <Bar
+                    key={series.id}
+                    dataKey={series.id}
+                    stackId="installed"
+                    name={t(series.labelKey)}
+                    fill={series.color}
+                    radius={isLast ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                    maxBarSize={36}
+                    animationDuration={700}
+                  />
+                );
+              })}
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -294,53 +291,40 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
         </div>
 
         <div className={styles.infrastructureChartFrame}>
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={usageChartData} margin={{ top: 10, right: 16, left: 0, bottom: 6 }}>
-              <CartesianGrid stroke="#e8eef6" vertical={false} />
+          <ResponsiveContainer width="100%" height={300}>
+            <ComposedChart data={usageChartData} margin={{ top: 16, right: 16, left: -12, bottom: 4 }}>
+              <CartesianGrid stroke="var(--border-color, #e0e0e0)" strokeDasharray="3 5" vertical={false} />
               <XAxis
                 dataKey="name"
-                tick={{ fill: '#687386', fontSize: 12, fontWeight: 800 }}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
                 tickLine={false}
-                axisLine={{ stroke: '#d9e4f0' }}
+                axisLine={{ stroke: 'var(--border-color, #e0e0e0)' }}
               />
               <YAxis
                 yAxisId="chargers"
-                tick={{ fill: '#687386', fontSize: 12, fontWeight: 800 }}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
                 tickFormatter={(value) => formatCount(Number(value))}
                 axisLine={false}
                 tickLine={false}
-                label={{
-                  value: t(data.usageTrend.leftAxisLabelKey),
-                  angle: -90,
-                  position: 'insideLeft',
-                  fill: '#667085',
-                  fontSize: 12,
-                  fontWeight: 800,
-                }}
               />
               <YAxis
                 yAxisId="energy"
                 orientation="right"
-                tick={{ fill: '#687386', fontSize: 12, fontWeight: 800 }}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
                 tickFormatter={(value) => `${Math.round(Number(value) / 1000)}k`}
                 axisLine={false}
                 tickLine={false}
-                label={{
-                  value: t(data.usageTrend.rightAxisLabelKey),
-                  angle: 90,
-                  position: 'insideRight',
-                  fill: '#667085',
-                  fontSize: 12,
-                  fontWeight: 800,
-                }}
               />
               <Tooltip
-                cursor={{ fill: 'rgba(15, 23, 42, 0.04)' }}
+                cursor={{ fill: 'rgba(46, 86, 166, 0.04)' }}
                 contentStyle={{
-                  border: '1px solid #d5e0ee',
+                  backgroundColor: 'var(--bg-secondary, #ffffff)',
+                  border: '1px solid var(--border-color, #e0e0e0)',
                   borderRadius: 8,
-                  boxShadow: '0 12px 28px rgba(31, 49, 73, 0.12)',
-                  fontWeight: 800,
+                  boxShadow: '0 8px 20px var(--shadow, rgba(46, 86, 166, 0.12))',
+                  fontWeight: 700,
+                  fontSize: 12,
+                  color: 'var(--text-primary, #2E56A6)',
                 }}
                 formatter={(value, name) => {
                   const metricName = String(name);
@@ -351,12 +335,12 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   return [formatted, metricName];
                 }}
               />
-              <Legend verticalAlign="bottom" height={34} iconType="circle" wrapperStyle={{ fontWeight: 800 }} />
-              <Bar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#3B82F6" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Bar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#0F9D8A" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Bar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#7C3AED" radius={[6, 6, 0, 0]} maxBarSize={30} />
-              <Line yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#F43F5E" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-              <Line yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#D97706" strokeWidth={3} strokeDasharray="8 7" dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary, #416CA6)' }} />
+              <Bar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#2F80ED" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Bar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#00BFA6" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Bar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#8B5CF6" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Line yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#F43F5E" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <Line yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#F2B84B" strokeWidth={2.5} strokeDasharray="6 5" dot={{ r: 4 }} activeDot={{ r: 6 }} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
