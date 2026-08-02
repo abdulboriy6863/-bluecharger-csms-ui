@@ -1,16 +1,10 @@
 import React from 'react';
 import styles from '../../scss/monitoring/ChargerTable.module.scss';
-import { Charger } from '../../types/charger';
 import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';
 import { Sliders, Wifi, Eye } from 'lucide-react';
 import { useI18n } from '../../i18n/I18nContext';
-
-interface ChargerTableProps {
-  chargers: Charger[];
-  onSelectCharger: (charger: Charger) => void;
-  onOpenControlModal: (charger: Charger) => void;
-}
+import type { ChargerTableProps } from '../../libs/types/monitoring';
 
 export const ChargerTable: React.FC<ChargerTableProps> = ({
   chargers,

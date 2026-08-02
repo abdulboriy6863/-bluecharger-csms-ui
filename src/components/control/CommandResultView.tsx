@@ -1,13 +1,8 @@
 import React from 'react';
 import styles from '../../scss/control/CommandResultView.module.scss';
-import { CommandResult } from '../../types/charger';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { Button } from '../common/Button/Button';
-
-interface CommandResultViewProps {
-  result: CommandResult;
-  onDone: () => void;
-}
+import type { CommandResultViewProps } from '../../libs/types/control';
 
 export const CommandResultView: React.FC<CommandResultViewProps> = ({ result, onDone }) => {
   return (

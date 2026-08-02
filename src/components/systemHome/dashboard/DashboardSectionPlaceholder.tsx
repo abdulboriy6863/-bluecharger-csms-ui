@@ -1,16 +1,6 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
-
-type DashboardSectionTone =
-  | 'chargerStatus'
-  | 'advertisement'
-  | 'infrastructureUsage'
-  | 'footerSection';
-
-interface DashboardSectionPlaceholderProps {
-  fileName: string;
-  tone: DashboardSectionTone;
-}
+import type { DashboardSectionPlaceholderProps } from '../../../libs/types/dashboardSection';
 
 export const DashboardSectionPlaceholder: React.FC<DashboardSectionPlaceholderProps> = ({
   fileName,

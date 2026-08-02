@@ -1,14 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from '../../../scss/common/Modal.module.scss';
 import { X } from 'lucide-react';
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-}
+import type { ModalProps } from '../../../libs/types/commonComponents';
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,

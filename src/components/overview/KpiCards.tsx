@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from '../../scss/systemHome/KpiCards.module.scss';
-import { KpiMetric } from '../../types/dashboard';
 import { Zap, Activity, TrendingUp, ShieldCheck, DollarSign, ArrowUpRight } from 'lucide-react';
-
-interface KpiCardsProps {
-  metrics: KpiMetric[];
-}
+import type { KpiCardsProps } from '../../libs/types/overview';
 
 export const KpiCards: React.FC<KpiCardsProps> = ({ metrics }) => {
   const getIcon = (index: number) => {

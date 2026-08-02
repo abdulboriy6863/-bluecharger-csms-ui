@@ -3,23 +3,11 @@ import { Menu, X } from 'lucide-react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import {
   ChargerStatusBreakdownItem,
-  ChargerStatusPanelData,
-  ChargerStatusPanelId,
-} from '../../../types/dashboard';
+  ChargerStatusChartItem,
+  ChargerStatusInfographicPieProps,
+  ChargerStatusSectionCardProps,
+} from '../../../libs/types/chargerStatus';
 import { useI18n } from '../../../i18n/I18nContext';
-
-interface ChartItem extends ChargerStatusBreakdownItem {
-  name: string;
-  percent: number;
-}
-
-interface ChargerStatusSectionCardProps {
-  panel: ChargerStatusPanelData;
-  active?: boolean;
-  detail?: boolean;
-  onSelect?: (panelId: ChargerStatusPanelId) => void;
-  onClose?: () => void;
-}
 
 const RADIAN = Math.PI / 180;
 const STATUS_CHART_INNER_RADIUS = 88;
@@ -86,21 +74,7 @@ const getPanelTotals = (items: ChargerStatusBreakdownItem[]) => items.reduce(
   { fast: 0, slow: 0, total: 0 },
 );
 
-const StatusInfographicPie: React.FC<{
-  data: ChartItem[];
-  total: number;
-  unit: string;
-  totalLabel: string;
-  tooltipLabel: string;
-  fastLabel: string;
-  slowLabel: string;
-  activeId: string;
-  pinnedId: string | null;
-  isInteracting: boolean;
-  onHover: (itemId: string) => void;
-  onLeave: () => void;
-  onToggle: (itemId: string) => void;
-}> = ({
+const StatusInfographicPie: React.FC<ChargerStatusInfographicPieProps> = ({
   data,
   total,
   unit,
@@ -295,7 +269,7 @@ export const ChargerStatusSectionCard: React.FC<ChargerStatusSectionCardProps> =
 }) => {
   const { t } = useI18n();
   const totals = useMemo(() => getPanelTotals(panel.items), [panel.items]);
-  const chartData = useMemo<ChartItem[]>(() => panel.items.map((item) => ({
+  const chartData = useMemo<ChargerStatusChartItem[]>(() => panel.items.map((item) => ({
     ...item,
     name: t(item.labelKey),
     percent: item.total / totals.total,

@@ -1,4 +1,4 @@
-import { AlertEvent } from '../types/dashboard';
+import type { AlertEvent } from '../libs/types/dashboard';
 
 export const mockAlerts: AlertEvent[] = [
   {

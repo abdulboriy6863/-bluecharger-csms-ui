@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from '../../scss/systemHome/EnergyTrendChart.module.scss';
-import { EnergyTrendPoint } from '../../types/dashboard';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-interface EnergyTrendChartProps {
-  data: EnergyTrendPoint[];
-}
+import type { EnergyTrendChartProps } from '../../libs/types/overview';
 
 export const EnergyTrendChart: React.FC<EnergyTrendChartProps> = ({ data }) => {
   return (

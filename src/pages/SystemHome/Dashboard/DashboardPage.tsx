@@ -1,10 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/DashboardPage.module.scss';
 import { OverviewDashboard } from '../../../components/overview/OverviewDashboard';
-
-interface DashboardPageProps {
-  onNavigateMonitoring: () => void;
-}
+import type { DashboardPageProps } from '../../../libs/types/pageProps';
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
   onNavigateMonitoring,

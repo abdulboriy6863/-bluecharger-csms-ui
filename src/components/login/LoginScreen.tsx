@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import styles from '../../scss/login/LoginScreen.module.scss';
 import { Eye, EyeOff, ShieldCheck, Lock, HelpCircle, Zap } from 'lucide-react';
-import { Language } from '../../types/auth';
+import type { Language } from '../../libs/types/auth';
 import { useI18n } from '../../i18n/I18nContext';
+import type { LoginLanguageOption, LoginScreenProps } from '../../libs/types/login';
 
-interface LoginScreenProps {
-  onLoginSuccess: () => void;
-  language?: Language;
-  onLanguageChange?: (lang: Language) => void;
-}
-
-const languageOptions: Array<{ value: Language; label: string }> = [
+const languageOptions: LoginLanguageOption[] = [
   { value: 'en', label: 'English' },
   { value: 'ko', label: '한국어' },
   { value: 'ru', label: 'Русский' },

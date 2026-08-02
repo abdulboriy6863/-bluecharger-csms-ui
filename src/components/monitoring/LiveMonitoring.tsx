@@ -1,16 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import styles from '../../scss/monitoring/LiveMonitoring.module.scss';
-import { Charger } from '../../types/charger';
 import { StatusCounters } from './StatusCounters';
 import { FilterBar } from './FilterBar';
 import { ChargerTable } from './ChargerTable';
 import { useI18n } from '../../i18n/I18nContext';
-
-interface LiveMonitoringProps {
-  chargers: Charger[];
-  onSelectCharger: (charger: Charger) => void;
-  onOpenControlModal: (charger: Charger) => void;
-}
+import type { LiveMonitoringProps } from '../../libs/types/monitoring';
 
 export const LiveMonitoring: React.FC<LiveMonitoringProps> = ({
   chargers,

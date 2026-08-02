@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './scss/core/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
-import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
 import { mockChargers } from './data/mockChargers';
-import { Charger, CommandType, CommandResult } from './types/charger';
-import { User } from './types/auth';
+import type { Charger, CommandType, CommandResult } from './libs/types/charger';
+import type { User } from './libs/types/auth';
 import { useI18n } from './i18n/I18nContext';
 import { DashboardPage } from './pages/SystemHome/Dashboard/DashboardPage';
 import { SolarDashboardPage } from './pages/SystemHome/SolarDashboard/SolarDashboardPage';
@@ -46,6 +45,7 @@ import { SalesManagementPage } from './pages/PurchaseSales/SalesManagement/Sales
 import { PurchaseSalesSummaryPage } from './pages/PurchaseSales/PurchaseSalesSummary/PurchaseSalesSummaryPage';
 import { PurchaseSalesPerformancePage } from './pages/PurchaseSales/PurchaseSalesPerformance/PurchaseSalesPerformancePage';
 import { NetProfitManagementPage } from './pages/PurchaseSales/NetProfitManagement/NetProfitManagementPage';
+import type { InfrastructurePage, HistoryManagementPage, MemberManagementPage, NavTab, PaymentManagementPage, PurchaseSalesPage, SystemHomePage, SystemManagementPage } from './libs/types/layout';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

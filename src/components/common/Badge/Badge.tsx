@@ -1,14 +1,8 @@
 import React from 'react';
 import styles from '../../../scss/common/Badge.module.scss';
 import clsx from 'clsx';
-import { ChargerStatus } from '../../../types/charger';
 import { useI18n } from '../../../i18n/I18nContext';
-
-interface BadgeProps {
-  status: ChargerStatus | 'neutral';
-  label?: string;
-  showDot?: boolean;
-}
+import type { BadgeProps } from '../../../libs/types/commonComponents';
 
 export const Badge: React.FC<BadgeProps> = ({ status, label, showDot = true }) => {
   const { t } = useI18n();

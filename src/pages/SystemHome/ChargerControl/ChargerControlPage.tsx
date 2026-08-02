@@ -1,12 +1,6 @@
 import React from 'react';
-import { Charger } from '../../../types/charger';
 import { LiveMonitoring } from '../../../components/monitoring/LiveMonitoring';
-
-interface ChargerControlPageProps {
-  chargers: Charger[];
-  onSelectCharger: (charger: Charger) => void;
-  onOpenControlModal: (charger: Charger) => void;
-}
+import type { ChargerControlPageProps } from '../../../libs/types/pageProps';
 
 export const ChargerControlPage: React.FC<ChargerControlPageProps> = ({
   chargers,

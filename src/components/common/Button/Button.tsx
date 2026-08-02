@@ -1,14 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Button.module.scss';
 import clsx from 'clsx';
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  children: React.ReactNode;
-}
+import type { ButtonProps } from '../../../libs/types/commonComponents';
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',

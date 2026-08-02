@@ -1,4 +1,4 @@
-import { Charger } from '../types/charger';
+import type { Charger } from '../libs/types/charger';
 
 export const mockChargers: Charger[] = [
   {

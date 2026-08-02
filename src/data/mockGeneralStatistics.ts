@@ -1,4 +1,4 @@
-import { GeneralStatisticsData } from '../types/dashboard';
+import type { GeneralStatisticsData } from '../libs/types/dashboard';
 
 export const mockGeneralStatistics: GeneralStatisticsData = {
   station: {

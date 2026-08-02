@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
-import { Language } from '../types/auth';
-
-type TranslationMap = Record<string, string>;
+import type { Language } from '../libs/types/auth';
+import type { I18nContextValue, I18nProviderProps, TranslationMap } from '../libs/types/i18n';
 
 const english: TranslationMap = {
   'sales.purchases': 'Purchase Management',
@@ -408,15 +407,9 @@ const translations: Record<Language, TranslationMap> = {
   },
 };
 
-interface I18nContextValue {
-  language: Language;
-  setLanguage: (language: Language) => void;
-  t: (key: string) => string;
-}
-
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
   const value = useMemo<I18nContextValue>(() => ({
     language,

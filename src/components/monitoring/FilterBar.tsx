@@ -5,18 +5,7 @@ import { Input } from '../common/Input/Input';
 import { Select } from '../common/Select/Select';
 import { Button } from '../common/Button/Button';
 import { useI18n } from '../../i18n/I18nContext';
-
-interface FilterBarProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  selectedRegion: string;
-  onRegionChange: (region: string) => void;
-  selectedConnector: string;
-  onConnectorChange: (conn: string) => void;
-  autoRefresh: boolean;
-  onToggleAutoRefresh: () => void;
-  onResetFilters: () => void;
-}
+import type { FilterBarProps } from '../../libs/types/monitoring';
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   searchQuery,

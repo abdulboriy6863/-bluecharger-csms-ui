@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import { mockChargerStatusPanels } from '../../../data/mockChargerStatusSummary';
-import { ChargerStatusPanelId } from '../../../types/dashboard';
+import type { ChargerStatusPanelId } from '../../../libs/types/chargerStatus';
 import { useI18n } from '../../../i18n/I18nContext';
 import { ChargerStatusSectionCard } from './ChargerStatusSectionCard';
 

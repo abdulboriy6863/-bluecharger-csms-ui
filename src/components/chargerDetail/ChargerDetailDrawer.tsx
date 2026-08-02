@@ -1,17 +1,10 @@
 import React from 'react';
 import styles from '../../scss/chargerDetail/ChargerDetailDrawer.module.scss';
-import { Charger } from '../../types/charger';
 import { Drawer } from '../common/Drawer/Drawer';
 import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';
 import { Zap, Cpu, AlertTriangle, Play, Square, RotateCcw, Unlock } from 'lucide-react';
-
-interface ChargerDetailDrawerProps {
-  charger: Charger | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onOpenControlModal: (charger: Charger, defaultCommand?: any) => void;
-}
+import type { ChargerDetailDrawerProps } from '../../libs/types/chargerDetail';
 
 export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
   charger,

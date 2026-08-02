@@ -1,33 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/layout/AppShell.module.scss';
-import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from '../TopNavigation/TopNavigation';
-import { Language, User } from '../../../types/auth';
-
-interface AppShellProps {
-  activeTab: NavTab;
-  onTabChange: (tab: NavTab) => void;
-  systemHomePage: SystemHomePage;
-  onSystemHomePageChange: (page: SystemHomePage) => void;
-  systemManagementPage: SystemManagementPage;
-  onSystemManagementPageChange: (page: SystemManagementPage) => void;
-  memberManagementPage: MemberManagementPage;
-  onMemberManagementPageChange: (page: MemberManagementPage) => void;
-  infrastructurePage: InfrastructurePage;
-  onInfrastructurePageChange: (page: InfrastructurePage) => void;
-  historyManagementPage: HistoryManagementPage;
-  onHistoryManagementPageChange: (page: HistoryManagementPage) => void;
-  paymentManagementPage: PaymentManagementPage;
-  onPaymentManagementPageChange: (page: PaymentManagementPage) => void;
-  purchaseSalesPage: PurchaseSalesPage;
-  onPurchaseSalesPageChange: (page: PurchaseSalesPage) => void;
-  user: User | null;
-  language: Language;
-  onLanguageChange: (lang: Language) => void;
-  onLogout: () => void;
-  isDarkMode: boolean;
-  onToggleDarkMode: () => void;
-  children: React.ReactNode;
-}
+import { TopNavigation } from '../TopNavigation/TopNavigation';
+import type { AppShellProps } from '../../../libs/types/layout';
 
 export const AppShell: React.FC<AppShellProps> = ({
   activeTab,

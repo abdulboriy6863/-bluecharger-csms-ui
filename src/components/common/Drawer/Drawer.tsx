@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from '../../../scss/common/Drawer.module.scss';
 import { X } from 'lucide-react';
-
-interface DrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-}
+import type { DrawerProps } from '../../../libs/types/commonComponents';
 
 export const Drawer: React.FC<DrawerProps> = ({
   isOpen,

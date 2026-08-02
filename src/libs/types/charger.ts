@@ -12,11 +12,11 @@ export interface Connector {
 }
 
 export interface Charger {
-  id: string; // CP-1001
+  id: string;
   name: string;
   stationId: string;
   stationName: string;
-  region: string; // Seoul, Tashkent, Samarkand, Busan
+  region: string;
   status: ChargerStatus;
   connectors: Connector[];
   manufacturer: string;

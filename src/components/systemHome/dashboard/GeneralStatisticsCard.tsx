@@ -1,31 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import clsx from 'clsx';
-
-export type GeneralStatisticTrend = {
-  direction: 'up' | 'down' | 'flat';
-  value: string;
-  tone?: 'danger' | 'info' | 'neutral';
-};
-
-export type GeneralStatisticMetric = {
-  label?: string;
-  value: string | number;
-  unit?: string;
-  trend?: GeneralStatisticTrend;
-  trailing?: string;
-};
-
-export type GeneralStatisticPalette = 'peach' | 'sky' | 'mint' | 'violet';
-
-interface GeneralStatisticsCardProps {
-  title: string;
-  subTitle?: string;
-  icon: React.ReactNode;
-  metrics: GeneralStatisticMetric[];
-  size?: 'standard' | 'wide';
-  palette?: GeneralStatisticPalette;
-}
+import type { GeneralStatisticsCardProps } from '../../../libs/types/generalStatistics';
 
 export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
   title,

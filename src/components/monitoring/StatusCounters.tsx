@@ -1,14 +1,8 @@
 import React from 'react';
 import styles from '../../scss/monitoring/StatusCounters.module.scss';
 import clsx from 'clsx';
-import { ChargerStatus } from '../../types/charger';
 import { useI18n } from '../../i18n/I18nContext';
-
-interface StatusCountersProps {
-  selectedStatus: string; // 'ALL' or specific ChargerStatus
-  onSelectStatus: (status: string) => void;
-  statusCounts: Record<string, number>;
-}
+import type { StatusCountersProps } from '../../libs/types/monitoring';
 
 export const StatusCounters: React.FC<StatusCountersProps> = ({
   selectedStatus,

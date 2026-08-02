@@ -1,14 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Card.module.scss';
 import clsx from 'clsx';
-
-interface CardProps {
-  title?: string;
-  subtitle?: string;
-  action?: React.ReactNode;
-  children: React.ReactNode;
-  className?: string;
-}
+import type { CardProps } from '../../../libs/types/commonComponents';
 
 export const Card: React.FC<CardProps> = ({
   title,

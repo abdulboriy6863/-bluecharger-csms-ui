@@ -1,12 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Input.module.scss';
 import clsx from 'clsx';
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  icon?: React.ReactNode;
-  error?: string;
-}
+import type { InputProps } from '../../../libs/types/commonComponents';
 
 export const Input: React.FC<InputProps> = ({
   label,

@@ -4,6 +4,12 @@
 
 The CSMS frontend is a code-first enterprise operations UI. New screens and sections should be dense, calm, data-focused, and reusable. Avoid marketing-style layouts inside the authenticated app.
 
+## Shared Libs Pattern
+
+- Shared interfaces, component prop types, and feature display types must live in `src/libs/types/<feature>.ts`; do not define new interfaces directly inside `.tsx` components.
+- Feature enums should live in `src/libs/enums/<feature>.ts` when needed.
+- Reusable hooks should live in `src/libs/hooks/<feature>.ts` when they are shared outside one component.
+
 ## General Statistics Pattern
 
 `GeneralStatisticsSection.tsx` is the reference pattern for KPI/statistic sections:

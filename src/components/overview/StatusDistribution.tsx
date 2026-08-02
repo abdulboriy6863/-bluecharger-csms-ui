@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from '../../scss/systemHome/StatusDistribution.module.scss';
-import { StatusDistributionPoint } from '../../types/dashboard';
 import { useI18n } from '../../i18n/I18nContext';
-
-interface StatusDistributionProps {
-  data: StatusDistributionPoint[];
-}
+import type { StatusDistributionProps } from '../../libs/types/overview';
 
 export const StatusDistribution: React.FC<StatusDistributionProps> = ({ data }) => {
   const { t } = useI18n();

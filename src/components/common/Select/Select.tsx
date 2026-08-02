@@ -1,16 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Select.module.scss';
 import { ChevronDown } from 'lucide-react';
-
-export interface SelectOption {
-  value: string;
-  label: string;
-}
-
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  options: SelectOption[];
-}
+import type { SelectProps } from '../../../libs/types/commonComponents';
 
 export const Select: React.FC<SelectProps> = ({
   label,
