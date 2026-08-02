@@ -69,17 +69,23 @@ export const GeneralStatisticsSection: React.FC = () => {
         {/* Card 3: ENERGY (KWH) */}
         <GeneralStatisticsCard
           topLabel={t('dashboard.stats.energyKwh')}
-          accentTone="red"
+          accentTone="blue"
           watermarkIcon={<BatteryCharging className={styles.watermarkIcon} />}
         >
           <div className={styles.listMetricsLayout}>
             <div className={styles.metricDetailRow}>
-              <span className={styles.metricNumber}>{data.energy.rapid.kwh.toLocaleString()}</span>
-              <span className={styles.redBadge}>(-{data.energy.rapid.changePercent}%)</span>
+              <span className={styles.metricName}>{t('dashboard.stats.fastCharge')}</span>
+              <div className={styles.valueGroup}>
+                <span className={styles.metricNumber}>{data.energy.rapid.kwh.toLocaleString()} kWh</span>
+                <span className={styles.changeBadge}>(-{data.energy.rapid.changePercent}%)</span>
+              </div>
             </div>
             <div className={styles.metricDetailRow}>
-              <span className={styles.metricNumber}>{data.energy.slow.kwh.toLocaleString()}</span>
-              <span className={styles.redBadge}>(-{data.energy.slow.changePercent}%)</span>
+              <span className={styles.metricName}>{t('dashboard.stats.slowCharge')}</span>
+              <div className={styles.valueGroup}>
+                <span className={styles.metricNumber}>{data.energy.slow.kwh.toLocaleString()} kWh</span>
+                <span className={styles.changeBadge}>(-{data.energy.slow.changePercent}%)</span>
+              </div>
             </div>
           </div>
         </GeneralStatisticsCard>
@@ -87,7 +93,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         {/* Card 4: ACTIVE MEMBERS */}
         <GeneralStatisticsCard
           topLabel={t('dashboard.stats.activeMembers')}
-          accentTone="navy"
+          accentTone="blue"
           watermarkIcon={<UsersRound className={styles.watermarkIcon} />}
         >
           <div className={styles.singleMetricLayout}>

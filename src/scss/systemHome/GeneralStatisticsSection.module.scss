@@ -116,21 +116,10 @@
   justify-content: space-between;
   border-radius: 16px;
   border: 1px solid var(--border-color, #e0e0e0);
+  border-left: 4px solid var(--primary-color, #2E56A6);
   background: var(--bg-secondary, #ffffff);
   box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
   transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
-
-  &.blue {
-    border-left: 4px solid var(--primary-color, #2E56A6);
-  }
-
-  &.red {
-    border: 1.5px solid #ef4444;
-  }
-
-  &.navy {
-    border-left: 4px solid #1c2541;
-  }
 
   &:hover {
     border-color: var(--primary-soft, #7A91BF);
@@ -242,6 +231,12 @@
   font-weight: 600;
 }
 
+.valueGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
 .metricNumber {
   color: var(--text-primary, #2E56A6);
   font-weight: 800;
@@ -249,11 +244,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-.redBadge {
-  color: #dc2626;
+.changeBadge {
+  color: var(--text-muted, #7A91BF);
   font-weight: 700;
   font-size: 12px;
-  margin-left: 6px;
 }
 
 /* Avatars Row for Members */
@@ -311,19 +305,8 @@
   .statCard {
     background: #1c2541;
     border-color: rgba(255, 255, 255, 0.12);
+    border-left-color: var(--primary-color, #2E56A6);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-
-    &.blue {
-      border-left-color: var(--primary-color, #2E56A6);
-    }
-
-    &.red {
-      border-color: #ef4444;
-    }
-
-    &.navy {
-      border-left-color: #93c5fd;
-    }
   }
 
   .bigValue,
