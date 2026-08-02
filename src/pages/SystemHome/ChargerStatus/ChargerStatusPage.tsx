@@ -1,8 +1,16 @@
 import React from 'react';
 import { Charger } from '../../../types/charger';
-import { LiveMonitoring } from '../../../components/monitoring/LiveMonitoring';
-import styles from './ChargerStatusPage.module.scss';
+import { ChargerStatusView } from '../../../components/systemHome/chargerstatus/ChargerStatusView';
 
-interface ChargerStatusPageProps { chargers: Charger[]; onSelectCharger: (charger: Charger) => void; onOpenControlModal: (charger: Charger) => void; }
+interface ChargerStatusPageProps {
+  chargers?: Charger[];
+  onSelectCharger?: (charger: Charger) => void;
+  onOpenControlModal?: (charger: Charger) => void;
+}
 
-export const ChargerStatusPage: React.FC<ChargerStatusPageProps> = (props) => <section className={styles.page} aria-label="Charger Status"><LiveMonitoring {...props} /></section>;
+export const ChargerStatusPage: React.FC<ChargerStatusPageProps> = () => (
+  <section style={{ padding: '24px' }} aria-label="Charger Status">
+    <ChargerStatusView />
+  </section>
+);
+
