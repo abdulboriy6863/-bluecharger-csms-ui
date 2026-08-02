@@ -158,11 +158,6 @@ export const App: React.FC = () => {
       {activeTab === 'overview' && systemHomePage === 'dashboard' && (
         <DashboardPage
           onNavigateMonitoring={() => { setSystemHomePage('charger-status'); setActiveTab('monitoring'); }}
-          onSelectCharger={(id) => {
-            const found = chargers.find((c) => c.id === id);
-            if (found) handleSelectCharger(found);
-            else { setSystemHomePage('charger-status'); setActiveTab('monitoring'); }
-          }}
         />
       )}
 

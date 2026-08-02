@@ -39,6 +39,10 @@ For General Statistics, the current visual reference values are:
 - Energy delivered: fast 29,665 kWh, down 2,453 kWh (8%); slow 12,299 kWh, down 6,794 kWh (36%).
 - Member registrations: 983 members.
 
+## Placeholder Section Pattern
+
+Until lower dashboard sections receive final product UI, render them as simple maximum-light pastel section bands directly under `GeneralStatisticsSection.tsx`. Each band should show the component file name only, using the reusable `DashboardSectionPlaceholder.tsx` renderer. Remove long explanatory temporary UI from section components.
+
 ## i18n Rules
 
 All new visible text must use the i18n system across supported languages. Numeric units that are language-specific should use existing translation keys or new keys added for all supported languages.

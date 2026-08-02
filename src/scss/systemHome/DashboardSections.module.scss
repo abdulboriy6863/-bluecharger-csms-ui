@@ -1,146 +1,116 @@
 .section {
+  position: relative;
+  overflow: hidden;
   width: 100%;
-  border-radius: 12px;
-  padding: 28px 32px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  }
-}
-
-.sectionHeader {
+  min-height: 86px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
-  padding-bottom: 12px;
-
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .badge {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-}
-
-.sectionBody {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.placeholderCard {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
   border-radius: 8px;
-  padding: 20px;
-  border: 1px dashed rgba(0, 0, 0, 0.15);
-  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  padding: 22px 28px;
+  box-shadow: 0 12px 26px rgba(35, 65, 105, 0.06);
 
-  p {
-    margin: 0 0 8px 0;
-    font-weight: 600;
-    color: #1e293b;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.36);
   }
 
-  ul {
-    margin: 0;
-    padding-left: 20px;
-    color: #475569;
+  &::before {
+    top: -56px;
+    right: 8%;
+    width: 156px;
+    height: 156px;
+  }
 
-    li {
-      margin-bottom: 6px;
-    }
+  &::after {
+    right: 18%;
+    bottom: -94px;
+    width: 210px;
+    height: 210px;
+    background: rgba(255, 255, 255, 0.24);
   }
 }
 
-/* Specific Section Colors */
-.generalStats {
-  background-color: #e0f2fe;
-  border-color: #bae6fd;
-  color: #0369a1;
+.fileMeta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
 
-  .badge {
-    background-color: #0284c7;
-    color: #ffffff;
-  }
+.fileBadge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  color: rgba(32, 36, 44, 0.7);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.fileName {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: rgba(32, 36, 44, 0.88);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .chargerStatus {
-  background-color: #dcfce7;
-  border-color: #bbf7d0;
-  color: #15803d;
-
-  .badge {
-    background-color: #16a34a;
-    color: #ffffff;
-  }
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(135deg, #f1fbff 0%, #e7f6ff 52%, #dceeff 100%);
 }
 
 .advertisement {
-  background-color: #f3e8ff;
-  border-color: #e9d5ff;
-  color: #6b21a8;
-
-  .badge {
-    background-color: #9333ea;
-    color: #ffffff;
-  }
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(135deg, #fff7fb 0%, #f9efff 54%, #ececff 100%);
 }
 
 .infrastructureUsage {
-  background-color: #fef3c7;
-  border-color: #fde68a;
-  color: #b45309;
-
-  .badge {
-    background-color: #d97706;
-    color: #ffffff;
-  }
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(135deg, #f2fff9 0%, #e4f9f2 53%, #d8f2ec 100%);
 }
 
 .footerSection {
-  background-color: #0f172a;
-  border-color: #1e293b;
-  color: #f8fafc;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(135deg, #fbf9ff 0%, #f1edff 52%, #e6eaff 100%);
+}
 
-  .sectionHeader {
-    border-bottom-color: rgba(255, 255, 255, 0.15);
-
-    h2 {
-      color: #ffffff;
-    }
+@media (max-width: 760px) {
+  .section {
+    min-height: 74px;
+    padding: 18px 20px;
   }
 
-  .badge {
-    background-color: #38bdf8;
-    color: #0f172a;
+  .fileMeta {
+    gap: 10px;
   }
 
-  .placeholderCard {
-    background: rgba(30, 41, 59, 0.8);
-    border-color: rgba(255, 255, 255, 0.15);
+  .fileBadge {
+    min-width: 40px;
+    height: 28px;
+    font-size: 11px;
+  }
 
-    p {
-      color: #f1f5f9;
-    }
-
-    ul {
-      color: #94a3b8;
-    }
+  .fileName {
+    font-size: 17px;
   }
 }
