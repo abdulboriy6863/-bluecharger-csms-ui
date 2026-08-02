@@ -235,7 +235,7 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                 formatter={(value, name) => [formatNumber(normalizeTooltipValue(value)), String(name)]}
               />
               {distributionPanel.series.map((series) => (
-                <Bar
+              <Bar
                   key={series.id}
                   dataKey={series.id}
                   stackId="installed"
@@ -243,6 +243,8 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   fill={series.color}
                   radius={[5, 5, 0, 0]}
                   maxBarSize={36}
+                  animationDuration={700}
+                  activeBar={{ stroke: '#172033', strokeWidth: 1.5, fillOpacity: 0.92 }}
                 />
               ))}
             </BarChart>
