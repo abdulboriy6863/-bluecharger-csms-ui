@@ -88,3 +88,22 @@ The language selector and `Language` type must stay aligned with this list:
 | `uz` | UZB | O‘zbekcha |
 
 When adding a new visible string, add the same i18n key to all seven language maps in `src/i18n/I18nContext.tsx`. The `english` fallback is only a safety net for missing keys and is not considered a completed translation. New chart labels, legends, tooltips, table/export headers, button labels, and accessibility labels must all follow this rule.
+
+## Typography & Color Hierarchy Rule
+
+All UI components and stylesheets MUST follow this strict color & font size hierarchy:
+
+1. **Large Size / Primary Emphasis (`font-size >= 24px` or main metric numbers)**:
+   - Must strictly use `--text-primary: #2E56A6` (`$color-brand-primary`).
+   - Ensures primary numbers and main headings stand out boldly.
+
+2. **Medium Size / Secondary Emphasis (`font-size 13px - 18px` or section titles)**:
+   - Must strictly use `--text-secondary: #416CA6`.
+
+3. **Small Size / Muted Emphasis (`font-size <= 13px`, subtitles, unit labels, footers, badges)**:
+   - Must strictly use `--text-muted: #7A91BF`.
+   - Gives a soft, clean contrast hierarchy across all cards, grids, and tables.
+
+4. **Primary Highlight Card Exception**:
+   - On solid dark/royal blue primary surface cards (`.primary`), text uses `#FFFFFF` with corresponding translucency (`1.0` for values, `0.88` for subtitles, `0.78` for small badges/trends) to guarantee 100% contrast readability.
+

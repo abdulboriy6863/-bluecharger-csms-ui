@@ -135,7 +135,7 @@
     font-weight: 700;
   }
 
-  /* KATTA SIZE (Large numbers): To'qroq rang (Deep Rich Royal Blue) */
+  /* KATTA SIZE (Large numbers / Primary focus): text-primary: #2E56A6 */
   .metricValue {
     color: var(--text-primary, #2E56A6);
     font-size: 38px;
@@ -145,7 +145,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* O'RTA SIZE (Subtitles): O'rtacha mos rang (Medium Blue / Slate) */
+  /* O'RTA SIZE (Subtitles & Headers): text-secondary: #416CA6 */
   .cardTitleGroup {
     .title {
       color: var(--text-secondary, #416CA6);
@@ -174,7 +174,14 @@
     font-weight: 700;
   }
 
-  /* KICHIK SIZE (Footer text & trends): Ochroq rang (Light Muted Blue/Grey) */
+  /* KICHIK SIZE (Footer text, notes & badges): text-muted: #7A91BF */
+  .topBadge {
+    background: #f1f5f9;
+    color: var(--text-muted, #7A91BF);
+    border: 1px solid #e2e8f0;
+    font-weight: 700;
+  }
+
   .cardFooterGroup {
     .trendBadge {
       color: var(--text-muted, #7A91BF);
