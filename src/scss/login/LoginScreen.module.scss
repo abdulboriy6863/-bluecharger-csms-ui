@@ -10,6 +10,34 @@
   @include flex-center;
   background-color: #050a18;
 
+  .languageSelector {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    z-index: 20;
+
+    select {
+      height: 38px;
+      min-width: 142px;
+      padding: 0 36px 0 12px;
+      border: 1px solid rgba(148, 163, 184, 0.34);
+      border-radius: $radius-sm;
+      background: rgba(8, 18, 38, 0.58);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+
+      &:focus {
+        border-color: rgba(56, 189, 248, 0.7);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16);
+      }
+    }
+  }
+
   /* Full Screen Background Image with scale & fade animation */
   .bgImageWrapper {
     position: absolute;
@@ -357,6 +385,17 @@
         font-size: 11.5px;
         gap: 8px;
       }
+    }
+  }
+
+  .languageSelector {
+    top: 14px;
+    right: 14px;
+
+    select {
+      min-width: 124px;
+      height: 34px;
+      font-size: 12px;
     }
   }
 }

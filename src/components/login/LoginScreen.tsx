@@ -10,13 +10,32 @@ interface LoginScreenProps {
   onLanguageChange?: (lang: Language) => void;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
-  const { t } = useI18n();
+const languageOptions: Array<{ value: Language; label: string }> = [
+  { value: 'en', label: 'English' },
+  { value: 'ko', label: '한국어' },
+  { value: 'ru', label: 'Русский' },
+  { value: 'hi', label: 'हिन्दी' },
+  { value: 'id', label: 'Bahasa Indonesia' },
+  { value: 'ky', label: 'Кыргызча' },
+  { value: 'uz', label: "O'zbekcha" },
+];
+
+export const LoginScreen: React.FC<LoginScreenProps> = ({
+  onLoginSuccess,
+  language,
+  onLanguageChange,
+}) => {
+  const { t, language: activeLanguage, setLanguage } = useI18n();
   const [email, setEmail] = useState<string>('operator@bluenetwork.com');
   const [password, setPassword] = useState<string>('••••••••••••');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberId, setRememberId] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const currentLanguage = language ?? activeLanguage;
+
+  const handleLanguageChange = (nextLanguage: Language) => {
+    (onLanguageChange ?? setLanguage)(nextLanguage);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +48,20 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
   return (
     <div className={styles.loginContainer}>
+      <div className={styles.languageSelector}>
+        <select
+          aria-label={t('login.language')}
+          value={currentLanguage}
+          onChange={(event) => handleLanguageChange(event.target.value as Language)}
+        >
+          {languageOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Full Screen Vivid Background Image */}
       <div className={styles.bgImageWrapper}>
         <img src="/assets/global-network-bg.png" alt="BLUENETWORK Global Telemetry Network" />

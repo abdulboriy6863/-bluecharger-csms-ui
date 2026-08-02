@@ -1,15 +1,20 @@
 import React from 'react';
-import { FirstHomePage } from '../mainhome/firsthomepage/FirstHomePage';
 import styles from '../../../scss/systemHome/DashboardPage.module.scss';
+import { OverviewDashboard } from '../../../components/overview/OverviewDashboard';
 
 interface DashboardPageProps {
-  onNavigateMonitoring?: () => void;
-  onSelectCharger?: (chargerId: string) => void;
+  onNavigateMonitoring: () => void;
+  onSelectCharger: (chargerId: string) => void;
 }
 
-export const DashboardPage: React.FC<DashboardPageProps> = () => (
+export const DashboardPage: React.FC<DashboardPageProps> = ({
+  onNavigateMonitoring,
+  onSelectCharger,
+}) => (
   <section className={styles.page} aria-label="System Home Dashboard">
-    <FirstHomePage />
+    <OverviewDashboard
+      onNavigateMonitoring={onNavigateMonitoring}
+      onSelectCharger={onSelectCharger}
+    />
   </section>
 );
-

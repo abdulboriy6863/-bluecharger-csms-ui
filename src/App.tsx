@@ -98,18 +98,20 @@ export const App: React.FC = () => {
 
   const handleCommandExecuted = (result: CommandResult) => {
     if (result.status === 'SUCCESS') {
+      const applyMockCommandResult = (charger: Charger): Charger => {
+        let newStatus = charger.status;
+        if (result.commandType === 'RemoteStartTransaction') newStatus = 'Charging';
+        if (result.commandType === 'RemoteStopTransaction') newStatus = 'Available';
+        if (result.commandType === 'Reset') newStatus = 'Available';
+        return { ...charger, status: newStatus, lastStatusChange: 'Just now' };
+      };
+
       // Dynamically reflect mock status change
       setChargers((prev) =>
-        prev.map((c) => {
-          if (c.id === result.chargerId) {
-            let newStatus = c.status;
-            if (result.commandType === 'RemoteStartTransaction') newStatus = 'Charging';
-            if (result.commandType === 'RemoteStopTransaction') newStatus = 'Available';
-            if (result.commandType === 'Reset') newStatus = 'Available';
-            return { ...c, status: newStatus, lastStatusChange: 'Just now' };
-          }
-          return c;
-        })
+        prev.map((c) => (c.id === result.chargerId ? applyMockCommandResult(c) : c))
+      );
+      setSelectedCharger((current) =>
+        current?.id === result.chargerId ? applyMockCommandResult(current) : current
       );
     }
   };

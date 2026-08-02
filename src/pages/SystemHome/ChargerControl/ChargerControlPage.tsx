@@ -1,18 +1,23 @@
 import React from 'react';
 import { Charger } from '../../../types/charger';
-import { ChargerControlView } from '../../../components/systemHome/chargercontrol/ChargerControlView';
+import { LiveMonitoring } from '../../../components/monitoring/LiveMonitoring';
 
 interface ChargerControlPageProps {
-  chargers?: Charger[];
-  onSelectCharger?: (charger: Charger) => void;
-  onOpenControlModal?: (charger: Charger) => void;
+  chargers: Charger[];
+  onSelectCharger: (charger: Charger) => void;
+  onOpenControlModal: (charger: Charger) => void;
 }
 
-export const ChargerControlPage: React.FC<ChargerControlPageProps> = () => {
+export const ChargerControlPage: React.FC<ChargerControlPageProps> = ({
+  chargers,
+  onSelectCharger,
+  onOpenControlModal,
+}) => {
   return (
-    <section style={{ padding: '24px' }}>
-      <ChargerControlView />
-    </section>
+    <LiveMonitoring
+      chargers={chargers}
+      onSelectCharger={onSelectCharger}
+      onOpenControlModal={onOpenControlModal}
+    />
   );
 };
-

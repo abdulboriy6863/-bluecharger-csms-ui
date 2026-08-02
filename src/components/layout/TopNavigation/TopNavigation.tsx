@@ -118,6 +118,7 @@ const languageOptions: Array<{ value: Language; label: string; title: string }> 
   { value: 'hi', label: 'HIN', title: 'हिन्दी' },
   { value: 'id', label: 'IDN', title: 'Bahasa Indonesia' },
   { value: 'ky', label: 'KYR', title: 'Кыргызча' },
+  { value: 'uz', label: 'UZB', title: 'O‘zbekcha' },
 ];
 
 export const TopNavigation: React.FC<TopNavigationProps> = ({

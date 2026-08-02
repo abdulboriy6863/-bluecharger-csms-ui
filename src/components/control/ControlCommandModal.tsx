@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../scss/control/ControlCommandModal.module.scss';
 import { Charger, CommandType, CommandResult } from '../../types/charger';
 import { Modal } from '../common/Modal/Modal';
@@ -16,6 +16,8 @@ interface ControlCommandModalProps {
   onCommandExecuted: (result: CommandResult) => void;
 }
 
+const defaultReason = 'Operator manual control test';
+
 export const ControlCommandModal: React.FC<ControlCommandModalProps> = ({
   charger,
   initialCommand = 'RemoteStartTransaction',
@@ -25,8 +27,17 @@ export const ControlCommandModal: React.FC<ControlCommandModalProps> = ({
 }) => {
   const [commandType, setCommandType] = useState<CommandType>(initialCommand);
   const [connectorId, setConnectorId] = useState<string>('1');
-  const [reason, setReason] = useState<string>('Operator manual control test');
+  const [reason, setReason] = useState<string>(defaultReason);
   const [executingResult, setExecutingResult] = useState<CommandResult | null>(null);
+
+  useEffect(() => {
+    if (!isOpen || !charger) return;
+
+    setCommandType(initialCommand);
+    setConnectorId(String(charger.connectors[0]?.id ?? '1'));
+    setReason(defaultReason);
+    setExecutingResult(null);
+  }, [charger, initialCommand, isOpen]);
 
   if (!charger) return null;
 
