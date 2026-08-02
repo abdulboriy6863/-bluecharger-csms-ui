@@ -15,15 +15,15 @@ export const mockGeneralStatistics: GeneralStatisticsData = {
   },
   energy: {
     rapid: {
-      kwh: 28667,
-      changeKwh: 2115,
-      changePercent: 7,
+      kwh: 29665,
+      changeKwh: 2453,
+      changePercent: 8,
       trendDirection: 'down'
     },
     slow: {
-      kwh: 11808,
-      changeKwh: 6338,
-      changePercent: 35,
+      kwh: 12299,
+      changeKwh: 6794,
+      changePercent: 36,
       trendDirection: 'down'
     }
   },

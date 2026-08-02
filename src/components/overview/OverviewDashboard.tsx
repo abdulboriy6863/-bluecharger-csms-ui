@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from '../../scss/systemHome/OverviewDashboard.module.scss';
-import { KpiCards } from './KpiCards';
 import { EnergyTrendChart } from './EnergyTrendChart';
 import { StatusDistribution } from './StatusDistribution';
 import { RecentAlerts } from './RecentAlerts';
 import { Card } from '../common/Card/Card';
 import { Button } from '../common/Button/Button';
-import { mockKpis, mockEnergyTrend, mockStatusDistribution } from '../../data/mockDashboard';
+import { GeneralStatisticsSection } from '../systemHome/dashboard/GeneralStatisticsSection';
+import { mockEnergyTrend, mockStatusDistribution } from '../../data/mockDashboard';
 import { mockAlerts } from '../../data/mockEvents';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 import { useI18n } from '../../i18n/I18nContext';
@@ -38,7 +38,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
       </div>
 
-      <KpiCards metrics={mockKpis} />
+      <GeneralStatisticsSection />
 
       <div className={styles.contentGrid}>
         <div className={styles.leftCol}>

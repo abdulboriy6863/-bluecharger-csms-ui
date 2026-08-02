@@ -3,104 +3,47 @@
 
 .sectionWrapper {
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  grid-template-columns:
+    minmax(245px, 0.78fr)
+    minmax(350px, 1.18fr)
+    minmax(450px, 1.55fr)
+    minmax(245px, 0.78fr);
+  gap: 20px;
   width: 100%;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1480px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 760px) {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 }
 
 .statCard {
   position: relative;
-  overflow: hidden;
-  border-radius: 14px;
-  padding: 20px 22px;
-  min-height: 128px;
+  min-width: 0;
+  min-height: 150px;
+  padding: 24px 28px 26px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-  transition: transform 220ms ease, box-shadow 220ms ease;
-  z-index: 1;
+  justify-content: flex-start;
+  border: 1px solid rgba(203, 213, 225, 0.82);
+  border-radius: $radius-md;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
   &:hover {
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
-    transform: translateY(-2px);
-  }
-
-  // Translucent circular geometric background overlays
-  &::before {
-    content: '';
-    position: absolute;
-    right: 20px;
-    bottom: -60px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: -30px;
-    bottom: -35px;
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.45);
-    pointer-events: none;
-    z-index: -1;
-  }
-}
-
-// Soft Pastel Variants
-.cardSoftRose {
-  background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
-  border: 1px solid #fecdd3;
-
-  .cardIcon {
-    color: #e11d48;
-  }
-}
-
-.cardSoftBlue {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border: 1px solid #bae6fd;
-
-  .cardIcon {
-    color: #0284c7;
-  }
-}
-
-.cardSoftMint {
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border: 1px solid #a7f3d0;
-
-  .cardIcon {
-    color: #059669;
-  }
-}
-
-.cardSoftLavender {
-  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
-  border: 1px solid #ddd6fe;
-
-  .cardIcon {
-    color: #4f46e5;
+    border-color: rgba(37, 99, 235, 0.24);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.11);
+    transform: translateY(-1px);
   }
 }
 
@@ -108,124 +51,207 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  z-index: 2;
+  gap: 18px;
 }
 
 .cardTitleGroup {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 
   .title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1e293b;
-    line-height: 1.35;
+    max-width: 260px;
+    color: #20242c;
+    font-size: 19px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: 0;
+    word-break: keep-all;
   }
 
   .subTitle {
-    font-size: 13px;
-    font-weight: 500;
-    color: #64748b;
-    line-height: 1.3;
+    color: #20242c;
+    font-size: 19px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: 0;
   }
 }
 
 .cardIcon {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.65);
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  color: #25272d;
+
+  svg {
+    width: 38px;
+    height: 38px;
+    stroke-width: 1.8;
+  }
 }
 
 .cardBody {
-  margin-top: 14px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 100%;
+}
+
+.metricRow {
+  min-width: 0;
   display: flex;
   align-items: baseline;
   justify-content: flex-start;
   gap: 8px;
-  z-index: 2;
+  color: #25272d;
+  white-space: nowrap;
 }
 
-.primaryValue {
-  font-size: 26px;
+.metricLabel {
+  flex: 0 0 auto;
+  min-width: 34px;
+  color: #2d3138;
+  font-size: 18px;
   font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
-.unitText {
-  font-size: 14px;
-  font-weight: 600;
-  color: #334155;
+.metricValue {
+  flex: 0 0 auto;
+  color: #2b2f36;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
 }
 
-.dotSeparator {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-left: 4px;
+.metricUnit {
+  flex: 0 0 auto;
+  color: #2f333a;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.trendBadgeUp {
+.trendBadge {
+  flex: 0 1 auto;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #be123c;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-left: 6px;
+  gap: 5px;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.danger {
+    color: #ef1d1d;
+  }
+
+  &.info {
+    color: #1e88e5;
+  }
+
+  &.neutral {
+    color: #8a9099;
+  }
 }
 
-.rowsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-  margin-top: 6px;
-}
-
-.statRow {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-  font-size: 14px;
-  color: #334155;
-}
-
-.rowLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: #475569;
-  min-width: 30px;
-}
-
-.rowValue {
+.metricTrailing {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  color: #545b66;
   font-size: 17px;
   font-weight: 700;
-  color: #0f172a;
 }
 
-.rowUnit {
-  font-size: 13px;
-  font-weight: 500;
-  color: #475569;
+@media (max-width: 1480px) {
+  .wideCard {
+    grid-column: span 2;
+  }
 }
 
-.trendBadgeDown {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #0369a1;
-  background: rgba(255, 255, 255, 0.65);
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-left: 8px;
+@media (max-width: 900px) {
+  .statCard {
+    min-height: 140px;
+    padding: 22px 24px 24px;
+  }
+
+  .cardBody {
+    gap: 12px;
+  }
+
+  .metricValue {
+    font-size: 28px;
+  }
+
+  .metricLabel,
+  .metricUnit {
+    font-size: 17px;
+  }
+
+  .trendBadge {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 760px) {
+  .wideCard {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .statCard {
+    padding: 20px;
+  }
+
+  .cardHeader {
+    gap: 12px;
+  }
+
+  .cardTitleGroup {
+    .title,
+    .subTitle {
+      font-size: 17px;
+    }
+  }
+
+  .cardIcon {
+    width: 38px;
+    height: 38px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .metricRow {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    white-space: normal;
+  }
+
+  .metricValue {
+    font-size: 26px;
+  }
+
+  .trendBadge {
+    width: 100%;
+    padding-left: 42px;
+  }
 }

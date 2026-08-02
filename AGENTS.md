@@ -4,6 +4,8 @@
 
 Read `ATIGRAVITY_PROJECT_BRIEF.md` first. It is the source of truth for this project.
 
+Then read `UI_STYLE_GUIDE.md` before changing UI components. It records the reusable visual and component patterns we want to keep across the app.
+
 This project is now a code-first local UI prototype, not a Figma-first task.
 
 ## Goal
@@ -134,5 +136,4 @@ Avoid marketing-page composition inside the app. The login can be cinematic, but
 8. **Page vs Component Architecture Rule**: All UI elements, sectional components, cards, modals, and presentation blocks MUST live inside `src/components/<moduleName>/<featureName>/`. Files in `src/pages/<ModuleName>/` act purely as page entry doors/containers that manage page-level state and render components imported from `src/components/`.
 9. **Git Commit Workflow**: Always stage (`git add`), commit with descriptive messages (`git commit`), and push (`git push`) after completing a logical feature or refactoring step.
 10. **i18n & Responsiveness Rule**: After every feature or UI update, all new text strings MUST be added to the i18n translation system across all supported languages (EN, KO, UZ, etc.), and all UI components MUST be fully responsive across mobile, tablet, and desktop screens.
-
 
