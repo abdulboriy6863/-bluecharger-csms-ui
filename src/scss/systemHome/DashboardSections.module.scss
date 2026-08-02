@@ -94,6 +94,261 @@
     linear-gradient(135deg, #fbf9ff 0%, #f1edff 52%, #e6eaff 100%);
 }
 
+.chargerStatusSection {
+  width: 100%;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.expandedStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.panelTabs {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 36px;
+}
+
+.panelTab {
+  min-height: 34px;
+  border: 1px solid rgba(204, 214, 228, 0.88);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #475569;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+
+  &:hover {
+    border-color: rgba(57, 173, 216, 0.42);
+    background: #f6fbff;
+    color: #1d4e72;
+  }
+}
+
+.activeTab {
+  border-color: rgba(57, 173, 216, 0.48);
+  background: #eaf7ff;
+  color: #12638d;
+}
+
+.statusCard {
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(207, 216, 229, 0.9);
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(31, 49, 73, 0.11);
+}
+
+.detailCard {
+  min-height: 500px;
+}
+
+.statusCardHeader {
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 34px 0 42px;
+  background: #f8fbff;
+  border-bottom: 1px solid #eef3f8;
+}
+
+.activeHeader {
+  background: #f7fbff;
+}
+
+.statusTitleButton {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #252a32;
+  padding: 0;
+  text-align: left;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.menuIcon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(32, 36, 44, 0.64);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(226, 236, 249, 0.68);
+    color: rgba(32, 36, 44, 0.88);
+  }
+}
+
+.summaryBody {
+  display: flex;
+  flex-direction: column;
+  min-height: 390px;
+  padding: 18px 24px 26px;
+}
+
+.detailBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.58fr) minmax(430px, 0.92fr);
+  min-height: 430px;
+}
+
+.chartPane,
+.detailChartPane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartPane {
+  gap: 18px;
+}
+
+.detailChartPane {
+  gap: 20px;
+  padding: 22px 42px 28px;
+  border-right: 1px dashed #d9e0ea;
+}
+
+.chartViewport {
+  width: 100%;
+  height: 270px;
+  min-width: 0;
+}
+
+.detailCard .chartViewport {
+  height: 330px;
+}
+
+.pieLabel {
+  fill: #151a22;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  paint-order: stroke;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.legendGrid {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 28px;
+  flex-wrap: wrap;
+  color: #2b3037;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.legendDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.tablePane {
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0 24px 14px 30px;
+}
+
+.statusTable {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 800;
+
+  th,
+  td {
+    height: 51px;
+    padding: 0 14px;
+    border-bottom: 1px solid #edf2f7;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  th {
+    height: 47px;
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 900;
+    background: #fbfdff;
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.categoryPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  min-height: 30px;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.totalRow {
+  background: #effbf3;
+  color: #17713b;
+
+  td {
+    border-bottom-color: #bceccd;
+    font-size: 17px;
+    font-weight: 950;
+  }
+}
+
 @media (max-width: 760px) {
   .section {
     min-height: 74px;
@@ -112,5 +367,98 @@
 
   .fileName {
     font-size: 17px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailBody {
+    grid-template-columns: 1fr;
+  }
+
+  .detailChartPane {
+    border-right: 0;
+    border-bottom: 1px dashed #d9e0ea;
+  }
+
+  .tablePane {
+    padding: 4px 24px 22px;
+  }
+}
+
+@media (max-width: 760px) {
+  .panelTabs {
+    justify-content: stretch;
+  }
+
+  .panelTab {
+    flex: 1 1 100%;
+    min-height: 40px;
+  }
+
+  .statusCardHeader {
+    min-height: 66px;
+    padding: 0 18px 0 20px;
+  }
+
+  .statusTitleButton {
+    font-size: 18px;
+  }
+
+  .summaryBody {
+    min-height: 330px;
+    padding: 14px 14px 22px;
+  }
+
+  .detailChartPane {
+    padding: 18px 14px 24px;
+  }
+
+  .chartViewport {
+    height: 224px;
+  }
+
+  .detailCard .chartViewport {
+    height: 256px;
+  }
+
+  .legendGrid {
+    gap: 10px 16px;
+    justify-content: flex-start;
+    font-size: 13px;
+  }
+
+  .pieLabel {
+    font-size: 12px;
+    stroke-width: 3px;
+  }
+
+  .legendDot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .tablePane {
+    padding: 0 12px 18px;
+  }
+
+  .statusTable {
+    min-width: 470px;
+    font-size: 14px;
+
+    th,
+    td {
+      height: 46px;
+      padding: 0 10px;
+    }
+  }
+
+  .categoryPill {
+    min-width: 68px;
+    min-height: 28px;
+    font-size: 14px;
   }
 }

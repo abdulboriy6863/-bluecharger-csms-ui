@@ -41,7 +41,17 @@ For General Statistics, the current visual reference values are:
 
 ## Placeholder Section Pattern
 
-Until lower dashboard sections receive final product UI, render them as simple maximum-light pastel section bands directly under `GeneralStatisticsSection.tsx`. Each band should show the component file name only, using the reusable `DashboardSectionPlaceholder.tsx` renderer. Remove long explanatory temporary UI from section components.
+Until lower dashboard sections receive final product UI, render them as simple maximum-light pastel section bands directly under completed dashboard sections. Each band should show the component file name only, using the reusable `DashboardSectionPlaceholder.tsx` renderer. Remove long explanatory temporary UI from section components.
+
+## Charger Status Pattern
+
+`ChargerStatusSection.tsx` is the reference pattern for pie-chart status sections:
+
+- Mock/API data must live outside the component and feed both the pie chart and detail table.
+- The summary view uses two stable chart cards for operation status and connector status.
+- Clicking a chart opens a full-width detail state with the same chart on the left and a count table on the right.
+- The expanded state must keep fixed chart/table dimensions so the section does not collapse or jump while switching views.
+- Pie labels, legends, table headers, category names, connector names, and action aria labels must use i18n keys across all supported languages.
 
 ## i18n Rules
 

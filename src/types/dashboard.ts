@@ -70,3 +70,20 @@ export interface GeneralStatisticsData {
   member: MemberStat;
 }
 
+export type ChargerStatusPanelId = 'operation' | 'connector';
+
+export interface ChargerStatusBreakdownItem {
+  id: string;
+  labelKey: string;
+  fast: number;
+  slow: number;
+  total: number;
+  color: string;
+  badgeBackground: string;
+}
+
+export interface ChargerStatusPanelData {
+  id: ChargerStatusPanelId;
+  titleKey: string;
+  items: ChargerStatusBreakdownItem[];
+}
