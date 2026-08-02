@@ -3,16 +3,13 @@
 
 .sectionWrapper {
   width: 100%;
-  padding: 16px 20px;
-  background-color: #eef2f6;
-  border-radius: $radius-lg;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 18px;
   width: 100%;
 
   @media (max-width: 1200px) {
@@ -25,20 +22,85 @@
 }
 
 .statCard {
-  background-color: $color-bg-surface;
-  border: 1px solid $color-border;
-  border-radius: $radius-lg;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
   padding: 20px 22px;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  min-height: 128px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 124px;
-  transition: transform $transition-fast, box-shadow $transition-fast;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  z-index: 1;
 
   &:hover {
-    box-shadow: $shadow-md;
-    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+    transform: translateY(-2px);
+  }
+
+  // Translucent circular geometric background overlays
+  &::before {
+    content: '';
+    position: absolute;
+    right: 20px;
+    bottom: -60px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    bottom: -35px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Soft Pastel Variants
+.cardSoftRose {
+  background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+  border: 1px solid #fecdd3;
+
+  .cardIcon {
+    color: #e11d48;
+  }
+}
+
+.cardSoftBlue {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+
+  .cardIcon {
+    color: #0284c7;
+  }
+}
+
+.cardSoftMint {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+
+  .cardIcon {
+    color: #059669;
+  }
+}
+
+.cardSoftLavender {
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+  border: 1px solid #ddd6fe;
+
+  .cardIcon {
+    color: #4f46e5;
   }
 }
 
@@ -46,6 +108,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  z-index: 2;
 }
 
 .cardTitleGroup {
@@ -56,7 +119,7 @@
     font-size: 15px;
     font-weight: 700;
     color: #1e293b;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .subTitle {
@@ -68,10 +131,13 @@
 }
 
 .cardIcon {
-  color: #334155;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .cardBody {
@@ -80,10 +146,11 @@
   align-items: baseline;
   justify-content: flex-start;
   gap: 8px;
+  z-index: 2;
 }
 
 .primaryValue {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
@@ -91,25 +158,27 @@
 
 .unitText {
   font-size: 14px;
-  font-weight: 500;
-  color: #475569;
-  margin-left: 2px;
+  font-weight: 600;
+  color: #334155;
 }
 
 .dotSeparator {
   font-size: 14px;
   color: #94a3b8;
-  margin-left: 6px;
+  margin-left: 4px;
 }
 
 .trendBadgeUp {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  color: #ef4444; // Red triangle for increase in Korean EV UI standard
-  margin-left: 8px;
+  color: #be123c;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 6px;
 }
 
 .rowsContainer {
@@ -117,7 +186,7 @@
   flex-direction: column;
   gap: 6px;
   width: 100%;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .statRow {
@@ -133,7 +202,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #475569;
-  min-width: 32px;
+  min-width: 30px;
 }
 
 .rowValue {
@@ -152,8 +221,11 @@
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: #0284c7; // Blue triangle for decrease
-  margin-left: 10px;
+  color: #0369a1;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
 }
