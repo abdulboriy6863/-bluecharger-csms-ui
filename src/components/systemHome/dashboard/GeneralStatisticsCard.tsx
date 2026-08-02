@@ -6,6 +6,7 @@ import type { GeneralStatisticsCardProps } from '../../../libs/types/dashboard/g
 export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
   title,
   subTitle,
+  badgeText,
   icon,
   metrics,
   size = 'standard',
@@ -14,29 +15,39 @@ export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
   return (
     <article className={clsx(styles.statCard, styles[palette], size === 'wide' && styles.wideCard)}>
       <div className={styles.cardHeader}>
-        <div className={styles.cardTitleGroup}>
-          <h3 className={styles.title}>{title}</h3>
-          {subTitle && <span className={styles.subTitle}>{subTitle}</span>}
-        </div>
         <div className={styles.cardIcon}>{icon}</div>
+        {badgeText && <span className={styles.topBadge}>{badgeText}</span>}
       </div>
+
       <div className={styles.cardBody}>
         {metrics.map((metric, index) => (
           <div className={styles.metricRow} key={`${title}-${index}`}>
             {metric.label && <span className={styles.metricLabel}>{metric.label}</span>}
             <span className={styles.metricValue}>{metric.value}</span>
             {metric.unit && <span className={styles.metricUnit}>{metric.unit}</span>}
-            {metric.trend && (
-              <span className={clsx(styles.trendBadge, styles[metric.trend.tone ?? 'neutral'])}>
-                {metric.trend.direction === 'up' && '▲'}
-                {metric.trend.direction === 'down' && '▼'}
-                {metric.trend.direction === 'flat' && '-'}
-                {metric.trend.direction !== 'flat' && <span>{metric.trend.value}</span>}
-              </span>
-            )}
-            {metric.trailing && <span className={styles.metricTrailing}>{metric.trailing}</span>}
           </div>
         ))}
+
+        <div className={styles.cardTitleGroup}>
+          <h3 className={styles.title}>{title}</h3>
+          {subTitle && <span className={styles.subTitle}>{subTitle}</span>}
+        </div>
+
+        <div className={styles.cardFooterGroup}>
+          {metrics.map((metric, index) => (
+            <React.Fragment key={`footer-${title}-${index}`}>
+              {metric.trend && (
+                <span className={clsx(styles.trendBadge, styles[metric.trend.tone ?? 'neutral'])}>
+                  {metric.trend.direction === 'up' && '▲ '}
+                  {metric.trend.direction === 'down' && '▼ '}
+                  {metric.trend.direction === 'flat' && '- '}
+                  <span>{metric.trend.value}</span>
+                </span>
+              )}
+              {metric.trailing && <span className={styles.metricTrailing}>{metric.trailing}</span>}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </article>
   );

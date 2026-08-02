@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import { GeneralStatisticsCard } from './GeneralStatisticsCard';
 import { mockGeneralStatistics } from '../../../data/mockGeneralStatistics';
-import { BatteryCharging, Fuel, UsersRound } from 'lucide-react';
+import { BatteryCharging, Fuel, UsersRound, Zap } from 'lucide-react';
 import { useI18n } from '../../../i18n/I18nContext';
 
 export const GeneralStatisticsSection: React.FC = () => {
@@ -15,8 +15,9 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.stationsTitle')}
           subTitle={t('dashboard.stats.prevMonthBasis')}
-          icon={<Fuel size={36} />}
-          palette="peach"
+          badgeText={t('dashboard.stats.badges.realtime')}
+          icon={<Zap size={24} />}
+          palette="primary"
           metrics={[
             {
               value: data.station.count.toLocaleString(),
@@ -32,7 +33,8 @@ export const GeneralStatisticsSection: React.FC = () => {
 
         <GeneralStatisticsCard
           title={t('dashboard.stats.chargersTitle')}
-          icon={<Fuel size={36} />}
+          badgeText={t('dashboard.stats.badges.sessions')}
+          icon={<Fuel size={24} />}
           palette="sky"
           metrics={[
             {
@@ -52,7 +54,8 @@ export const GeneralStatisticsSection: React.FC = () => {
 
         <GeneralStatisticsCard
           title={t('dashboard.stats.energyTitle')}
-          icon={<BatteryCharging size={36} />}
+          badgeText={t('dashboard.stats.badges.energy')}
+          icon={<BatteryCharging size={24} />}
           size="wide"
           palette="mint"
           metrics={[
@@ -81,7 +84,8 @@ export const GeneralStatisticsSection: React.FC = () => {
 
         <GeneralStatisticsCard
           title={t('dashboard.stats.membersTitle')}
-          icon={<UsersRound size={36} />}
+          badgeText={t('dashboard.stats.badges.all')}
+          icon={<UsersRound size={24} />}
           palette="violet"
           metrics={[
             {

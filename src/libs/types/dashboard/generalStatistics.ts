@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 export type GeneralStatisticTrendDirection = 'up' | 'down' | 'flat';
 export type GeneralStatisticTrendTone = 'danger' | 'info' | 'neutral';
-export type GeneralStatisticPalette = 'peach' | 'sky' | 'mint' | 'violet';
+export type GeneralStatisticPalette = 'primary' | 'peach' | 'sky' | 'mint' | 'violet';
 
 export interface GeneralStatisticTrend {
   direction: GeneralStatisticTrendDirection;
@@ -21,6 +21,7 @@ export interface GeneralStatisticMetric {
 export interface GeneralStatisticsCardProps {
   title: string;
   subTitle?: string;
+  badgeText?: string;
   icon: ReactNode;
   metrics: GeneralStatisticMetric[];
   size?: 'standard' | 'wide';

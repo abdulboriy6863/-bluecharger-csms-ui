@@ -9,10 +9,10 @@
 .cardGrid {
   display: grid;
   grid-template-columns:
-    minmax(245px, 0.78fr)
-    minmax(350px, 1.18fr)
-    minmax(450px, 1.55fr)
-    minmax(245px, 0.78fr);
+    minmax(240px, 0.85fr)
+    minmax(320px, 1.15fr)
+    minmax(420px, 1.5fr)
+    minmax(240px, 0.85fr);
   gap: 20px;
   width: 100%;
 
@@ -30,129 +30,163 @@
   position: relative;
   overflow: hidden;
   min-width: 0;
-  min-height: 150px;
-  padding: 24px 28px 26px;
+  min-height: 156px;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border-radius: $radius-md;
-  border: 1px solid rgba(255, 255, 255, 0.86);
-  background: linear-gradient(135deg, #f8fbff 0%, #edf6ff 100%);
-  box-shadow: 0 14px 30px rgba(35, 65, 105, 0.08);
+  justify-content: space-between;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(30, 41, 59, 0.04);
   transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
-  &::before,
-  &::after {
+  &::before {
     content: '';
     position: absolute;
-    pointer-events: none;
+    top: -40px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.32);
-  }
-
-  &::before {
-    top: -42px;
-    right: -34px;
-    width: 158px;
-    height: 158px;
-  }
-
-  &::after {
-    right: 34px;
-    bottom: -76px;
-    width: 190px;
-    height: 190px;
-    background: rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 18px 36px rgba(35, 65, 105, 0.11);
+    border-color: #cbd5e1;
+    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
     transform: translateY(-2px);
   }
 }
 
-.peach {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 44%),
-    linear-gradient(135deg, #fff4ea 0%, #ffecef 55%, #ffe0ec 100%);
+/* Primary Highlight Card (Royal Blue) */
+.primary {
+  background: linear-gradient(135deg, #3b62bd 0%, #2a48a1 100%);
+  border-color: #3556ab;
+  box-shadow: 0 10px 28px rgba(42, 72, 161, 0.25);
+
+  .cardIcon {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .topBadge {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+  }
+
+  .metricValue {
+    color: #ffffff;
+  }
+
+  .metricLabel,
+  .metricUnit {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .title,
+  .subTitle {
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .trendBadge {
+    color: #ffffff;
+
+    &.danger,
+    &.info,
+    &.neutral {
+      color: #ffffff;
+    }
+  }
+
+  .metricTrailing {
+    color: rgba(255, 255, 255, 0.72);
+  }
 }
 
+/* Clean White / Tinted Cards */
 .sky {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 44%),
-    linear-gradient(135deg, #f1fbff 0%, #e5f5ff 50%, #d6ecff 100%);
+  background: #ffffff;
+
+  .cardIcon {
+    background: #eff6ff;
+    color: #2563eb;
+  }
 }
 
 .mint {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 44%),
-    linear-gradient(135deg, #f0fff9 0%, #ddf8f1 53%, #c9f0e9 100%);
+  background: #ffffff;
+
+  .cardIcon {
+    background: #ecfdf5;
+    color: #059669;
+  }
 }
 
 .violet {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 44%),
-    linear-gradient(135deg, #fbf7ff 0%, #f0ebff 53%, #e4e9ff 100%);
+  background: #ffffff;
+
+  .cardIcon {
+    background: #f5f3ff;
+    color: #7c3aed;
+  }
 }
 
+.peach {
+  background: #ffffff;
+
+  .cardIcon {
+    background: #fff7ed;
+    color: #ea580c;
+  }
+}
+
+/* Layout Parts */
 .cardHeader {
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.cardTitleGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-
-  .title {
-    max-width: 260px;
-    color: rgba(32, 36, 44, 0.86);
-    font-size: 19px;
-    font-weight: 900;
-    line-height: 1.18;
-    letter-spacing: 0;
-    word-break: keep-all;
-  }
-
-  .subTitle {
-    color: rgba(32, 36, 44, 0.86);
-    font-size: 19px;
-    font-weight: 900;
-    line-height: 1.18;
-    letter-spacing: 0;
-  }
+  align-items: center;
+  gap: 12px;
 }
 
 .cardIcon {
   flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(32, 36, 44, 0.75);
+  border-radius: 12px;
+  transition: transform $transition-fast;
 
   svg {
-    width: 38px;
-    height: 38px;
-    stroke-width: 1.8;
+    stroke-width: 2.2;
   }
+}
+
+.topBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .cardBody {
   position: relative;
   z-index: 1;
-  margin-top: 24px;
+  margin-top: 14px;
   display: flex;
   flex-direction: column;
-  gap: 13px;
+  gap: 8px;
   width: 100%;
 }
 
@@ -162,75 +196,192 @@
   align-items: baseline;
   justify-content: flex-start;
   gap: 8px;
-  color: rgba(32, 36, 44, 0.9);
   white-space: nowrap;
 }
 
 .metricLabel {
   flex: 0 0 auto;
-  min-width: 34px;
-  color: rgba(32, 36, 44, 0.84);
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1;
+  min-width: 32px;
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .metricValue {
   flex: 0 0 auto;
-  color: rgba(32, 36, 44, 0.94);
-  font-size: 31px;
+  color: #0f172a;
+  font-size: 32px;
   font-weight: 900;
-  line-height: 0.98;
-  letter-spacing: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 
 .metricUnit {
   flex: 0 0 auto;
-  color: rgba(32, 36, 44, 0.86);
-  font-size: 18px;
+  color: #64748b;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1;
+}
+
+.cardTitleGroup {
+  margin-top: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+
+  .title {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .subTitle {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+.cardFooterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .trendBadge {
-  flex: 0 1 auto;
-  min-width: 0;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  overflow: hidden;
-  color: #64748b;
-  font-size: 16px;
-  font-weight: 900;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 800;
   line-height: 1;
 
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   &.danger {
-    color: #ec2020;
+    color: #ef4444;
   }
 
   &.info {
-    color: #1478d4;
+    color: #2563eb;
   }
 
   &.neutral {
-    color: #8a9099;
+    color: #64748b;
   }
 }
 
 .metricTrailing {
-  flex: 0 0 auto;
-  margin-left: 12px;
-  color: rgba(32, 36, 44, 0.56);
-  font-size: 17px;
+  color: #94a3b8;
+  font-size: 13px;
   font-weight: 700;
 }
 
+/* ==========================================================================
+   Dark Mode Styles (:global(.darkAppMode))
+   ========================================================================== */
+:global(.darkAppMode) {
+  .statCard {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: #1e293b;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  .topBadge {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+  }
+
+  .metricValue {
+    color: #f8fafc;
+  }
+
+  .metricLabel,
+  .metricUnit {
+    color: #94a3b8;
+  }
+
+  .cardTitleGroup {
+    .title {
+      color: #cbd5e1;
+    }
+
+    .subTitle {
+      color: #64748b;
+    }
+  }
+
+  .metricTrailing {
+    color: #64748b;
+  }
+
+  /* Dark mode palette overrides */
+  .primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+
+    .cardIcon {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .topBadge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .metricValue {
+      color: #ffffff;
+    }
+
+    .title,
+    .subTitle,
+    .metricLabel,
+    .metricUnit,
+    .trendBadge {
+      color: #ffffff;
+    }
+  }
+
+  .sky {
+    .cardIcon {
+      background: rgba(37, 99, 235, 0.18);
+      color: #60a5fa;
+    }
+  }
+
+  .mint {
+    .cardIcon {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+    }
+  }
+
+  .violet {
+    .cardIcon {
+      background: rgba(139, 92, 246, 0.18);
+      color: #c084fc;
+    }
+  }
+
+  .peach {
+    .cardIcon {
+      background: rgba(249, 115, 22, 0.18);
+      color: #fb923c;
+    }
+  }
+}
+
+/* Media Queries */
 @media (max-width: 1480px) {
   .wideCard {
     grid-column: span 2;
@@ -239,25 +390,12 @@
 
 @media (max-width: 900px) {
   .statCard {
-    min-height: 140px;
-    padding: 22px 24px 24px;
-  }
-
-  .cardBody {
-    gap: 12px;
+    min-height: 144px;
+    padding: 20px;
   }
 
   .metricValue {
     font-size: 28px;
-  }
-
-  .metricLabel,
-  .metricUnit {
-    font-size: 17px;
-  }
-
-  .trendBadge {
-    font-size: 15px;
   }
 }
 
@@ -269,42 +407,10 @@
 
 @media (max-width: 520px) {
   .statCard {
-    padding: 20px;
-  }
-
-  .cardHeader {
-    gap: 12px;
-  }
-
-  .cardTitleGroup {
-    .title,
-    .subTitle {
-      font-size: 17px;
-    }
-  }
-
-  .cardIcon {
-    width: 38px;
-    height: 38px;
-
-    svg {
-      width: 32px;
-      height: 32px;
-    }
-  }
-
-  .metricRow {
-    flex-wrap: wrap;
-    row-gap: 6px;
-    white-space: normal;
+    padding: 16px 18px;
   }
 
   .metricValue {
     font-size: 26px;
-  }
-
-  .trendBadge {
-    width: 100%;
-    padding-left: 42px;
   }
 }
