@@ -65,6 +65,10 @@ Until lower dashboard sections receive final product UI, render them as simple m
 - The expanded state must keep fixed chart/table dimensions so the section does not collapse or jump while switching views.
 - Pie labels, legends, table headers, category names, connector names, and action aria labels must use i18n keys across all supported languages.
 
+## Infrastructure Chart Pattern
+
+The infrastructure distribution chart may use a restrained prismatic/3D bar treatment to communicate depth while remaining an operational chart. The effect must stay data-driven: use a custom SVG bar shape over the real chart series, preserve stacked values, hover/tooltips, responsive sizing, and CSV export. Do not replace chart data with a static image or decorative chart illustration.
+
 ## i18n Rules
 
 All new visible text must use the i18n system across supported languages. Numeric units that are language-specific should use existing translation keys or new keys added for all supported languages.
