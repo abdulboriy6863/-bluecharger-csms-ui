@@ -40,10 +40,9 @@ interface ChargerStatusChartCardProps {
 }
 
 const RADIAN = Math.PI / 180;
-const OPERATION_CHART_INNER_RADIUS = 82;
-const OPERATION_CHART_BASE_OUTER_RADIUS = 158;
-const OPERATION_CHART_MAX_EXTENSION = 78;
-const OPERATION_CHART_VIEWBOX_SIZE = 560;
+const OPERATION_CHART_INNER_RADIUS = 88;
+const OPERATION_CHART_OUTER_RADIUS = 252;
+const OPERATION_CHART_VIEWBOX_SIZE = 620;
 
 const formatPercent = (value: number): string => `${(value * 100).toFixed(1)} %`;
 const classNames = (...values: Array<string | false | undefined>) => values.filter(Boolean).join(' ');
@@ -161,7 +160,6 @@ const OperationInfographicPie: React.FC<{
   const gradientPrefix = useId().replace(/:/g, '');
   const segmentShadowId = `${gradientPrefix}-segmentShadow`;
   const centerShadowId = `${gradientPrefix}-centerShadow`;
-  const maxTotal = Math.max(...data.map((item) => item.total));
   const activeItem = data.find((item) => item.id === activeId) ?? data[0];
   let cursorAngle = -86;
 
@@ -204,10 +202,7 @@ const OperationInfographicPie: React.FC<{
         const gap = Math.min(2.2, Math.max(0.4, sweep * 0.18));
         const startAngle = cursorAngle + gap / 2;
         const endAngle = cursorAngle + sweep - gap / 2;
-        const outerRadius = Math.round(
-          OPERATION_CHART_BASE_OUTER_RADIUS
-            + Math.pow(item.total / maxTotal, 0.44) * OPERATION_CHART_MAX_EXTENSION,
-        );
+        const outerRadius = OPERATION_CHART_OUTER_RADIUS;
         const labelRadius = OPERATION_CHART_INNER_RADIUS + (outerRadius - OPERATION_CHART_INNER_RADIUS) * 0.64;
         const labelPoint = polarPoint(labelRadius, startAngle + (endAngle - startAngle) / 2);
         const path = createAnnularSectorPath(
@@ -361,7 +356,12 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
 
       <div className={detail ? styles.detailBody : styles.summaryBody}>
         <div className={detail ? styles.detailChartPane : styles.chartPane}>
-          <div className={styles.chartViewport}>
+          <div
+            className={classNames(
+              styles.chartViewport,
+              panel.id === 'operation' && styles.operationChartViewport,
+            )}
+          >
             {panel.id === 'operation' ? (
               <OperationInfographicPie
                 data={chartData}

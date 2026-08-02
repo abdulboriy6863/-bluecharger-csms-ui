@@ -251,11 +251,19 @@
   height: 330px;
 }
 
+.operationChartViewport {
+  height: 342px;
+}
+
+.detailCard .operationChartViewport {
+  height: 408px;
+}
+
 .infographicSvg {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: 448px;
+  max-width: 520px;
   margin: 0 auto;
   overflow: visible;
 }
@@ -573,6 +581,14 @@
     height: 256px;
   }
 
+  .operationChartViewport {
+    height: 278px;
+  }
+
+  .detailCard .operationChartViewport {
+    height: 318px;
+  }
+
   .legendGrid {
     gap: 10px 16px;
     justify-content: flex-start;
@@ -585,7 +601,7 @@
   }
 
   .infographicSvg {
-    max-width: 330px;
+    max-width: 390px;
   }
 
   .infographicLabelName {
