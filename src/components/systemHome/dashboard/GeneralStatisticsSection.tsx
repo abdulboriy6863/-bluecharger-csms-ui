@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import { GeneralStatisticsCard } from './GeneralStatisticsCard';
 import { mockGeneralStatistics } from '../../../data/mockGeneralStatistics';
-import { BatteryCharging, Fuel, UsersRound, Zap } from 'lucide-react';
+import { BatteryCharging, Fuel, RefreshCw, UsersRound, Zap } from 'lucide-react';
 import { useI18n } from '../../../i18n/I18nContext';
 
 export const GeneralStatisticsSection: React.FC = () => {
@@ -11,12 +11,20 @@ export const GeneralStatisticsSection: React.FC = () => {
 
   return (
     <section className={styles.sectionWrapper} aria-label="General Statistics Section">
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>{t('dashboard.stats.sectionOverviewTitle')}</h2>
+        <button className={styles.refreshButton} type="button" aria-label={t('overview.refresh')}>
+          <RefreshCw size={14} />
+          <span>{t('overview.refresh')}</span>
+        </button>
+      </div>
+
       <div className={styles.cardGrid}>
         <GeneralStatisticsCard
           title={t('dashboard.stats.stationsTitle')}
           subTitle={t('dashboard.stats.prevMonthBasis')}
           badgeText={t('dashboard.stats.badges.realtime')}
-          icon={<Zap size={24} />}
+          icon={<Zap size={22} />}
           palette="primary"
           metrics={[
             {
@@ -34,7 +42,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.chargersTitle')}
           badgeText={t('dashboard.stats.badges.sessions')}
-          icon={<Fuel size={24} />}
+          icon={<Fuel size={22} />}
           palette="sky"
           metrics={[
             {
@@ -55,7 +63,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.energyTitle')}
           badgeText={t('dashboard.stats.badges.energy')}
-          icon={<BatteryCharging size={24} />}
+          icon={<BatteryCharging size={22} />}
           size="wide"
           palette="mint"
           metrics={[
@@ -85,7 +93,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.membersTitle')}
           badgeText={t('dashboard.stats.badges.all')}
-          icon={<UsersRound size={24} />}
+          icon={<UsersRound size={22} />}
           palette="violet"
           metrics={[
             {

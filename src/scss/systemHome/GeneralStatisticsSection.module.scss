@@ -3,7 +3,57 @@
 
 .sectionWrapper {
   width: 100%;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
+  padding: 24px 28px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: var(--bg-tertiary, #f8f9fa);
+  box-shadow: 0 4px 20px var(--shadow, rgba(46, 86, 166, 0.06));
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--text-primary, #2E56A6);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--primary-color, #2E56A6);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(46, 86, 166, 0.22);
+  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    background: var(--primary-light, #3F61A6);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(46, 86, 166, 0.3);
+  }
+
+  svg {
+    stroke-width: 2.2;
+  }
 }
 
 .cardGrid {
@@ -30,7 +80,7 @@
   position: relative;
   overflow: hidden;
   min-width: 0;
-  min-height: 156px;
+  min-height: 160px;
   padding: 22px 24px;
   display: flex;
   flex-direction: column;
@@ -38,7 +88,7 @@
   border-radius: 16px;
   border: 1px solid var(--border-color, #e0e0e0);
   background: var(--bg-secondary, #ffffff);
-  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.08));
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
   transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
   &::before {
@@ -60,81 +110,141 @@
   }
 }
 
-/* Primary Highlight Card (Royal Blue Gradient) */
+/* Card 1: Primary Royal Blue Highlight Card */
 .primary {
   background: var(--gradient-primary, linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%)) !important;
   border-color: var(--primary-color, #2E56A6) !important;
-  box-shadow: 0 8px 24px rgba(46, 86, 166, 0.25) !important;
+  box-shadow: 0 10px 28px rgba(46, 86, 166, 0.3) !important;
 
   .cardIcon {
-    background: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
     color: #ffffff !important;
   }
 
   .topBadge {
-    background: rgba(255, 255, 255, 0.28) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
     color: #ffffff !important;
     font-weight: 800 !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
 
+  /* Large number: Pure Bold White */
   .metricValue {
     color: #ffffff !important;
     font-weight: 900 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .metricLabel,
   .metricUnit {
-    color: #ffffff !important;
-    opacity: 0.95 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 800 !important;
   }
 
+  /* Medium subtitle: Soft White */
   .cardTitleGroup {
     .title,
     .subTitle {
-      color: #ffffff !important;
-      opacity: 0.95 !important;
-      font-weight: 800 !important;
+      color: rgba(255, 255, 255, 0.88) !important;
+      font-weight: 700 !important;
     }
   }
 
-  .trendBadge {
-    color: #ffffff !important;
-    font-weight: 800 !important;
+  /* Small footer: Light Muted White */
+  .trendBadge,
+  .metricTrailing {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-weight: 600 !important;
 
     &.danger,
     &.info,
     &.neutral {
-      color: #ffffff !important;
+      color: rgba(255, 255, 255, 0.88) !important;
     }
-  }
-
-  .metricTrailing {
-    color: rgba(255, 255, 255, 0.88) !important;
-    font-weight: 700 !important;
   }
 }
 
-/* Clean White / Design System Palette Cards */
+/* Cards 2, 3, 4: Clean Crisp White Cards matching reference image */
 .sky,
 .mint,
 .violet,
 .peach {
   background: var(--bg-secondary, #ffffff);
 
+  /* Solid Royal Blue Icon Badge matching reference image */
   .cardIcon {
-    background: var(--alert-info-bg, #e8f0ff);
-    color: var(--primary-color, #2E56A6);
-    border: 1px solid rgba(46, 86, 166, 0.12);
+    background: var(--primary-color, #2E56A6);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(46, 86, 166, 0.2);
   }
 
+  /* Light Muted Grey Top Pill Badge matching reference image */
   .topBadge {
-    background: var(--alert-info-bg, #e8f0ff);
+    background: #f1f5f9;
+    color: var(--text-muted, #7A91BF);
+    border: 1px solid #e2e8f0;
+    font-weight: 700;
+  }
+
+  /* KATTA SIZE (Large numbers): To'qroq rang (Deep Rich Royal Blue) */
+  .metricValue {
     color: var(--text-primary, #2E56A6);
-    border: 1px solid rgba(46, 86, 166, 0.15);
-    font-weight: 800;
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* O'RTA SIZE (Subtitles): O'rtacha mos rang (Medium Blue / Slate) */
+  .cardTitleGroup {
+    .title {
+      color: var(--text-secondary, #416CA6);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .subTitle {
+      color: var(--text-muted, #7A91BF);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .metricLabel {
+    color: var(--text-secondary, #416CA6);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .metricUnit {
+    color: var(--text-muted, #7A91BF);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* KICHIK SIZE (Footer text & trends): Ochroq rang (Light Muted Blue/Grey) */
+  .cardFooterGroup {
+    .trendBadge {
+      color: var(--text-muted, #7A91BF);
+      font-size: 12px;
+      font-weight: 600;
+
+      &.danger {
+        color: #dc2626;
+      }
+
+      &.info {
+        color: var(--text-secondary, #416CA6);
+      }
+    }
+
+    .metricTrailing {
+      color: var(--text-muted, #7A91BF);
+      font-size: 12px;
+      font-weight: 600;
+    }
   }
 }
 
@@ -150,8 +260,8 @@
 
 .cardIcon {
   flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,10 +277,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 800;
   letter-spacing: 0;
 }
 
@@ -180,7 +289,7 @@
   margin-top: 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -193,92 +302,40 @@
   white-space: nowrap;
 }
 
-.metricLabel {
-  flex: 0 0 auto;
-  min-width: 32px;
-  color: var(--text-secondary, #416CA6);
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.metricValue {
-  flex: 0 0 auto;
-  color: #0f172a;
-  font-size: 30px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.metricUnit {
-  flex: 0 0 auto;
-  color: var(--text-secondary, #416CA6);
-  font-size: 15px;
-  font-weight: 700;
-}
-
 .cardTitleGroup {
   margin-top: 4px;
   display: flex;
   align-items: baseline;
   gap: 6px;
   min-width: 0;
-
-  .title {
-    color: var(--text-primary, #2E56A6);
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin: 0;
-  }
-
-  .subTitle {
-    color: var(--text-muted, #7A91BF);
-    font-size: 13px;
-    font-weight: 700;
-  }
 }
 
 .cardFooterGroup {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 6px;
   flex-wrap: wrap;
-}
-
-.trendBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1;
-
-  &.danger {
-    color: #dc2626;
-  }
-
-  &.info {
-    color: var(--text-primary, #2E56A6);
-  }
-
-  &.neutral {
-    color: var(--text-muted, #7A91BF);
-  }
-}
-
-.metricTrailing {
-  color: var(--text-muted, #7A91BF);
-  font-size: 13px;
-  font-weight: 700;
 }
 
 /* ==========================================================================
    Dark Mode Styles (:global(.darkAppMode))
    ========================================================================== */
 :global(.darkAppMode) {
+  .sectionWrapper {
+    background: #0f172a;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .sectionTitle {
+    color: #ffffff;
+  }
+
+  .refreshButton {
+    background: var(--primary-color, #2E56A6);
+    color: #ffffff;
+  }
+
   .statCard {
     border-color: rgba(255, 255, 255, 0.12);
     background: #1c2541;
@@ -297,39 +354,38 @@
     background: #1c2541;
 
     .cardIcon {
-      background: rgba(46, 86, 166, 0.3);
-      color: #93c5fd;
-      border-color: rgba(147, 197, 253, 0.2);
+      background: var(--primary-color, #2E56A6);
+      color: #ffffff;
     }
 
     .topBadge {
-      background: rgba(46, 86, 166, 0.35);
-      color: #e8f0ff;
-      border-color: rgba(147, 197, 253, 0.25);
-    }
-  }
-
-  .metricValue {
-    color: #ffffff;
-  }
-
-  .metricLabel,
-  .metricUnit {
-    color: #94a3b8;
-  }
-
-  .cardTitleGroup {
-    .title {
-      color: #e8f0ff;
+      background: rgba(255, 255, 255, 0.08);
+      color: #7A91BF;
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
-    .subTitle {
+    .metricValue {
+      color: #ffffff;
+    }
+
+    .metricLabel,
+    .metricUnit {
+      color: #94a3b8;
+    }
+
+    .cardTitleGroup {
+      .title {
+        color: #e8f0ff;
+      }
+
+      .subTitle {
+        color: #7A91BF;
+      }
+    }
+
+    .metricTrailing {
       color: #7A91BF;
     }
-  }
-
-  .metricTrailing {
-    color: #7A91BF;
   }
 
   .primary {
@@ -366,13 +422,22 @@
 }
 
 @media (max-width: 900px) {
+  .sectionWrapper {
+    padding: 20px;
+  }
+
   .statCard {
     min-height: 144px;
     padding: 20px;
   }
 
-  .metricValue {
-    font-size: 28px;
+  .sky,
+  .mint,
+  .violet,
+  .peach {
+    .metricValue {
+      font-size: 32px;
+    }
   }
 }
 
@@ -383,11 +448,21 @@
 }
 
 @media (max-width: 520px) {
+  .sectionWrapper {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
   .statCard {
     padding: 16px 18px;
   }
 
-  .metricValue {
-    font-size: 26px;
+  .sky,
+  .mint,
+  .violet,
+  .peach {
+    .metricValue {
+      font-size: 28px;
+    }
   }
 }
