@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './EnergyTrendChart.module.scss';
+import styles from '../../styles/systemHome/EnergyTrendChart.module.scss';
 import { EnergyTrendPoint } from '../../types/dashboard';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 

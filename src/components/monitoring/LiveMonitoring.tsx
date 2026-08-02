@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import styles from './LiveMonitoring.module.scss';
+import styles from '../../styles/monitoring/LiveMonitoring.module.scss';
 import { Charger } from '../../types/charger';
 import { StatusCounters } from './StatusCounters';
 import { FilterBar } from './FilterBar';

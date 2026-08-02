@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Select.module.scss';
+import styles from '../../../styles/common/Select.module.scss';
 import { ChevronDown } from 'lucide-react';
 
 export interface SelectOption {

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './MenuPermissionGroupsView.module.scss';
+import styles from '../../../styles/systemManagement/MenuPermissionGroupsView.module.scss';
 import { ShieldAlert } from 'lucide-react';
 
 export const MenuPermissionGroupsView: React.FC = () => {

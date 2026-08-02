@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ChargerTable.module.scss';
+import styles from '../../styles/monitoring/ChargerTable.module.scss';
 import { Charger } from '../../types/charger';
 import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';

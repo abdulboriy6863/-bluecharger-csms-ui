@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './OverviewDashboard.module.scss';
+import styles from '../../styles/systemHome/OverviewDashboard.module.scss';
 import { KpiCards } from './KpiCards';
 import { EnergyTrendChart } from './EnergyTrendChart';
 import { StatusDistribution } from './StatusDistribution';

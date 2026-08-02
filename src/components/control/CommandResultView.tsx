@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './CommandResultView.module.scss';
+import styles from '../../styles/control/CommandResultView.module.scss';
 import { CommandResult } from '../../types/charger';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { Button } from '../common/Button/Button';

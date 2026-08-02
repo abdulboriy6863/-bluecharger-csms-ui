@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, Search } from 'lucide-react';
 import { Card } from '../../../components/common/Card/Card';
-import styles from './ManagementPageFrame.module.scss';
+import styles from '../../../styles/systemManagement/ManagementPageFrame.module.scss';
 
 interface ManagementPageFrameProps {
   title: string;

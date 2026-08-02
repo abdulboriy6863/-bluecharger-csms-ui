@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ControlCommandModal.module.scss';
+import styles from '../../styles/control/ControlCommandModal.module.scss';
 import { Charger, CommandType, CommandResult } from '../../types/charger';
 import { Modal } from '../common/Modal/Modal';
 import { Select } from '../common/Select/Select';

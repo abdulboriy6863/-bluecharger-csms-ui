@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Button.module.scss';
+import styles from '../../../styles/common/Button.module.scss';
 import clsx from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

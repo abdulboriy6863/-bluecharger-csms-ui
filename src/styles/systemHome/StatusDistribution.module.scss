@@ -1,0 +1,67 @@
+@import "../core/variables";
+@import "../core/mixins";
+
+.container {
+  @include flex-column;
+  gap: 16px;
+  margin-top: 8px;
+
+  .legendList {
+    @include flex-column;
+    gap: 10px;
+
+    .legendItem {
+      @include flex-between;
+      font-size: 13px;
+
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+        }
+
+        .name {
+          color: $color-text-main;
+          font-weight: 500;
+        }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .count {
+          font-weight: 700;
+          font-family: $font-family-mono;
+          color: $color-text-main;
+        }
+
+        .percent {
+          font-size: 12px;
+          color: $color-text-muted;
+          width: 40px;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .progressBar {
+    display: flex;
+    height: 12px;
+    border-radius: $radius-full;
+    overflow: hidden;
+    background-color: $color-bg-subtle;
+
+    .segment {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+  }
+}

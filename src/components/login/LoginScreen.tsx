@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './LoginScreen.module.scss';
+import styles from '../../styles/login/LoginScreen.module.scss';
 import { Eye, EyeOff, ShieldCheck, Lock, HelpCircle, Zap } from 'lucide-react';
 import { Language } from '../../types/auth';
 import { useI18n } from '../../i18n/I18nContext';

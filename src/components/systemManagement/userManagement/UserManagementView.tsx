@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './UserManagementView.module.scss';
+import styles from '../../../styles/systemManagement/UserManagementView.module.scss';
 import { Users } from 'lucide-react';
 
 export const UserManagementView: React.FC = () => {

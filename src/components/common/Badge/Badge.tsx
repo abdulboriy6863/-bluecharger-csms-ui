@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Badge.module.scss';
+import styles from '../../../styles/common/Badge.module.scss';
 import clsx from 'clsx';
 import { ChargerStatus } from '../../../types/charger';
 import { useI18n } from '../../../i18n/I18nContext';

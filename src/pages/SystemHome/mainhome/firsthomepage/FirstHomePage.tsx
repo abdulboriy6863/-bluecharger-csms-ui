@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './FirstHomePage.module.scss';
+import styles from '../../../../styles/systemHome/FirstHomePage.module.scss';
 import { GeneralStatisticsSection } from '../../../../components/systemHome/dashboard/GeneralStatisticsSection';
 import { ChargerStatusSection } from '../../../../components/systemHome/dashboard/ChargerStatusSection';
 import { AdvertisementSection } from '../../../../components/systemHome/dashboard/AdvertisementSection';

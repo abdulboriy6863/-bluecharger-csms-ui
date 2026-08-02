@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './CommonCodeManagementView.module.scss';
+import styles from '../../../styles/systemManagement/CommonCodeManagementView.module.scss';
 import { Code2 } from 'lucide-react';
 
 export const CommonCodeManagementView: React.FC = () => {

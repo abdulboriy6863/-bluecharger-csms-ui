@@ -1,0 +1,65 @@
+@import "../core/variables";
+@import "../core/mixins";
+
+.filterCard {
+  @include enterprise-card;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .searchInput {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .selectGroup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .autoRefreshToggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 12px;
+    border-left: 1px solid $color-border;
+    font-size: 13px;
+    color: $color-text-muted;
+
+    input {
+      accent-color: $color-brand-primary;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .filterCard {
+    align-items: stretch;
+    padding: 14px;
+
+    .searchInput {
+      min-width: 100%;
+    }
+
+    .selectGroup {
+      width: 100%;
+      flex-wrap: wrap;
+
+      > div {
+        flex: 1 1 145px;
+        width: auto !important;
+      }
+    }
+
+    .autoRefreshToggle {
+      width: 100%;
+      padding-left: 0;
+      padding-top: 12px;
+      border-left: 0;
+      border-top: 1px solid $color-border;
+    }
+  }
+}
