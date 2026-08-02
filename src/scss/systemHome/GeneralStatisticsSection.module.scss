@@ -36,9 +36,9 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(30, 41, 59, 0.04);
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.08));
   transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
   &::before {
@@ -49,96 +49,92 @@
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
     pointer-events: none;
   }
 
   &:hover {
-    border-color: #cbd5e1;
-    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
+    border-color: var(--primary-soft, #7A91BF);
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.15));
     transform: translateY(-2px);
   }
 }
 
-/* Primary Highlight Card (Royal Blue) */
+/* Primary Highlight Card (Royal Blue Gradient) */
 .primary {
-  background: linear-gradient(135deg, #3b62bd 0%, #2a48a1 100%);
-  border-color: #3556ab;
-  box-shadow: 0 10px 28px rgba(42, 72, 161, 0.25);
+  background: var(--gradient-primary, linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%)) !important;
+  border-color: var(--primary-color, #2E56A6) !important;
+  box-shadow: 0 8px 24px rgba(46, 86, 166, 0.25) !important;
 
   .cardIcon {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
   }
 
   .topBadge {
-    background: rgba(255, 255, 255, 0.22);
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
 
   .metricValue {
-    color: #ffffff;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .metricLabel,
   .metricUnit {
-    color: rgba(255, 255, 255, 0.9);
+    color: #ffffff !important;
+    opacity: 0.95 !important;
+    font-weight: 800 !important;
   }
 
-  .title,
-  .subTitle {
-    color: rgba(255, 255, 255, 0.88);
+  .cardTitleGroup {
+    .title,
+    .subTitle {
+      color: #ffffff !important;
+      opacity: 0.95 !important;
+      font-weight: 800 !important;
+    }
   }
 
   .trendBadge {
-    color: #ffffff;
+    color: #ffffff !important;
+    font-weight: 800 !important;
 
     &.danger,
     &.info,
     &.neutral {
-      color: #ffffff;
+      color: #ffffff !important;
     }
   }
 
   .metricTrailing {
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-weight: 700 !important;
   }
 }
 
-/* Clean White / Tinted Cards */
-.sky {
-  background: #ffffff;
-
-  .cardIcon {
-    background: #eff6ff;
-    color: #2563eb;
-  }
-}
-
-.mint {
-  background: #ffffff;
-
-  .cardIcon {
-    background: #ecfdf5;
-    color: #059669;
-  }
-}
-
-.violet {
-  background: #ffffff;
-
-  .cardIcon {
-    background: #f5f3ff;
-    color: #7c3aed;
-  }
-}
-
+/* Clean White / Design System Palette Cards */
+.sky,
+.mint,
+.violet,
 .peach {
-  background: #ffffff;
+  background: var(--bg-secondary, #ffffff);
 
   .cardIcon {
-    background: #fff7ed;
-    color: #ea580c;
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--primary-color, #2E56A6);
+    border: 1px solid rgba(46, 86, 166, 0.12);
+  }
+
+  .topBadge {
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--text-primary, #2E56A6);
+    border: 1px solid rgba(46, 86, 166, 0.15);
+    font-weight: 800;
   }
 }
 
@@ -173,8 +169,6 @@
   justify-content: center;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #f1f5f9;
-  color: #475569;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0;
@@ -202,15 +196,15 @@
 .metricLabel {
   flex: 0 0 auto;
   min-width: 32px;
-  color: #64748b;
-  font-size: 15px;
-  font-weight: 700;
+  color: var(--text-secondary, #416CA6);
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .metricValue {
   flex: 0 0 auto;
   color: #0f172a;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -219,8 +213,8 @@
 
 .metricUnit {
   flex: 0 0 auto;
-  color: #64748b;
-  font-size: 16px;
+  color: var(--text-secondary, #416CA6);
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -232,7 +226,7 @@
   min-width: 0;
 
   .title {
-    color: #475569;
+    color: var(--text-primary, #2E56A6);
     font-size: 14px;
     font-weight: 800;
     line-height: 1.2;
@@ -240,7 +234,7 @@
   }
 
   .subTitle {
-    color: #94a3b8;
+    color: var(--text-muted, #7A91BF);
     font-size: 13px;
     font-weight: 700;
   }
@@ -250,7 +244,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 4px;
+  flex-wrap: wrap;
 }
 
 .trendBadge {
@@ -262,20 +257,20 @@
   line-height: 1;
 
   &.danger {
-    color: #ef4444;
+    color: #dc2626;
   }
 
   &.info {
-    color: #2563eb;
+    color: var(--text-primary, #2E56A6);
   }
 
   &.neutral {
-    color: #64748b;
+    color: var(--text-muted, #7A91BF);
   }
 }
 
 .metricTrailing {
-  color: #94a3b8;
+  color: var(--text-muted, #7A91BF);
   font-size: 13px;
   font-weight: 700;
 }
@@ -285,23 +280,37 @@
    ========================================================================== */
 :global(.darkAppMode) {
   .statCard {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: #1c2541;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 
     &:hover {
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--primary-light, #3F61A6);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
   }
 
-  .topBadge {
-    background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
+  .sky,
+  .mint,
+  .violet,
+  .peach {
+    background: #1c2541;
+
+    .cardIcon {
+      background: rgba(46, 86, 166, 0.3);
+      color: #93c5fd;
+      border-color: rgba(147, 197, 253, 0.2);
+    }
+
+    .topBadge {
+      background: rgba(46, 86, 166, 0.35);
+      color: #e8f0ff;
+      border-color: rgba(147, 197, 253, 0.25);
+    }
   }
 
   .metricValue {
-    color: #f8fafc;
+    color: #ffffff;
   }
 
   .metricLabel,
@@ -311,72 +320,40 @@
 
   .cardTitleGroup {
     .title {
-      color: #cbd5e1;
+      color: #e8f0ff;
     }
 
     .subTitle {
-      color: #64748b;
+      color: #7A91BF;
     }
   }
 
   .metricTrailing {
-    color: #64748b;
+    color: #7A91BF;
   }
 
-  /* Dark mode palette overrides */
   .primary {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    border-color: rgba(59, 130, 246, 0.5);
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+    background: var(--gradient-primary, linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%)) !important;
+    border-color: rgba(147, 197, 253, 0.4) !important;
+    box-shadow: 0 10px 30px rgba(46, 86, 166, 0.4) !important;
 
     .cardIcon {
-      background: rgba(255, 255, 255, 0.25);
-      color: #ffffff;
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
     }
 
     .topBadge {
-      background: rgba(255, 255, 255, 0.25);
-      color: #ffffff;
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
     }
 
-    .metricValue {
-      color: #ffffff;
-    }
-
+    .metricValue,
     .title,
     .subTitle,
     .metricLabel,
     .metricUnit,
     .trendBadge {
-      color: #ffffff;
-    }
-  }
-
-  .sky {
-    .cardIcon {
-      background: rgba(37, 99, 235, 0.18);
-      color: #60a5fa;
-    }
-  }
-
-  .mint {
-    .cardIcon {
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-    }
-  }
-
-  .violet {
-    .cardIcon {
-      background: rgba(139, 92, 246, 0.18);
-      color: #c084fc;
-    }
-  }
-
-  .peach {
-    .cardIcon {
-      background: rgba(249, 115, 22, 0.18);
-      color: #fb923c;
+      color: #ffffff !important;
     }
   }
 }

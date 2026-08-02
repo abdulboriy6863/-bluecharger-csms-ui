@@ -1,9 +1,32 @@
 // BlueCharger CSMS Design System Variables
 
+:root {
+  --bg-primary: #f2f2f2;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fa;
+  --text-primary: #2E56A6;
+  --text-secondary: #416CA6;
+  --text-muted: #7A91BF;
+  --border-color: #e0e0e0;
+  --shadow: rgba(46, 86, 166, 0.08);
+  --shadow-hover: rgba(46, 86, 166, 0.15);
+  --gradient-primary: linear-gradient(135deg, #2E56A6 0%, #3F61A6 100%);
+  --gradient-secondary: linear-gradient(135deg, #416CA6 0%, #7A91BF 100%);
+  --gradient-success: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  --primary-color: #2E56A6;
+  --primary-light: #3F61A6;
+  --primary-medium: #416CA6;
+  --primary-soft: #7A91BF;
+  --neutral-light: #F2F2F2;
+  --alert-info-bg: #e8f0ff;
+  --alert-info-border: #2E56A6;
+  --alert-info-text: #2E56A6;
+}
+
 // Brand & Theme Colors
-$color-brand-primary: #2563eb;
+$color-brand-primary: #2E56A6;
 $color-brand-primary-hover: #1d4ed8;
-$color-brand-primary-light: #eff6ff;
+$color-brand-primary-light: #e8f0ff;
 $color-brand-accent: #06b6d4;
 $color-brand-accent-hover: #0891b2;
 
