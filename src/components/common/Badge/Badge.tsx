@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../scss/common/Badge.module.scss';
 import clsx from 'clsx';
 import { useI18n } from '../../../i18n/I18nContext';
-import type { BadgeProps } from '../../../libs/types/commonComponents';
+import type { BadgeProps } from '../../../libs/types/common/commonComponents';
 
 export const Badge: React.FC<BadgeProps> = ({ status, label, showDot = true }) => {
   const { t } = useI18n();

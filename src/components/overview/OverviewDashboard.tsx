@@ -8,7 +8,7 @@ import { InfrastructureUsageSection } from '../systemHome/dashboard/Infrastructu
 import { FooterSection } from '../systemHome/dashboard/FooterSection';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 import { useI18n } from '../../i18n/I18nContext';
-import type { OverviewDashboardProps } from '../../libs/types/overview';
+import type { OverviewDashboardProps } from '../../libs/types/overview/overview';
 
 export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onNavigateMonitoring,

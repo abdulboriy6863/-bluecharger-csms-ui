@@ -5,8 +5,8 @@ import { LoginScreen } from './components/login/LoginScreen';
 import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
 import { ControlCommandModal } from './components/control/ControlCommandModal';
 import { mockChargers } from './data/mockChargers';
-import type { Charger, CommandType, CommandResult } from './libs/types/charger';
-import type { User } from './libs/types/auth';
+import type { Charger, CommandType, CommandResult } from './libs/types/charger/charger';
+import type { User } from './libs/types/auth/auth';
 import { useI18n } from './i18n/I18nContext';
 import { DashboardPage } from './pages/SystemHome/Dashboard/DashboardPage';
 import { SolarDashboardPage } from './pages/SystemHome/SolarDashboard/SolarDashboardPage';
@@ -45,7 +45,7 @@ import { SalesManagementPage } from './pages/PurchaseSales/SalesManagement/Sales
 import { PurchaseSalesSummaryPage } from './pages/PurchaseSales/PurchaseSalesSummary/PurchaseSalesSummaryPage';
 import { PurchaseSalesPerformancePage } from './pages/PurchaseSales/PurchaseSalesPerformance/PurchaseSalesPerformancePage';
 import { NetProfitManagementPage } from './pages/PurchaseSales/NetProfitManagement/NetProfitManagementPage';
-import type { InfrastructurePage, HistoryManagementPage, MemberManagementPage, NavTab, PaymentManagementPage, PurchaseSalesPage, SystemHomePage, SystemManagementPage } from './libs/types/layout';
+import type { InfrastructurePage, HistoryManagementPage, MemberManagementPage, NavTab, PaymentManagementPage, PurchaseSalesPage, SystemHomePage, SystemManagementPage } from './libs/types/layout/layout';
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

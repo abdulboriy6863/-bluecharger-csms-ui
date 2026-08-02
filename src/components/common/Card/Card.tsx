@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Card.module.scss';
 import clsx from 'clsx';
-import type { CardProps } from '../../../libs/types/commonComponents';
+import type { CardProps } from '../../../libs/types/common/commonComponents';
 
 export const Card: React.FC<CardProps> = ({
   title,

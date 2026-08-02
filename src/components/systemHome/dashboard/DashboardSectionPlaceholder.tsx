@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
-import type { DashboardSectionPlaceholderProps } from '../../../libs/types/dashboardSection';
+import type { DashboardSectionPlaceholderProps } from '../../../libs/types/dashboard/dashboardSection';
 
 export const DashboardSectionPlaceholder: React.FC<DashboardSectionPlaceholderProps> = ({
   fileName,

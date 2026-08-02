@@ -1,4 +1,4 @@
-import type { Charger } from './charger';
+import type { Charger } from '../charger/charger';
 
 export interface ChargerTableProps {
   chargers: Charger[];

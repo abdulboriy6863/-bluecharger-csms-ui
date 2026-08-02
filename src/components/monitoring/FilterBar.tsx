@@ -5,7 +5,7 @@ import { Input } from '../common/Input/Input';
 import { Select } from '../common/Select/Select';
 import { Button } from '../common/Button/Button';
 import { useI18n } from '../../i18n/I18nContext';
-import type { FilterBarProps } from '../../libs/types/monitoring';
+import type { FilterBarProps } from '../../libs/types/monitoring/monitoring';
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   searchQuery,

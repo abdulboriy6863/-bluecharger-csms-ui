@@ -6,7 +6,7 @@ import {
   ChargerStatusChartItem,
   ChargerStatusInfographicPieProps,
   ChargerStatusSectionCardProps,
-} from '../../../libs/types/chargerStatus';
+} from '../../../libs/types/dashboard/chargerStatus';
 import { useI18n } from '../../../i18n/I18nContext';
 
 const RADIAN = Math.PI / 180;

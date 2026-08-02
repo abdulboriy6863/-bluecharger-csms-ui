@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus, Search } from 'lucide-react';
 import { Card } from '../../../components/common/Card/Card';
 import styles from '../../../scss/systemManagement/ManagementPageFrame.module.scss';
-import type { ManagementPageFrameProps } from '../../../libs/types/pageProps';
+import type { ManagementPageFrameProps } from '../../../libs/types/pages/pageProps';
 
 export const ManagementPageFrame: React.FC<ManagementPageFrameProps> = ({ title, description, columns, rows, actionLabel }) => (
   <section className={styles.page}>

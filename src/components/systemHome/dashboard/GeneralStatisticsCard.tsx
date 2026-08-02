@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import clsx from 'clsx';
-import type { GeneralStatisticsCardProps } from '../../../libs/types/generalStatistics';
+import type { GeneralStatisticsCardProps } from '../../../libs/types/dashboard/generalStatistics';
 
 export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
   title,

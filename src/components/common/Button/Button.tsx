@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/common/Button.module.scss';
 import clsx from 'clsx';
-import type { ButtonProps } from '../../../libs/types/commonComponents';
+import type { ButtonProps } from '../../../libs/types/common/commonComponents';
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',

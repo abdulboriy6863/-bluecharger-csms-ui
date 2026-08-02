@@ -6,7 +6,8 @@ The CSMS frontend is a code-first enterprise operations UI. New screens and sect
 
 ## Shared Libs Pattern
 
-- Shared interfaces, component prop types, and feature display types must live in `src/libs/types/<feature>.ts`; do not define new interfaces directly inside `.tsx` components.
+- Shared interfaces, component prop types, and feature display types must live in domain folders under `src/libs/types/<domain>/<feature>.ts`; do not define new interfaces directly inside `.tsx` components.
+- Create a folder first for the domain or module (`charger`, `dashboard`, `auth`, `monitoring`, etc.), then add the related `.ts` type files inside that folder.
 - Feature enums should live in `src/libs/enums/<feature>.ts` when needed.
 - Reusable hooks should live in `src/libs/hooks/<feature>.ts` when they are shared outside one component.
 

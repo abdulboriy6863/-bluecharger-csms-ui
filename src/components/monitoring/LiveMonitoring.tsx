@@ -4,7 +4,7 @@ import { StatusCounters } from './StatusCounters';
 import { FilterBar } from './FilterBar';
 import { ChargerTable } from './ChargerTable';
 import { useI18n } from '../../i18n/I18nContext';
-import type { LiveMonitoringProps } from '../../libs/types/monitoring';
+import type { LiveMonitoringProps } from '../../libs/types/monitoring/monitoring';
 
 export const LiveMonitoring: React.FC<LiveMonitoringProps> = ({
   chargers,

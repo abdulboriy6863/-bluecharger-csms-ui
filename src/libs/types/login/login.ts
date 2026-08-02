@@ -1,4 +1,4 @@
-import type { Language } from './auth';
+import type { Language } from '../auth/auth';
 
 export interface LoginScreenProps {
   onLoginSuccess: () => void;

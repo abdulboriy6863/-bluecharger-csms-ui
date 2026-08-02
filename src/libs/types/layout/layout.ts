@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Language, User } from './auth';
+import type { Language, User } from '../auth/auth';
 
 export type NavTab =
   | 'overview'

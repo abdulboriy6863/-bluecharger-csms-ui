@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../scss/systemHome/RecentAlerts.module.scss';
 import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
-import type { RecentAlertsProps } from '../../libs/types/overview';
+import type { RecentAlertsProps } from '../../libs/types/overview/overview';
 
 export const RecentAlerts: React.FC<RecentAlertsProps> = ({ alerts, onSelectCharger }) => {
   const getIcon = (type: string) => {

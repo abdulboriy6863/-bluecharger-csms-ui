@@ -3,7 +3,7 @@ import type {
   EnergyTrendPoint,
   KpiMetric,
   StatusDistributionPoint,
-} from './dashboard';
+} from '../dashboard/dashboard';
 
 export interface EnergyTrendChartProps {
   data: EnergyTrendPoint[];

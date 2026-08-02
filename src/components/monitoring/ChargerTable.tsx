@@ -4,7 +4,7 @@ import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';
 import { Sliders, Wifi, Eye } from 'lucide-react';
 import { useI18n } from '../../i18n/I18nContext';
-import type { ChargerTableProps } from '../../libs/types/monitoring';
+import type { ChargerTableProps } from '../../libs/types/monitoring/monitoring';
 
 export const ChargerTable: React.FC<ChargerTableProps> = ({
   chargers,

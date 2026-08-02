@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from '../../../scss/common/Modal.module.scss';
 import { X } from 'lucide-react';
-import type { ModalProps } from '../../../libs/types/commonComponents';
+import type { ModalProps } from '../../../libs/types/common/commonComponents';
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,

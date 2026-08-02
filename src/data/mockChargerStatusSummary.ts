@@ -1,4 +1,4 @@
-import type { ChargerStatusPanelData } from '../libs/types/chargerStatus';
+import type { ChargerStatusPanelData } from '../libs/types/dashboard/chargerStatus';
 
 export const mockChargerStatusPanels: ChargerStatusPanelData[] = [
   {

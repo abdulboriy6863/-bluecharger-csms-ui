@@ -1,6 +1,6 @@
 import React from 'react';
 import { LiveMonitoring } from '../../../components/monitoring/LiveMonitoring';
-import type { ChargerStatusPageProps } from '../../../libs/types/pageProps';
+import type { ChargerStatusPageProps } from '../../../libs/types/pages/pageProps';
 
 export const ChargerStatusPage: React.FC<ChargerStatusPageProps> = ({
   chargers,

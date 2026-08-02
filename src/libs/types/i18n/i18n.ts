@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Language } from './auth';
+import type { Language } from '../auth/auth';
 
 export type TranslationMap = Record<string, string>;
 

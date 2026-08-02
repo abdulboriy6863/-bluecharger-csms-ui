@@ -10,7 +10,7 @@ import {
   Sun,
   UserRound,
 } from 'lucide-react';
-import type { Language } from '../../../libs/types/auth';
+import type { Language } from '../../../libs/types/auth/auth';
 import { useI18n } from '../../../i18n/I18nContext';
 import styles from '../../../scss/layout/TopNavigation.module.scss';
 import type {
@@ -24,7 +24,7 @@ import type {
   SystemHomePage,
   SystemManagementPage,
   TopNavigationProps,
-} from '../../../libs/types/layout';
+} from '../../../libs/types/layout/layout';
 
 const moduleNavItems: ModuleNavItem[] = [
   {

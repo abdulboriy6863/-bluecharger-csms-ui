@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styles from '../../scss/login/LoginScreen.module.scss';
 import { Eye, EyeOff, ShieldCheck, Lock, HelpCircle, Zap } from 'lucide-react';
-import type { Language } from '../../libs/types/auth';
+import type { Language } from '../../libs/types/auth/auth';
 import { useI18n } from '../../i18n/I18nContext';
-import type { LoginLanguageOption, LoginScreenProps } from '../../libs/types/login';
+import type { LoginLanguageOption, LoginScreenProps } from '../../libs/types/login/login';
 
 const languageOptions: LoginLanguageOption[] = [
   { value: 'en', label: 'English' },

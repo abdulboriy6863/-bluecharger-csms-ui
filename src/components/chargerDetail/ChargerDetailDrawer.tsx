@@ -4,7 +4,7 @@ import { Drawer } from '../common/Drawer/Drawer';
 import { Badge } from '../common/Badge/Badge';
 import { Button } from '../common/Button/Button';
 import { Zap, Cpu, AlertTriangle, Play, Square, RotateCcw, Unlock } from 'lucide-react';
-import type { ChargerDetailDrawerProps } from '../../libs/types/chargerDetail';
+import type { ChargerDetailDrawerProps } from '../../libs/types/charger/chargerDetail';
 
 export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
   charger,

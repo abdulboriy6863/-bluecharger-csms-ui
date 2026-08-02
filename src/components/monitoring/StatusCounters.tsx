@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../scss/monitoring/StatusCounters.module.scss';
 import clsx from 'clsx';
 import { useI18n } from '../../i18n/I18nContext';
-import type { StatusCountersProps } from '../../libs/types/monitoring';
+import type { StatusCountersProps } from '../../libs/types/monitoring/monitoring';
 
 export const StatusCounters: React.FC<StatusCountersProps> = ({
   selectedStatus,

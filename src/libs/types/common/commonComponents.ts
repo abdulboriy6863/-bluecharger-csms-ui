@@ -4,7 +4,7 @@ import type {
   ReactNode,
   SelectHTMLAttributes,
 } from 'react';
-import type { ChargerStatus } from './charger';
+import type { ChargerStatus } from '../charger/charger';
 
 export interface BadgeProps {
   status: ChargerStatus | 'neutral';

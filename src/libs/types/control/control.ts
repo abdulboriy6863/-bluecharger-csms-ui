@@ -1,4 +1,4 @@
-import type { Charger, CommandResult, CommandType } from './charger';
+import type { Charger, CommandResult, CommandType } from '../charger/charger';
 
 export interface CommandResultViewProps {
   result: CommandResult;

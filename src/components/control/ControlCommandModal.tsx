@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../scss/control/ControlCommandModal.module.scss';
-import type { CommandType, CommandResult } from '../../libs/types/charger';
+import type { CommandType, CommandResult } from '../../libs/types/charger/charger';
 import { Modal } from '../common/Modal/Modal';
 import { Select } from '../common/Select/Select';
 import { Input } from '../common/Input/Input';
 import { Button } from '../common/Button/Button';
 import { CommandResultView } from './CommandResultView';
 import { AlertTriangle, Send } from 'lucide-react';
-import type { ControlCommandModalProps } from '../../libs/types/control';
+import type { ControlCommandModalProps } from '../../libs/types/control/control';
 
 const defaultReason = 'Operator manual control test';
 

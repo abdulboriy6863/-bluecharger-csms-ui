@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
-import type { Language } from '../libs/types/auth';
-import type { I18nContextValue, I18nProviderProps, TranslationMap } from '../libs/types/i18n';
+import type { Language } from '../libs/types/auth/auth';
+import type { I18nContextValue, I18nProviderProps, TranslationMap } from '../libs/types/i18n/i18n';
 
 const english: TranslationMap = {
   'sales.purchases': 'Purchase Management',

@@ -1,4 +1,4 @@
-import type { KpiMetric, EnergyTrendPoint, StatusDistributionPoint } from '../libs/types/dashboard';
+import type { KpiMetric, EnergyTrendPoint, StatusDistributionPoint } from '../libs/types/dashboard/dashboard';
 
 export const mockKpis: KpiMetric[] = [
   {

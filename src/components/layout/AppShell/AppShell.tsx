@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/layout/AppShell.module.scss';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
-import type { AppShellProps } from '../../../libs/types/layout';
+import type { AppShellProps } from '../../../libs/types/layout/layout';
 
 export const AppShell: React.FC<AppShellProps> = ({
   activeTab,

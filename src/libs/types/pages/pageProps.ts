@@ -1,4 +1,4 @@
-import type { Charger } from './charger';
+import type { Charger } from '../charger/charger';
 
 export interface ChargerControlPageProps {
   chargers: Charger[];
