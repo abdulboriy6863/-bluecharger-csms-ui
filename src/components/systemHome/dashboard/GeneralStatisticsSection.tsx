@@ -16,6 +16,7 @@ export const GeneralStatisticsSection: React.FC = () => {
           title={t('dashboard.stats.stationsTitle')}
           subTitle={t('dashboard.stats.prevMonthBasis')}
           icon={<Fuel size={36} />}
+          palette="peach"
           metrics={[
             {
               value: data.station.count.toLocaleString(),
@@ -32,6 +33,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.chargersTitle')}
           icon={<Fuel size={36} />}
+          palette="sky"
           metrics={[
             {
               label: t('dashboard.stats.rapid'),
@@ -52,6 +54,7 @@ export const GeneralStatisticsSection: React.FC = () => {
           title={t('dashboard.stats.energyTitle')}
           icon={<BatteryCharging size={36} />}
           size="wide"
+          palette="mint"
           metrics={[
             {
               label: t('dashboard.stats.rapid'),
@@ -79,6 +82,7 @@ export const GeneralStatisticsSection: React.FC = () => {
         <GeneralStatisticsCard
           title={t('dashboard.stats.membersTitle')}
           icon={<UsersRound size={36} />}
+          palette="violet"
           metrics={[
             {
               value: data.member.count.toLocaleString(),

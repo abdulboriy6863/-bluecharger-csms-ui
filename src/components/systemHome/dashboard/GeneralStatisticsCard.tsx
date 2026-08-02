@@ -16,12 +16,15 @@ export type GeneralStatisticMetric = {
   trailing?: string;
 };
 
+export type GeneralStatisticPalette = 'peach' | 'sky' | 'mint' | 'violet';
+
 interface GeneralStatisticsCardProps {
   title: string;
   subTitle?: string;
   icon: React.ReactNode;
   metrics: GeneralStatisticMetric[];
   size?: 'standard' | 'wide';
+  palette?: GeneralStatisticPalette;
 }
 
 export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
@@ -30,9 +33,10 @@ export const GeneralStatisticsCard: React.FC<GeneralStatisticsCardProps> = ({
   icon,
   metrics,
   size = 'standard',
+  palette = 'sky',
 }) => {
   return (
-    <article className={clsx(styles.statCard, size === 'wide' && styles.wideCard)}>
+    <article className={clsx(styles.statCard, styles[palette], size === 'wide' && styles.wideCard)}>
       <div className={styles.cardHeader}>
         <div className={styles.cardTitleGroup}>
           <h3 className={styles.title}>{title}</h3>

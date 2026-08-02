@@ -18,7 +18,9 @@ The CSMS frontend is a code-first enterprise operations UI. New screens and sect
 
 Use this style for dashboard KPI cards and future statistic cards:
 
-- White surface, subtle border, soft operational shadow.
+- Soft pastel gradient surface, subtle white border, soft operational shadow.
+- Prefer very light peach, sky, mint, and violet palettes for top-level KPI cards.
+- Use large translucent circular overlays inside gradient KPI cards, matching the General Statistics pattern.
 - 8px radius for enterprise surfaces.
 - Strong title top-left, simple lucide icon top-right.
 - Large tabular numeric value, compact unit, clear trend indicator.
