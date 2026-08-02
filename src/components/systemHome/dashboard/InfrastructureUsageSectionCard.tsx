@@ -197,7 +197,7 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
             <BarChart
               data={distributionChartData}
               margin={{ top: 12, right: 18, left: 4, bottom: 16 }}
-              barCategoryGap="24%"
+              barCategoryGap="8%"
             >
               <CartesianGrid stroke="#e6edf4" strokeDasharray="3 5" vertical={false} />
               <XAxis
@@ -242,7 +242,7 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   name={t(series.labelKey)}
                   fill={series.color}
                   radius={[5, 5, 0, 0]}
-                  maxBarSize={36}
+                  maxBarSize={46}
                   animationDuration={700}
                   activeBar={{ stroke: '#172033', strokeWidth: 1.5, fillOpacity: 0.92 }}
                 />
