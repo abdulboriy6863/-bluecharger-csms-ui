@@ -1,11 +1,4 @@
 import React, { useId, useMemo, useState } from 'react';
-import {
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
 import { Menu, X } from 'lucide-react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import { mockChargerStatusPanels } from '../../../data/mockChargerStatusSummary';
@@ -21,16 +14,6 @@ interface ChartItem extends ChargerStatusBreakdownItem {
   percent: number;
 }
 
-interface PieLabelProps {
-  cx?: number;
-  cy?: number;
-  midAngle?: number;
-  innerRadius?: number;
-  outerRadius?: number;
-  percent?: number;
-  name?: string;
-}
-
 interface ChargerStatusChartCardProps {
   panel: ChargerStatusPanelData;
   active?: boolean;
@@ -40,11 +23,11 @@ interface ChargerStatusChartCardProps {
 }
 
 const RADIAN = Math.PI / 180;
-const OPERATION_CHART_INNER_RADIUS = 88;
-const OPERATION_CHART_OUTER_RADIUS = 252;
-const OPERATION_CHART_VIEWBOX_SIZE = 620;
-const OPERATION_TOOLTIP_WIDTH = 164;
-const OPERATION_TOOLTIP_HEIGHT = 82;
+const STATUS_CHART_INNER_RADIUS = 88;
+const STATUS_CHART_OUTER_RADIUS = 252;
+const STATUS_CHART_VIEWBOX_SIZE = 620;
+const STATUS_TOOLTIP_WIDTH = 164;
+const STATUS_TOOLTIP_HEIGHT = 82;
 
 const formatPercent = (value: number): string => `${(value * 100).toFixed(1)} %`;
 const classNames = (...values: Array<string | false | undefined>) => values.filter(Boolean).join(' ');
@@ -95,35 +78,6 @@ const createAnnularSectorPath = (
   ].join(' ');
 };
 
-const renderPieLabel = ({
-  cx = 0,
-  cy = 0,
-  midAngle = 0,
-  innerRadius = 0,
-  outerRadius = 0,
-  percent = 0,
-  name = '',
-}: PieLabelProps): React.ReactNode => {
-  if (percent < 0.065) return null;
-
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.58;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      textAnchor="middle"
-      dominantBaseline="central"
-      className={styles.pieLabel}
-    >
-      <tspan x={x} dy="-0.45em">{name}</tspan>
-      <tspan x={x} dy="1.15em">{formatPercent(percent)}</tspan>
-    </text>
-  );
-};
-
 const getPanelTotals = (items: ChargerStatusBreakdownItem[]) => items.reduce(
   (totals, item) => ({
     fast: totals.fast + item.fast,
@@ -133,7 +87,7 @@ const getPanelTotals = (items: ChargerStatusBreakdownItem[]) => items.reduce(
   { fast: 0, slow: 0, total: 0 },
 );
 
-const OperationInfographicPie: React.FC<{
+const StatusInfographicPie: React.FC<{
   data: ChartItem[];
   total: number;
   unit: string;
@@ -172,7 +126,7 @@ const OperationInfographicPie: React.FC<{
   return (
     <svg
       className={styles.infographicSvg}
-      viewBox={`${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${OPERATION_CHART_VIEWBOX_SIZE} ${OPERATION_CHART_VIEWBOX_SIZE}`}
+      viewBox={`${-STATUS_CHART_VIEWBOX_SIZE / 2} ${-STATUS_CHART_VIEWBOX_SIZE / 2} ${STATUS_CHART_VIEWBOX_SIZE} ${STATUS_CHART_VIEWBOX_SIZE}`}
       role="group"
       aria-label={`${activeItem.name} ${formatPercent(activeItem.percent)} ${activeItem.total.toLocaleString()}${unit}`}
       onMouseLeave={onLeave}
@@ -208,11 +162,11 @@ const OperationInfographicPie: React.FC<{
         const gap = Math.min(2.2, Math.max(0.4, sweep * 0.18));
         const startAngle = cursorAngle + gap / 2;
         const endAngle = cursorAngle + sweep - gap / 2;
-        const outerRadius = OPERATION_CHART_OUTER_RADIUS;
-        const labelRadius = OPERATION_CHART_INNER_RADIUS + (outerRadius - OPERATION_CHART_INNER_RADIUS) * 0.64;
+        const outerRadius = STATUS_CHART_OUTER_RADIUS;
+        const labelRadius = STATUS_CHART_INNER_RADIUS + (outerRadius - STATUS_CHART_INNER_RADIUS) * 0.64;
         const labelPoint = polarPoint(labelRadius, startAngle + (endAngle - startAngle) / 2);
         const path = createAnnularSectorPath(
-          OPERATION_CHART_INNER_RADIUS,
+          STATUS_CHART_INNER_RADIUS,
           outerRadius,
           startAngle,
           Math.max(startAngle + 0.3, endAngle),
@@ -226,7 +180,7 @@ const OperationInfographicPie: React.FC<{
 
         if (isActive) {
           tooltipPoint = polarPoint(
-            OPERATION_CHART_INNER_RADIUS + (OPERATION_CHART_OUTER_RADIUS - OPERATION_CHART_INNER_RADIUS) * 0.58,
+            STATUS_CHART_INNER_RADIUS + (STATUS_CHART_OUTER_RADIUS - STATUS_CHART_INNER_RADIUS) * 0.58,
             midAngle,
           );
         }
@@ -308,17 +262,17 @@ const OperationInfographicPie: React.FC<{
         <foreignObject
           className={styles.infographicTooltipObject}
           x={clamp(
-            tooltipPoint.x + (tooltipPoint.x >= 0 ? 18 : -OPERATION_TOOLTIP_WIDTH - 18),
-            -OPERATION_CHART_VIEWBOX_SIZE / 2 + 18,
-            OPERATION_CHART_VIEWBOX_SIZE / 2 - OPERATION_TOOLTIP_WIDTH - 18,
+            tooltipPoint.x + (tooltipPoint.x >= 0 ? 18 : -STATUS_TOOLTIP_WIDTH - 18),
+            -STATUS_CHART_VIEWBOX_SIZE / 2 + 18,
+            STATUS_CHART_VIEWBOX_SIZE / 2 - STATUS_TOOLTIP_WIDTH - 18,
           )}
           y={clamp(
-            tooltipPoint.y - OPERATION_TOOLTIP_HEIGHT / 2,
-            -OPERATION_CHART_VIEWBOX_SIZE / 2 + 18,
-            OPERATION_CHART_VIEWBOX_SIZE / 2 - OPERATION_TOOLTIP_HEIGHT - 18,
+            tooltipPoint.y - STATUS_TOOLTIP_HEIGHT / 2,
+            -STATUS_CHART_VIEWBOX_SIZE / 2 + 18,
+            STATUS_CHART_VIEWBOX_SIZE / 2 - STATUS_TOOLTIP_HEIGHT - 18,
           )}
-          width={OPERATION_TOOLTIP_WIDTH}
-          height={OPERATION_TOOLTIP_HEIGHT}
+          width={STATUS_TOOLTIP_WIDTH}
+          height={STATUS_TOOLTIP_HEIGHT}
         >
           <div className={styles.infographicTooltip}>
             <span className={styles.infographicTooltipTitle}>{activeItem.name}</span>
@@ -349,17 +303,17 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
   })), [panel.items, t, totals.total]);
   const unit = t('dashboard.chargerStatus.unit');
   const title = t(panel.titleKey);
-  const defaultOperationItemId = useMemo(() => (
+  const defaultItemId = useMemo(() => (
     chartData.reduce((largest, item) => (item.total > largest.total ? item : largest), chartData[0]).id
   ), [chartData]);
-  const [hoveredOperationItemId, setHoveredOperationItemId] = useState<string | null>(null);
-  const [pinnedOperationItemId, setPinnedOperationItemId] = useState<string | null>(null);
-  const activeOperationItemId = hoveredOperationItemId ?? pinnedOperationItemId ?? defaultOperationItemId;
-  const isOperationInteracting = Boolean(pinnedOperationItemId ?? hoveredOperationItemId);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
+  const [pinnedItemId, setPinnedItemId] = useState<string | null>(null);
+  const activeItemId = hoveredItemId ?? pinnedItemId ?? defaultItemId;
+  const isInteracting = Boolean(pinnedItemId ?? hoveredItemId);
 
-  const handleToggleOperationItem = (itemId: string) => {
-    setPinnedOperationItemId((current) => (current === itemId ? null : itemId));
-    setHoveredOperationItemId(itemId);
+  const handleToggleItem = (itemId: string) => {
+    setPinnedItemId((current) => (current === itemId ? null : itemId));
+    setHoveredItemId(itemId);
   };
 
   return (
@@ -399,81 +353,46 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
           <div
             className={classNames(
               styles.chartViewport,
-              panel.id === 'operation' && styles.operationChartViewport,
+              styles.statusInfographicViewport,
             )}
           >
-            {panel.id === 'operation' ? (
-              <OperationInfographicPie
-                data={chartData}
-                total={totals.total}
-                unit={unit}
-                totalLabel={t('dashboard.chargerStatus.total')}
-                tooltipLabel={t('dashboard.chargerStatus.tooltip.status')}
-                fastLabel={t('dashboard.chargerStatus.table.fast')}
-                slowLabel={t('dashboard.chargerStatus.table.slow')}
-                activeId={activeOperationItemId}
-                pinnedId={pinnedOperationItemId}
-                isInteracting={isOperationInteracting}
-                onHover={setHoveredOperationItemId}
-                onLeave={() => setHoveredOperationItemId(null)}
-                onToggle={handleToggleOperationItem}
-              />
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
-                  <Pie
-                    data={chartData}
-                    dataKey="total"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius="82%"
-                    stroke="#ffffff"
-                    strokeWidth={2}
-                    isAnimationActive={false}
-                    labelLine={false}
-                    label={renderPieLabel}
-                  >
-                    {chartData.map((item) => (
-                      <Cell key={item.id} fill={item.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    isAnimationActive={false}
-                    formatter={(value, name) => [`${Number(value).toLocaleString()}${unit}`, String(name)]}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
+            <StatusInfographicPie
+              data={chartData}
+              total={totals.total}
+              unit={unit}
+              totalLabel={t('dashboard.chargerStatus.total')}
+              tooltipLabel={t('dashboard.chargerStatus.tooltip.status')}
+              fastLabel={t('dashboard.chargerStatus.table.fast')}
+              slowLabel={t('dashboard.chargerStatus.table.slow')}
+              activeId={activeItemId}
+              pinnedId={pinnedItemId}
+              isInteracting={isInteracting}
+              onHover={setHoveredItemId}
+              onLeave={() => setHoveredItemId(null)}
+              onToggle={handleToggleItem}
+            />
           </div>
 
           <div className={styles.legendGrid}>
             {chartData.map((item) => (
-              panel.id === 'operation' ? (
-                <button
-                  className={classNames(
-                    styles.legendItem,
-                    styles.legendButton,
-                    item.id === activeOperationItemId && styles.legendButtonActive,
-                  )}
-                  key={item.id}
-                  type="button"
-                  onMouseEnter={() => setHoveredOperationItemId(item.id)}
-                  onMouseLeave={() => setHoveredOperationItemId(null)}
-                  onFocus={() => setHoveredOperationItemId(item.id)}
-                  onBlur={() => setHoveredOperationItemId(null)}
-                  onClick={() => handleToggleOperationItem(item.id)}
-                  aria-pressed={pinnedOperationItemId === item.id}
-                >
-                  <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
-                  {item.name}
-                </button>
-              ) : (
-                <span className={styles.legendItem} key={item.id}>
-                  <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
-                  {item.name}
-                </span>
-              )
+              <button
+                className={classNames(
+                  styles.legendItem,
+                  styles.legendButton,
+                  item.id === activeItemId && styles.legendButtonActive,
+                )}
+                key={item.id}
+                type="button"
+                onMouseEnter={() => setHoveredItemId(item.id)}
+                onMouseLeave={() => setHoveredItemId(null)}
+                onFocus={() => setHoveredItemId(item.id)}
+                onBlur={() => setHoveredItemId(null)}
+                onClick={() => handleToggleItem(item.id)}
+                aria-pressed={pinnedItemId === item.id}
+              >
+                <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
+                {item.name}
+              </button>
             ))}
           </div>
         </div>
