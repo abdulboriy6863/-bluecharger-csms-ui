@@ -31,3 +31,42 @@ export interface AlertEvent {
   severity: 'HIGH' | 'MEDIUM' | 'LOW';
   acknowledged: boolean;
 }
+
+export interface StationStat {
+  count: number;
+  unit: string;
+  momChange: number;
+  trendDirection: 'up' | 'down' | 'flat';
+}
+
+export interface ChargerCountStat {
+  rapidCount: number;
+  rapidUnit: string;
+  slowCount: number;
+  slowUnit: string;
+}
+
+export interface EnergyUsageItem {
+  kwh: number;
+  changeKwh: number;
+  changePercent: number;
+  trendDirection: 'up' | 'down' | 'flat';
+}
+
+export interface EnergyUsageStat {
+  rapid: EnergyUsageItem;
+  slow: EnergyUsageItem;
+}
+
+export interface MemberStat {
+  count: number;
+  unit: string;
+}
+
+export interface GeneralStatisticsData {
+  station: StationStat;
+  charger: ChargerCountStat;
+  energy: EnergyUsageStat;
+  member: MemberStat;
+}
+
