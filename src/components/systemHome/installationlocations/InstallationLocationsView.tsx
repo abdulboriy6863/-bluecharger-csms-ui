@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemHome/InstallationLocationsView.module.scss';
+import styles from '../../../scss/systemHome/InstallationLocationsView.module.scss';
 import { MapPin } from 'lucide-react';
 
 export const InstallationLocationsView: React.FC = () => {

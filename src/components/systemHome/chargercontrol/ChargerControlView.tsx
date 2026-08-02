@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemHome/ChargerControlView.module.scss';
+import styles from '../../../scss/systemHome/ChargerControlView.module.scss';
 import { Sliders } from 'lucide-react';
 
 export const ChargerControlView: React.FC = () => {

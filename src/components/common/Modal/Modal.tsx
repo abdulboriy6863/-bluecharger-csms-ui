@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styles from '../../../styles/common/Modal.module.scss';
+import styles from '../../../scss/common/Modal.module.scss';
 import { X } from 'lucide-react';
 
 interface ModalProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemHome/SolarDashboardView.module.scss';
+import styles from '../../../scss/systemHome/SolarDashboardView.module.scss';
 import { Sun } from 'lucide-react';
 
 export const SolarDashboardView: React.FC = () => {

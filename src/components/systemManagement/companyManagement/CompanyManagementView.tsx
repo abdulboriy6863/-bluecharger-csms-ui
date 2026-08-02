@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemManagement/CompanyManagementView.module.scss';
+import styles from '../../../scss/systemManagement/CompanyManagementView.module.scss';
 import { Building2 } from 'lucide-react';
 
 export const CompanyManagementView: React.FC = () => {

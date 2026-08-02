@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemHome/DashboardSections.module.scss';
+import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import { Tv } from 'lucide-react';
 
 export const AdvertisementSection: React.FC = () => {

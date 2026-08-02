@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Language, User } from '../../../types/auth';
 import { useI18n } from '../../../i18n/I18nContext';
-import styles from '../../../styles/layout/TopNavigation.module.scss';
+import styles from '../../../scss/layout/TopNavigation.module.scss';
 
 export type NavTab =
   | 'overview'

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/common/Input.module.scss';
+import styles from '../../../scss/common/Input.module.scss';
 import clsx from 'clsx';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

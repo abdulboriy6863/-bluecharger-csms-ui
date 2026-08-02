@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/chargerDetail/ChargerDetailDrawer.module.scss';
+import styles from '../../scss/chargerDetail/ChargerDetailDrawer.module.scss';
 import { Charger } from '../../types/charger';
 import { Drawer } from '../common/Drawer/Drawer';
 import { Badge } from '../common/Badge/Badge';

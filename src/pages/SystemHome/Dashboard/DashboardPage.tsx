@@ -1,6 +1,6 @@
 import React from 'react';
 import { FirstHomePage } from '../mainhome/firsthomepage/FirstHomePage';
-import styles from '../../../styles/systemHome/DashboardPage.module.scss';
+import styles from '../../../scss/systemHome/DashboardPage.module.scss';
 
 interface DashboardPageProps {
   onNavigateMonitoring?: () => void;

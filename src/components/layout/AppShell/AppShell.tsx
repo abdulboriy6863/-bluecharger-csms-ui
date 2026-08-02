@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/layout/AppShell.module.scss';
+import styles from '../../../scss/layout/AppShell.module.scss';
 import { TopNavigation, NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from '../TopNavigation/TopNavigation';
 import { Language, User } from '../../../types/auth';
 

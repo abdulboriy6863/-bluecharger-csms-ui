@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/systemHome/KpiCards.module.scss';
+import styles from '../../scss/systemHome/KpiCards.module.scss';
 import { KpiMetric } from '../../types/dashboard';
 import { Zap, Activity, TrendingUp, ShieldCheck, DollarSign, ArrowUpRight } from 'lucide-react';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/systemHome/RecentAlerts.module.scss';
+import styles from '../../scss/systemHome/RecentAlerts.module.scss';
 import { AlertEvent } from '../../types/dashboard';
 import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
 

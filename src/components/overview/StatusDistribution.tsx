@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/systemHome/StatusDistribution.module.scss';
+import styles from '../../scss/systemHome/StatusDistribution.module.scss';
 import { StatusDistributionPoint } from '../../types/dashboard';
 import { useI18n } from '../../i18n/I18nContext';
 

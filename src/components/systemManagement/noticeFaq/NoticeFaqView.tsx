@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemManagement/NoticeFaqView.module.scss';
+import styles from '../../../scss/systemManagement/NoticeFaqView.module.scss';
 import { HelpCircle } from 'lucide-react';
 
 export const NoticeFaqView: React.FC = () => {

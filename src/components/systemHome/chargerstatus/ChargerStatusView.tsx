@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/systemHome/ChargerStatusView.module.scss';
+import styles from '../../../scss/systemHome/ChargerStatusView.module.scss';
 import { Zap } from 'lucide-react';
 
 export const ChargerStatusView: React.FC = () => {

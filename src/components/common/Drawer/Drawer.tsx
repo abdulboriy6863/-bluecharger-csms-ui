@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styles from '../../../styles/common/Drawer.module.scss';
+import styles from '../../../scss/common/Drawer.module.scss';
 import { X } from 'lucide-react';
 
 interface DrawerProps {

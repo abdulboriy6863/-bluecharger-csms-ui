@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styles/core/global.scss';
+import './scss/core/global.scss';
 import { AppShell } from './components/layout/AppShell/AppShell';
 import { NavTab, SystemHomePage, SystemManagementPage, MemberManagementPage, InfrastructurePage, HistoryManagementPage, PaymentManagementPage, PurchaseSalesPage } from './components/layout/TopNavigation/TopNavigation';
 import { LoginScreen } from './components/login/LoginScreen';

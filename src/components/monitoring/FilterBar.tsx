@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/monitoring/FilterBar.module.scss';
+import styles from '../../scss/monitoring/FilterBar.module.scss';
 import { Search, RotateCcw } from 'lucide-react';
 import { Input } from '../common/Input/Input';
 import { Select } from '../common/Select/Select';
