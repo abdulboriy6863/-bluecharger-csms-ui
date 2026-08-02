@@ -60,7 +60,5 @@ export interface InfrastructureUsageSectionCardProps {
 
 export interface InfrastructureChartMenuProps {
   open: boolean;
-  tableVisible: boolean;
   onDownloadCsv: () => void;
-  onToggleTable: () => void;
 }

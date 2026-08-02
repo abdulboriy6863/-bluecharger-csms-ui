@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { BarChart3, Download, Eye, EyeOff, Menu, Zap } from 'lucide-react';
+import { BarChart3, Download, Menu, Zap } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -48,9 +48,7 @@ const downloadCsv = (fileName: string, rows: string[][]) => {
 
 const ChartMenu: React.FC<InfrastructureChartMenuProps> = ({
   open,
-  tableVisible,
   onDownloadCsv,
-  onToggleTable,
 }) => {
   const { t } = useI18n();
 
@@ -62,14 +60,6 @@ const ChartMenu: React.FC<InfrastructureChartMenuProps> = ({
         <Download size={15} />
         <span>{t('dashboard.infrastructure.menu.downloadCsv')}</span>
       </button>
-      <button type="button" role="menuitem" onClick={onToggleTable}>
-        {tableVisible ? <EyeOff size={15} /> : <Eye size={15} />}
-        <span>
-          {tableVisible
-            ? t('dashboard.infrastructure.menu.hideTable')
-            : t('dashboard.infrastructure.menu.viewTable')}
-        </span>
-      </button>
     </div>
   );
 };
@@ -80,8 +70,6 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
   const { t } = useI18n();
   const [activeMode, setActiveMode] = useState<InfrastructureDistributionMode>('chargerType');
   const [openMenu, setOpenMenu] = useState<'distribution' | 'usage' | null>(null);
-  const [showDistributionTable, setShowDistributionTable] = useState<boolean>(false);
-  const [showUsageTable, setShowUsageTable] = useState<boolean>(false);
   const distributionPanel = data.distributionPanels[activeMode];
   const modeOptions: InfrastructureDistributionMode[] = ['chargerType', 'modelName'];
 
@@ -185,15 +173,10 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
               >
                 <Menu size={24} />
               </button>
-              <ChartMenu
-                open={openMenu === 'distribution'}
-                tableVisible={showDistributionTable}
-                onDownloadCsv={handleDownloadDistributionCsv}
-                onToggleTable={() => {
-                  setShowDistributionTable((current) => !current);
-                  setOpenMenu(null);
-                }}
-              />
+            <ChartMenu
+              open={openMenu === 'distribution'}
+              onDownloadCsv={handleDownloadDistributionCsv}
+            />
             </div>
           </div>
         </header>
@@ -271,32 +254,6 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
           ))}
         </div>
 
-        {showDistributionTable && (
-          <div className={styles.infrastructureTableWrap}>
-            <table className={styles.infrastructureTable}>
-              <thead>
-                <tr>
-                  <th>{t('dashboard.infrastructure.table.region')}</th>
-                  {distributionPanel.series.map((series) => (
-                    <th key={series.id}>{t(series.labelKey)}</th>
-                  ))}
-                  <th>{t('dashboard.infrastructure.table.total')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {distributionChartData.map((region) => (
-                  <tr key={region.id}>
-                    <td>{region.name}</td>
-                    {distributionPanel.series.map((series) => (
-                      <td key={series.id}>{formatNumber(Number(region[series.id] ?? 0))}</td>
-                    ))}
-                    <td>{formatNumber(region.total)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </article>
 
       <article className={styles.infrastructureCard}>
@@ -316,12 +273,7 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
             </button>
             <ChartMenu
               open={openMenu === 'usage'}
-              tableVisible={showUsageTable}
               onDownloadCsv={handleDownloadUsageCsv}
-              onToggleTable={() => {
-                setShowUsageTable((current) => !current);
-                setOpenMenu(null);
-              }}
             />
           </div>
         </header>
@@ -403,34 +355,6 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
           </ResponsiveContainer>
         </div>
 
-        {showUsageTable && (
-          <div className={styles.infrastructureTableWrap}>
-            <table className={styles.infrastructureTable}>
-              <thead>
-                <tr>
-                  <th>{t('dashboard.infrastructure.table.period')}</th>
-                  <th>{t('dashboard.infrastructure.metric.fastEnergy')}</th>
-                  <th>{t('dashboard.infrastructure.metric.slowEnergy')}</th>
-                  <th>{t('dashboard.infrastructure.metric.totalEnergy')}</th>
-                  <th>{t('dashboard.infrastructure.metric.fastChargers')}</th>
-                  <th>{t('dashboard.infrastructure.metric.slowChargers')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {usageChartData.map((point) => (
-                  <tr key={point.id}>
-                    <td>{point.name}</td>
-                    <td>{formatEnergy(point.fastEnergyKwh)}</td>
-                    <td>{formatEnergy(point.slowEnergyKwh)}</td>
-                    <td>{formatEnergy(point.totalEnergyKwh)}</td>
-                    <td>{formatNumber(point.fastChargerCount)}</td>
-                    <td>{formatNumber(point.slowChargerCount)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </article>
     </div>
   );
