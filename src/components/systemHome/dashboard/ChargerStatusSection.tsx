@@ -46,6 +46,7 @@ const OPERATION_CHART_MAX_EXTENSION = 78;
 const OPERATION_CHART_VIEWBOX_SIZE = 560;
 
 const formatPercent = (value: number): string => `${(value * 100).toFixed(1)} %`;
+const classNames = (...values: Array<string | false | undefined>) => values.filter(Boolean).join(' ');
 
 const mixHexColor = (hexColor: string, mixWith: string, amount: number) => {
   const parseHex = (value: string) => {
@@ -135,19 +136,42 @@ const OperationInfographicPie: React.FC<{
   total: number;
   unit: string;
   totalLabel: string;
-}> = ({ data, total, unit, totalLabel }) => {
+  fastLabel: string;
+  slowLabel: string;
+  activeId: string;
+  pinnedId: string | null;
+  isInteracting: boolean;
+  onHover: (itemId: string) => void;
+  onLeave: () => void;
+  onToggle: (itemId: string) => void;
+}> = ({
+  data,
+  total,
+  unit,
+  totalLabel,
+  fastLabel,
+  slowLabel,
+  activeId,
+  pinnedId,
+  isInteracting,
+  onHover,
+  onLeave,
+  onToggle,
+}) => {
   const gradientPrefix = useId().replace(/:/g, '');
   const segmentShadowId = `${gradientPrefix}-segmentShadow`;
   const centerShadowId = `${gradientPrefix}-centerShadow`;
   const maxTotal = Math.max(...data.map((item) => item.total));
+  const activeItem = data.find((item) => item.id === activeId) ?? data[0];
   let cursorAngle = -86;
 
   return (
     <svg
       className={styles.infographicSvg}
       viewBox={`${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${OPERATION_CHART_VIEWBOX_SIZE} ${OPERATION_CHART_VIEWBOX_SIZE}`}
-      role="img"
-      aria-label={`${totalLabel} ${total.toLocaleString()}${unit}`}
+      role="group"
+      aria-label={`${activeItem.name} ${formatPercent(activeItem.percent)} ${activeItem.total.toLocaleString()}${unit}`}
+      onMouseLeave={onLeave}
     >
       <defs>
         <filter id={segmentShadowId} x="-24%" y="-24%" width="148%" height="148%">
@@ -169,6 +193,10 @@ const OperationInfographicPie: React.FC<{
             <stop offset="100%" stopColor={mixHexColor(item.color, '#000000', 0.08)} />
           </linearGradient>
         ))}
+        <radialGradient id={`${gradientPrefix}-centerSurface`} cx="42%" cy="32%" r="68%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#eef4fb" />
+        </radialGradient>
       </defs>
 
       {data.map((item) => {
@@ -189,13 +217,39 @@ const OperationInfographicPie: React.FC<{
           Math.max(startAngle + 0.3, endAngle),
         );
         const showLabel = item.percent >= 0.065;
+        const isActive = item.id === activeItem.id;
+        const isDimmed = isInteracting && !isActive;
+        const explode = isActive ? polarPoint(10, startAngle + (endAngle - startAngle) / 2) : { x: 0, y: 0 };
+        const ariaLabel = `${item.name}: ${item.total.toLocaleString()}${unit}, ${formatPercent(item.percent)}`;
 
         cursorAngle += sweep;
 
         return (
-          <g key={item.id}>
+          <g
+            key={item.id}
+            className={styles.infographicSegmentGroup}
+            transform={`translate(${explode.x.toFixed(2)} ${explode.y.toFixed(2)})`}
+            role="button"
+            tabIndex={0}
+            aria-label={ariaLabel}
+            aria-pressed={pinnedId === item.id}
+            onMouseEnter={() => onHover(item.id)}
+            onFocus={() => onHover(item.id)}
+            onBlur={onLeave}
+            onClick={() => onToggle(item.id)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onToggle(item.id);
+              }
+            }}
+          >
             <path
-              className={styles.infographicSegment}
+              className={classNames(
+                styles.infographicSegment,
+                isActive && styles.infographicSegmentActive,
+                isDimmed && styles.infographicSegmentDimmed,
+              )}
               d={path}
               fill={`url(#${gradientPrefix}-${item.id})`}
               filter={`url(#${segmentShadowId})`}
@@ -220,14 +274,24 @@ const OperationInfographicPie: React.FC<{
         );
       })}
 
+      <circle className={styles.infographicCenterAccent} r="111" stroke={activeItem.color} />
       <circle className={styles.infographicCenterOuter} r="101" filter={`url(#${centerShadowId})`} />
-      <circle className={styles.infographicCenterInner} r="82" />
+      <circle className={styles.infographicCenterInner} r="82" fill={`url(#${gradientPrefix}-centerSurface)`} />
       <text className={styles.infographicCenterText} textAnchor="middle" dominantBaseline="central">
-        <tspan className={styles.infographicCenterValue} x="0" dy="-0.18em">
-          {total.toLocaleString()}{unit}
+        <tspan className={styles.infographicCenterPercent} x="0" dy="-1.85em">
+          {formatPercent(activeItem.percent)}
         </tspan>
-        <tspan className={styles.infographicCenterLabel} x="0" dy="1.35em">
-          {totalLabel}
+        <tspan className={styles.infographicCenterName} x="0" dy="1.42em">
+          {activeItem.name}
+        </tspan>
+        <tspan className={styles.infographicCenterValue} x="0" dy="1.45em">
+          {activeItem.total.toLocaleString()}{unit}
+        </tspan>
+        <tspan className={styles.infographicCenterBreakdown} x="0" dy="1.38em">
+          {fastLabel} {activeItem.fast.toLocaleString()} / {slowLabel} {activeItem.slow.toLocaleString()}
+        </tspan>
+        <tspan className={styles.infographicCenterLabel} x="0" dy="1.38em">
+          {totalLabel} {total.toLocaleString()}{unit}
         </tspan>
       </text>
     </svg>
@@ -250,6 +314,18 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
   })), [panel.items, t, totals.total]);
   const unit = t('dashboard.chargerStatus.unit');
   const title = t(panel.titleKey);
+  const defaultOperationItemId = useMemo(() => (
+    chartData.reduce((largest, item) => (item.total > largest.total ? item : largest), chartData[0]).id
+  ), [chartData]);
+  const [hoveredOperationItemId, setHoveredOperationItemId] = useState<string | null>(null);
+  const [pinnedOperationItemId, setPinnedOperationItemId] = useState<string | null>(null);
+  const activeOperationItemId = hoveredOperationItemId ?? pinnedOperationItemId ?? defaultOperationItemId;
+  const isOperationInteracting = Boolean(pinnedOperationItemId ?? hoveredOperationItemId);
+
+  const handleToggleOperationItem = (itemId: string) => {
+    setPinnedOperationItemId((current) => (current === itemId ? null : itemId));
+    setHoveredOperationItemId(itemId);
+  };
 
   return (
     <article className={`${styles.statusCard} ${detail ? styles.detailCard : ''}`}>
@@ -292,6 +368,14 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
                 total={totals.total}
                 unit={unit}
                 totalLabel={t('dashboard.chargerStatus.total')}
+                fastLabel={t('dashboard.chargerStatus.table.fast')}
+                slowLabel={t('dashboard.chargerStatus.table.slow')}
+                activeId={activeOperationItemId}
+                pinnedId={pinnedOperationItemId}
+                isInteracting={isOperationInteracting}
+                onHover={setHoveredOperationItemId}
+                onLeave={() => setHoveredOperationItemId(null)}
+                onToggle={handleToggleOperationItem}
               />
             ) : (
               <ResponsiveContainer width="100%" height="100%">
@@ -324,10 +408,31 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
 
           <div className={styles.legendGrid}>
             {chartData.map((item) => (
-              <span className={styles.legendItem} key={item.id}>
-                <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
-                {item.name}
-              </span>
+              panel.id === 'operation' ? (
+                <button
+                  className={classNames(
+                    styles.legendItem,
+                    styles.legendButton,
+                    item.id === activeOperationItemId && styles.legendButtonActive,
+                  )}
+                  key={item.id}
+                  type="button"
+                  onMouseEnter={() => setHoveredOperationItemId(item.id)}
+                  onMouseLeave={() => setHoveredOperationItemId(null)}
+                  onFocus={() => setHoveredOperationItemId(item.id)}
+                  onBlur={() => setHoveredOperationItemId(null)}
+                  onClick={() => handleToggleOperationItem(item.id)}
+                  aria-pressed={pinnedOperationItemId === item.id}
+                >
+                  <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
+                  {item.name}
+                </button>
+              ) : (
+                <span className={styles.legendItem} key={item.id}>
+                  <span className={styles.legendDot} style={{ backgroundColor: item.color }} />
+                  {item.name}
+                </span>
+              )
             ))}
           </div>
         </div>
