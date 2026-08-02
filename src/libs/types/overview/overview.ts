@@ -14,7 +14,7 @@ export interface KpiCardsProps {
 }
 
 export interface OverviewDashboardProps {
-  onNavigateMonitoring: () => void;
+  onNavigateMonitoring?: () => void;
 }
 
 export interface RecentAlertsProps {

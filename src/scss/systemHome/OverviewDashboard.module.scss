@@ -5,34 +5,6 @@
   @include flex-column;
   gap: 24px;
 
-  .headerArea {
-    @include flex-between;
-
-    .pageTitle {
-      font-family: $font-family-brand;
-      font-size: 22px;
-      font-weight: 700;
-      color: $color-text-main;
-    }
-
-    .pageSubtitle {
-      font-size: 13px;
-      color: $color-text-muted;
-      margin-top: 2px;
-    }
-
-    @media (max-width: 720px) {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 14px;
-
-      > div:last-child {
-        width: 100%;
-        flex-wrap: wrap;
-      }
-    }
-  }
-
   .sectionStack {
     @include flex-column;
     gap: 18px;
