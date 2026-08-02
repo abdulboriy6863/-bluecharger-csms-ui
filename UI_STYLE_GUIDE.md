@@ -68,3 +68,19 @@ Until lower dashboard sections receive final product UI, render them as simple m
 ## i18n Rules
 
 All new visible text must use the i18n system across supported languages. Numeric units that are language-specific should use existing translation keys or new keys added for all supported languages.
+
+### Supported Languages
+
+The language selector and `Language` type must stay aligned with this list:
+
+| Code | Selector label | Language |
+| --- | --- | --- |
+| `en` | ENG | English |
+| `ko` | KOR | 한국어 |
+| `ru` | RUS | Русский |
+| `hi` | HIN | हिन्दी |
+| `id` | IDN | Bahasa Indonesia |
+| `ky` | KYR | Кыргызча |
+| `uz` | UZB | O‘zbekcha |
+
+When adding a new visible string, add the same i18n key to all seven language maps in `src/i18n/I18nContext.tsx`. The `english` fallback is only a safety net for missing keys and is not considered a completed translation. New chart labels, legends, tooltips, table/export headers, button labels, and accessibility labels must all follow this rule.
