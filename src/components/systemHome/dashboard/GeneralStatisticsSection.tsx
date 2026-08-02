@@ -3,6 +3,7 @@ import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scs
 import { GeneralStatisticsCard } from './GeneralStatisticsCard';
 import { mockGeneralStatistics } from '../../../data/mockGeneralStatistics';
 import { UserPlus, BatteryCharging, Fuel } from 'lucide-react';
+import { useI18n } from '../../../i18n/I18nContext';
 
 const EvStationIcon: React.FC<{ size?: number }> = ({ size = 26 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -14,23 +15,24 @@ const EvStationIcon: React.FC<{ size?: number }> = ({ size = 26 }) => (
 );
 
 export const GeneralStatisticsSection: React.FC = () => {
+  const { t } = useI18n();
   const data = mockGeneralStatistics;
 
   return (
     <section className={styles.sectionWrapper} aria-label="General Statistics Section">
       <div className={styles.cardGrid}>
 
-        {/* Box 1: 충전소 수 (전월기준) - Soft Rose */}
+        {/* Box 1: Station Count */}
         <GeneralStatisticsCard
-          title="충전소 수"
-          subTitle="(전월기준)"
+          title={t('dashboard.stats.stationsTitle')}
+          subTitle={t('dashboard.stats.prevMonthBasis')}
           icon={<EvStationIcon size={26} />}
           variant="rose"
         >
           <span className={styles.primaryValue}>
             {data.station.count.toLocaleString()}
           </span>
-          <span className={styles.unitText}>{data.station.unit}</span>
+          <span className={styles.unitText}>{t('dashboard.stats.units.locations')}</span>
           {data.station.momChange > 0 && (
             <span className={styles.trendBadgeUp}>
               ▲ {data.station.momChange}
@@ -38,41 +40,41 @@ export const GeneralStatisticsSection: React.FC = () => {
           )}
         </GeneralStatisticsCard>
 
-        {/* Box 2: 충전기 수 (전월기준) - Soft Sky Blue */}
+        {/* Box 2: Charger Count */}
         <GeneralStatisticsCard
-          title="충전기 수 (전월기준)"
+          title={t('dashboard.stats.chargersTitle')}
           icon={<Fuel size={26} />}
           variant="blue"
         >
           <div className={styles.rowsContainer}>
             <div className={styles.statRow}>
-              <span className={styles.rowLabel}>급속</span>
+              <span className={styles.rowLabel}>{t('dashboard.stats.rapid')}</span>
               <span className={styles.rowValue}>
                 {data.charger.rapidCount.toLocaleString()}
               </span>
-              <span className={styles.rowUnit}>{data.charger.rapidUnit}</span>
+              <span className={styles.rowUnit}>{t('dashboard.stats.units.chargers')}</span>
               <span className={styles.dotSeparator}>·</span>
             </div>
             <div className={styles.statRow}>
-              <span className={styles.rowLabel}>완속</span>
+              <span className={styles.rowLabel}>{t('dashboard.stats.slow')}</span>
               <span className={styles.rowValue}>
                 {data.charger.slowCount.toLocaleString()}
               </span>
-              <span className={styles.rowUnit}>{data.charger.slowUnit}</span>
+              <span className={styles.rowUnit}>{t('dashboard.stats.units.chargers')}</span>
               <span className={styles.dotSeparator}>·</span>
             </div>
           </div>
         </GeneralStatisticsCard>
 
-        {/* Box 3: 충전량 (전월기준) - Soft Mint */}
+        {/* Box 3: Energy Delivered */}
         <GeneralStatisticsCard
-          title="충전량 (전월기준)"
+          title={t('dashboard.stats.energyTitle')}
           icon={<BatteryCharging size={26} />}
           variant="mint"
         >
           <div className={styles.rowsContainer}>
             <div className={styles.statRow}>
-              <span className={styles.rowLabel}>급속</span>
+              <span className={styles.rowLabel}>{t('dashboard.stats.rapid')}</span>
               <span className={styles.rowValue}>
                 {data.energy.rapid.kwh.toLocaleString()}
               </span>
@@ -82,7 +84,7 @@ export const GeneralStatisticsSection: React.FC = () => {
               </span>
             </div>
             <div className={styles.statRow}>
-              <span className={styles.rowLabel}>완속</span>
+              <span className={styles.rowLabel}>{t('dashboard.stats.slow')}</span>
               <span className={styles.rowValue}>
                 {data.energy.slow.kwh.toLocaleString()}
               </span>
@@ -94,16 +96,16 @@ export const GeneralStatisticsSection: React.FC = () => {
           </div>
         </GeneralStatisticsCard>
 
-        {/* Box 4: 회원가입 현황 - Soft Lavender */}
+        {/* Box 4: Member Registrations */}
         <GeneralStatisticsCard
-          title="회원가입 현황"
+          title={t('dashboard.stats.membersTitle')}
           icon={<UserPlus size={26} />}
           variant="lavender"
         >
           <span className={styles.primaryValue}>
             {data.member.count.toLocaleString()}
           </span>
-          <span className={styles.unitText}>{data.member.unit}</span>
+          <span className={styles.unitText}>{t('dashboard.stats.units.members')}</span>
           <span className={styles.dotSeparator}>·</span>
         </GeneralStatisticsCard>
 

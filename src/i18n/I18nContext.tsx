@@ -106,6 +106,16 @@ const english: TranslationMap = {
   'monitoring.actions': 'Actions',
   'monitoring.detail': 'Detail',
   'monitoring.control': 'Control',
+  'dashboard.stats.stationsTitle': 'Station Count',
+  'dashboard.stats.prevMonthBasis': '(Prev Month)',
+  'dashboard.stats.chargersTitle': 'Charger Count (Prev Month)',
+  'dashboard.stats.energyTitle': 'Energy Delivered (Prev Month)',
+  'dashboard.stats.membersTitle': 'Member Registrations',
+  'dashboard.stats.rapid': 'Fast',
+  'dashboard.stats.slow': 'Slow',
+  'dashboard.stats.units.locations': 'locs',
+  'dashboard.stats.units.chargers': 'units',
+  'dashboard.stats.units.members': 'members',
 };
 
 const translations: Record<Language, TranslationMap> = {
@@ -144,6 +154,10 @@ const translations: Record<Language, TranslationMap> = {
     'monitoring.station': '충전소 및 지역', 'monitoring.status': '상태', 'monitoring.connectors': '커넥터',
     'monitoring.manufacturer': '제조사 / 모델', 'monitoring.heartbeat': '하트비트', 'monitoring.actions': '작업',
     'monitoring.detail': '상세', 'monitoring.control': '제어',
+    'dashboard.stats.stationsTitle': '충전소 수', 'dashboard.stats.prevMonthBasis': '(전월기준)',
+    'dashboard.stats.chargersTitle': '충전기 수 (전월기준)', 'dashboard.stats.energyTitle': '충전량 (전월기준)',
+    'dashboard.stats.membersTitle': '회원가입 현황', 'dashboard.stats.rapid': '급속', 'dashboard.stats.slow': '완속',
+    'dashboard.stats.units.locations': '개소', 'dashboard.stats.units.chargers': '기', 'dashboard.stats.units.members': '명',
   },
   ru: {
     ...english,
@@ -232,7 +246,24 @@ const translations: Record<Language, TranslationMap> = {
     'monitoring.status': 'Абалы', 'monitoring.connectors': 'Туташтыргычтар', 'monitoring.manufacturer': 'Өндүрүүчү / модель', 'monitoring.heartbeat': 'Байланыш', 'monitoring.actions': 'Аракеттер',
     'monitoring.detail': 'Толук маалымат', 'monitoring.control': 'Башкаруу',
   },
-  uz: english,
+  uz: {
+    ...english,
+    'dashboard.stats.stationsTitle': 'Zaryadlash stansiyalari',
+    'dashboard.stats.prevMonthBasis': "(O'tgan oy)",
+    'dashboard.stats.chargersTitle': "Zaryadlovchilar soni (O'tgan oy)",
+    'dashboard.stats.energyTitle': "Zaryad hajmi (O'tgan oy)",
+    'dashboard.stats.membersTitle': "A'zo bo'lgan mijozlar",
+    'dashboard.stats.rapid': 'Tezkor',
+    'dashboard.stats.slow': 'Sekin',
+    'dashboard.stats.units.locations': 'stansiya',
+    'dashboard.stats.units.chargers': 'dona',
+    'dashboard.stats.units.members': 'ta',
+    'home.dashboard': 'Boshqaruv paneli', 'home.solar': 'Quyosh paneli', 'home.locations': 'O\'rnatish joylari',
+    'home.chargerStatus': 'Zaryadlovchi holati', 'home.chargerControl': 'Zaryadlovchini boshqarish',
+    'nav.home': 'Tizim Bosh sahifasi', 'nav.admin': 'Tizim Boshqaruvi', 'nav.members': 'A\'zolar Boshqaruvi', 'nav.infrastructure': 'Infrastruktura',
+    'nav.history': 'Tarix', 'nav.events': 'Hodisalar', 'nav.payments': 'To\'lov ma\'lumotlari', 'nav.sales': 'Xarid va Sotuv', 'nav.welcome': 'Xush kelibsiz!',
+    'nav.user': 'Foydalanuvchi', 'nav.logout': 'Chiqish',
+  },
 };
 
 interface I18nContextValue {
