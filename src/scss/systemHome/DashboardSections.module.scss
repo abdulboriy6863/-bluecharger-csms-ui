@@ -122,38 +122,43 @@
 
 .panelTab {
   min-height: 34px;
-  border: 1px solid rgba(204, 214, 228, 0.88);
+  border: 1px solid var(--border-color, #e0e0e0);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #475569;
+  background: var(--bg-secondary, #ffffff);
+  color: var(--text-secondary, #416CA6);
   padding: 0 13px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0;
   cursor: pointer;
   transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 
   &:hover {
-    border-color: rgba(57, 173, 216, 0.42);
-    background: #f6fbff;
-    color: #1d4e72;
+    border-color: var(--primary-soft, #7A91BF);
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--text-primary, #2E56A6);
   }
 }
 
 .activeTab {
-  border-color: rgba(57, 173, 216, 0.48);
-  background: #eaf7ff;
-  color: #12638d;
+  border-color: var(--primary-color, #2E56A6);
+  background: var(--primary-color, #2E56A6);
+  color: #ffffff;
+
+  &:hover {
+    background: var(--primary-light, #3F61A6);
+    color: #ffffff;
+  }
 }
 
 .statusCard {
   overflow: hidden;
   width: 100%;
   min-width: 0;
-  border-radius: 8px;
-  border: 1px solid rgba(207, 216, 229, 0.9);
-  background: #ffffff;
-  box-shadow: 0 12px 28px rgba(31, 49, 73, 0.11);
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.08));
 }
 
 .detailCard {
@@ -161,51 +166,52 @@
 }
 
 .statusCardHeader {
-  min-height: 74px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 0 34px 0 42px;
-  background: #f8fbff;
-  border-bottom: 1px solid #eef3f8;
+  padding: 0 24px 0 28px;
+  background: var(--bg-tertiary, #f8f9fa);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
 }
 
 .activeHeader {
-  background: #f7fbff;
+  background: var(--alert-info-bg, #e8f0ff);
 }
 
 .statusTitleButton {
   min-width: 0;
   border: 0;
   background: transparent;
-  color: #252a32;
+  color: var(--text-primary, #2E56A6);
   padding: 0;
   text-align: left;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 900;
   line-height: 1.2;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   cursor: pointer;
   overflow-wrap: anywhere;
 }
 
 .menuIcon {
   flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: rgba(32, 36, 44, 0.64);
+  color: var(--text-muted, #7A91BF);
   cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
 
   &:hover {
-    background: rgba(226, 236, 249, 0.68);
-    color: rgba(32, 36, 44, 0.88);
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--text-primary, #2E56A6);
   }
 }
 
@@ -388,52 +394,53 @@
 }
 
 .infographicCenterText {
-  fill: #263244;
+  fill: var(--text-primary, #2E56A6);
   pointer-events: none;
 }
 
 .infographicCenterPercent {
   font-size: 30px;
-  font-weight: 950;
-  letter-spacing: 0;
+  font-weight: 900;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
+  fill: var(--text-primary, #2E56A6);
 }
 
 .infographicCenterName {
-  fill: #263244;
-  font-size: 18px;
-  font-weight: 950;
+  fill: var(--text-secondary, #416CA6);
+  font-size: 17px;
+  font-weight: 800;
   letter-spacing: 0;
 }
 
 .infographicCenterValue {
-  fill: #4f5b6b;
+  fill: var(--text-primary, #2E56A6);
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
 .infographicCenterBreakdown {
-  fill: #64748b;
-  font-size: 10px;
-  font-weight: 850;
+  fill: var(--text-muted, #7A91BF);
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
 .infographicCenterLabel {
-  fill: #7a8493;
-  font-size: 9px;
-  font-weight: 850;
+  fill: var(--text-muted, #7A91BF);
+  font-size: 10px;
+  font-weight: 700;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
 .pieLabel {
-  fill: #151a22;
-  stroke: #ffffff;
-  stroke-width: 4px;
+  fill: #ffffff;
+  stroke: rgba(0, 0, 0, 0.4);
+  stroke-width: 3px;
   paint-order: stroke;
   font-size: 14px;
   font-weight: 900;
@@ -447,11 +454,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px 28px;
+  gap: 12px 24px;
   flex-wrap: wrap;
-  color: #2b3037;
-  font-size: 14px;
-  font-weight: 800;
+  color: var(--text-secondary, #416CA6);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .legendItem {
@@ -466,31 +473,33 @@
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
-  color: #2b3037;
+  color: var(--text-secondary, #416CA6);
   padding: 0 10px;
   font: inherit;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
 
   &:hover,
   &:focus-visible {
-    border-color: #d7e3ef;
-    background: #f8fbff;
-    color: #152238;
+    border-color: var(--primary-soft, #7A91BF);
+    background: var(--alert-info-bg, #e8f0ff);
+    color: var(--text-primary, #2E56A6);
     outline: none;
   }
 }
 
 .legendButtonActive {
-  border-color: #c8d9ea;
-  background: #eef7ff;
-  color: #10243d;
+  border-color: var(--primary-color, #2E56A6);
+  background: var(--alert-info-bg, #e8f0ff);
+  color: var(--text-primary, #2E56A6);
+  font-weight: 800;
   transform: translateY(-1px);
 }
 
 .legendDot {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
@@ -506,25 +515,25 @@
   min-width: 520px;
   border-collapse: collapse;
   table-layout: fixed;
-  color: #334155;
-  font-size: 16px;
+  color: var(--text-primary, #2E56A6);
+  font-size: 15px;
   font-weight: 800;
 
   th,
   td {
-    height: 51px;
+    height: 48px;
     padding: 0 14px;
-    border-bottom: 1px solid #edf2f7;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
     text-align: center;
     white-space: nowrap;
   }
 
   th {
-    height: 47px;
-    color: #64748b;
-    font-size: 15px;
-    font-weight: 900;
-    background: #fbfdff;
+    height: 44px;
+    color: var(--text-muted, #7A91BF);
+    font-size: 13px;
+    font-weight: 800;
+    background: var(--bg-tertiary, #f8f9fa);
   }
 
   td {
@@ -537,21 +546,21 @@
   align-items: center;
   justify-content: center;
   min-width: 76px;
-  min-height: 30px;
+  min-height: 28px;
   border-radius: 8px;
   padding: 0 12px;
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .totalRow {
-  background: #effbf3;
-  color: #17713b;
+  background: var(--alert-info-bg, #e8f0ff);
+  color: var(--text-primary, #2E56A6);
 
   td {
-    border-bottom-color: #bceccd;
-    font-size: 17px;
-    font-weight: 950;
+    border-bottom-color: rgba(46, 86, 166, 0.2);
+    font-size: 15px;
+    font-weight: 900;
   }
 }
 
@@ -987,5 +996,108 @@
     min-width: 68px;
     min-height: 28px;
     font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   Dark Mode Overrides (:global(.darkAppMode))
+   ========================================================================== */
+:global(.darkAppMode) {
+  .statusCard {
+    background: #1c2541;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .statusCardHeader {
+    background: #172033;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .activeHeader {
+    background: rgba(46, 86, 166, 0.3);
+  }
+
+  .statusTitleButton {
+    color: #ffffff;
+  }
+
+  .menuIcon {
+    color: #7A91BF;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+  }
+
+  .panelTab {
+    background: rgba(255, 255, 255, 0.08);
+    color: #7A91BF;
+    border-color: rgba(255, 255, 255, 0.12);
+
+    &:hover {
+      background: rgba(46, 86, 166, 0.3);
+      color: #ffffff;
+    }
+  }
+
+  .activeTab {
+    background: var(--primary-color, #2E56A6);
+    color: #ffffff;
+    border-color: var(--primary-color, #2E56A6);
+  }
+
+  .infographicCenterText {
+    fill: #ffffff;
+  }
+
+  .infographicCenterPercent,
+  .infographicCenterName,
+  .infographicCenterValue {
+    fill: #ffffff;
+  }
+
+  .infographicCenterBreakdown,
+  .infographicCenterLabel {
+    fill: #7A91BF;
+  }
+
+  .legendButton {
+    color: #7A91BF;
+
+    &:hover {
+      background: rgba(46, 86, 166, 0.25);
+      color: #ffffff;
+    }
+  }
+
+  .legendButtonActive {
+    background: rgba(46, 86, 166, 0.35);
+    color: #ffffff;
+    border-color: rgba(147, 197, 253, 0.3);
+  }
+
+  .statusTable {
+    color: #ffffff;
+
+    th {
+      color: #7A91BF;
+      background: #172033;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    td {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .totalRow {
+      background: rgba(46, 86, 166, 0.25);
+      color: #ffffff;
+
+      td {
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+      }
+    }
   }
 }
