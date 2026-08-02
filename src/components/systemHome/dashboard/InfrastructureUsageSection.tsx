@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../FirstHomePage.module.scss';
+import styles from './DashboardSections.module.scss';
 import { Activity } from 'lucide-react';
 
 export const InfrastructureUsageSection: React.FC = () => {

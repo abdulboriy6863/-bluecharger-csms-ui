@@ -131,3 +131,6 @@ Avoid marketing-page composition inside the app. The login can be cinematic, but
 5. Prioritize visual polish and workflow clarity.
 6. Start a dev server and provide the localhost URL after implementation.
 7. Verify the UI in browser before final response when possible.
+8. **Page vs Component Architecture Rule**: All UI elements, sectional components, cards, modals, and presentation blocks MUST live inside `src/components/<moduleName>/<featureName>/`. Files in `src/pages/<ModuleName>/` act purely as page entry doors/containers that manage page-level state and render components imported from `src/components/`.
+9. **Git Commit Workflow**: Always stage (`git add`), commit with descriptive messages (`git commit`), and push (`git push`) after completing a logical feature or refactoring step.
+

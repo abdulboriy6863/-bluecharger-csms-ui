@@ -1,27 +1,27 @@
 import React from 'react';
 import styles from './FirstHomePage.module.scss';
-import { GeneralStatisticsSection } from './sections/GeneralStatisticsSection';
-import { ChargerStatusSection } from './sections/ChargerStatusSection';
-import { AdvertisementSection } from './sections/AdvertisementSection';
-import { InfrastructureUsageSection } from './sections/InfrastructureUsageSection';
-import { FooterSection } from './sections/FooterSection';
+import { GeneralStatisticsSection } from '../../../../components/systemHome/dashboard/GeneralStatisticsSection';
+import { ChargerStatusSection } from '../../../../components/systemHome/dashboard/ChargerStatusSection';
+import { AdvertisementSection } from '../../../../components/systemHome/dashboard/AdvertisementSection';
+import { InfrastructureUsageSection } from '../../../../components/systemHome/dashboard/InfrastructureUsageSection';
+import { FooterSection } from '../../../../components/systemHome/dashboard/FooterSection';
 
 export const FirstHomePage: React.FC = () => {
   return (
     <div className={styles.container}>
-      {/* 1. General Statistics */}
+      {/* Section 1: General Statistics */}
       <GeneralStatisticsSection />
 
-      {/* 2. Charger Operation Status & Charger Status by Connector */}
+      {/* Section 2: Charger Operation & Connector Status */}
       <ChargerStatusSection />
 
-      {/* 3. Advertisement (Company Video / Promo) */}
+      {/* Section 3: Advertisement (Company Video & Promo) */}
       <AdvertisementSection />
 
-      {/* 4. Infrastructure Status & Charger Usage Statistics */}
+      {/* Section 4: Infrastructure Status & Usage Statistics */}
       <InfrastructureUsageSection />
 
-      {/* 5. Footer */}
+      {/* Section 5: Footer */}
       <FooterSection />
     </div>
   );

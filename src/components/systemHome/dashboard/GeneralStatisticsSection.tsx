@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../FirstHomePage.module.scss';
+import styles from './DashboardSections.module.scss';
 import { BarChart3 } from 'lucide-react';
 
 export const GeneralStatisticsSection: React.FC = () => {
