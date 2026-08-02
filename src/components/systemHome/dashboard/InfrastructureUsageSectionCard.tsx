@@ -241,7 +241,7 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   stackId="installed"
                   name={t(series.labelKey)}
                   fill={series.color}
-                  radius={[5, 5, 0, 0]}
+                  radius={[0, 0, 0, 0]}
                   maxBarSize={46}
                   animationDuration={700}
                   activeBar={{ stroke: '#172033', strokeWidth: 1.5, fillOpacity: 0.92 }}
