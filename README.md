@@ -186,18 +186,18 @@ Responsive behavior includes:
 ### Requirements
 
 - Node.js 18 or newer
-- npm or Yarn
+- Yarn
 
 ### Install dependencies
 
 ~~~bash
-npm install
+yarn install
 ~~~
 
 ### Start the development server
 
 ~~~bash
-npm run dev
+yarn run dev
 ~~~
 
 Open the local URL shown by Vite, normally:
@@ -209,19 +209,19 @@ http://localhost:5173
 ### Build for production
 
 ~~~bash
-npm run build
+yarn run build
 ~~~
 
 ### Type check
 
 ~~~bash
-npm run lint
+yarn run lint
 ~~~
 
 ### Preview the production build
 
 ~~~bash
-npm run preview
+yarn run preview
 ~~~
 
 ## Validation
@@ -229,7 +229,7 @@ npm run preview
 Before completing a feature, run:
 
 ~~~bash
-npm run build
+yarn run build
 git diff --check
 ~~~
 
