@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import {
   Cell,
   Pie,
@@ -40,8 +40,57 @@ interface ChargerStatusChartCardProps {
 }
 
 const RADIAN = Math.PI / 180;
+const OPERATION_CHART_INNER_RADIUS = 82;
+const OPERATION_CHART_BASE_OUTER_RADIUS = 158;
+const OPERATION_CHART_MAX_EXTENSION = 78;
+const OPERATION_CHART_VIEWBOX_SIZE = 560;
 
 const formatPercent = (value: number): string => `${(value * 100).toFixed(1)} %`;
+
+const mixHexColor = (hexColor: string, mixWith: string, amount: number) => {
+  const parseHex = (value: string) => {
+    const normalized = value.replace('#', '');
+    return {
+      r: parseInt(normalized.slice(0, 2), 16),
+      g: parseInt(normalized.slice(2, 4), 16),
+      b: parseInt(normalized.slice(4, 6), 16),
+    };
+  };
+  const base = parseHex(hexColor);
+  const target = parseHex(mixWith);
+  const mixChannel = (from: number, to: number) => Math.round(from + (to - from) * amount);
+
+  return `rgb(${mixChannel(base.r, target.r)}, ${mixChannel(base.g, target.g)}, ${mixChannel(base.b, target.b)})`;
+};
+
+const polarPoint = (radius: number, angle: number) => {
+  const angleInRadians = (angle - 90) * RADIAN;
+  return {
+    x: radius * Math.cos(angleInRadians),
+    y: radius * Math.sin(angleInRadians),
+  };
+};
+
+const createAnnularSectorPath = (
+  innerRadius: number,
+  outerRadius: number,
+  startAngle: number,
+  endAngle: number,
+) => {
+  const outerStart = polarPoint(outerRadius, startAngle);
+  const outerEnd = polarPoint(outerRadius, endAngle);
+  const innerEnd = polarPoint(innerRadius, endAngle);
+  const innerStart = polarPoint(innerRadius, startAngle);
+  const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+
+  return [
+    `M ${outerStart.x.toFixed(3)} ${outerStart.y.toFixed(3)}`,
+    `A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${outerEnd.x.toFixed(3)} ${outerEnd.y.toFixed(3)}`,
+    `L ${innerEnd.x.toFixed(3)} ${innerEnd.y.toFixed(3)}`,
+    `A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${innerStart.x.toFixed(3)} ${innerStart.y.toFixed(3)}`,
+    'Z',
+  ].join(' ');
+};
 
 const renderPieLabel = ({
   cx = 0,
@@ -80,6 +129,110 @@ const getPanelTotals = (items: ChargerStatusBreakdownItem[]) => items.reduce(
   }),
   { fast: 0, slow: 0, total: 0 },
 );
+
+const OperationInfographicPie: React.FC<{
+  data: ChartItem[];
+  total: number;
+  unit: string;
+  totalLabel: string;
+}> = ({ data, total, unit, totalLabel }) => {
+  const gradientPrefix = useId().replace(/:/g, '');
+  const segmentShadowId = `${gradientPrefix}-segmentShadow`;
+  const centerShadowId = `${gradientPrefix}-centerShadow`;
+  const maxTotal = Math.max(...data.map((item) => item.total));
+  let cursorAngle = -86;
+
+  return (
+    <svg
+      className={styles.infographicSvg}
+      viewBox={`${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${-OPERATION_CHART_VIEWBOX_SIZE / 2} ${OPERATION_CHART_VIEWBOX_SIZE} ${OPERATION_CHART_VIEWBOX_SIZE}`}
+      role="img"
+      aria-label={`${totalLabel} ${total.toLocaleString()}${unit}`}
+    >
+      <defs>
+        <filter id={segmentShadowId} x="-24%" y="-24%" width="148%" height="148%">
+          <feDropShadow dx="0" dy="10" stdDeviation="7" floodColor="#1f3149" floodOpacity="0.15" />
+        </filter>
+        <filter id={centerShadowId} x="-28%" y="-28%" width="156%" height="156%">
+          <feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#1f3149" floodOpacity="0.17" />
+        </filter>
+        {data.map((item) => (
+          <linearGradient
+            key={item.id}
+            id={`${gradientPrefix}-${item.id}`}
+            x1="-10%"
+            y1="-10%"
+            x2="110%"
+            y2="110%"
+          >
+            <stop offset="0%" stopColor={mixHexColor(item.color, '#ffffff', 0.26)} />
+            <stop offset="100%" stopColor={mixHexColor(item.color, '#000000', 0.08)} />
+          </linearGradient>
+        ))}
+      </defs>
+
+      {data.map((item) => {
+        const sweep = item.percent * 360;
+        const gap = Math.min(2.2, Math.max(0.4, sweep * 0.18));
+        const startAngle = cursorAngle + gap / 2;
+        const endAngle = cursorAngle + sweep - gap / 2;
+        const outerRadius = Math.round(
+          OPERATION_CHART_BASE_OUTER_RADIUS
+            + Math.pow(item.total / maxTotal, 0.44) * OPERATION_CHART_MAX_EXTENSION,
+        );
+        const labelRadius = OPERATION_CHART_INNER_RADIUS + (outerRadius - OPERATION_CHART_INNER_RADIUS) * 0.64;
+        const labelPoint = polarPoint(labelRadius, startAngle + (endAngle - startAngle) / 2);
+        const path = createAnnularSectorPath(
+          OPERATION_CHART_INNER_RADIUS,
+          outerRadius,
+          startAngle,
+          Math.max(startAngle + 0.3, endAngle),
+        );
+        const showLabel = item.percent >= 0.065;
+
+        cursorAngle += sweep;
+
+        return (
+          <g key={item.id}>
+            <path
+              className={styles.infographicSegment}
+              d={path}
+              fill={`url(#${gradientPrefix}-${item.id})`}
+              filter={`url(#${segmentShadowId})`}
+            />
+            {showLabel && (
+              <text
+                className={styles.infographicLabel}
+                x={labelPoint.x}
+                y={labelPoint.y}
+                textAnchor="middle"
+                dominantBaseline="central"
+              >
+                <tspan className={styles.infographicLabelName} x={labelPoint.x} dy="-0.7em">
+                  {item.name}
+                </tspan>
+                <tspan className={styles.infographicLabelPercent} x={labelPoint.x} dy="1.2em">
+                  {formatPercent(item.percent)}
+                </tspan>
+              </text>
+            )}
+          </g>
+        );
+      })}
+
+      <circle className={styles.infographicCenterOuter} r="101" filter={`url(#${centerShadowId})`} />
+      <circle className={styles.infographicCenterInner} r="82" />
+      <text className={styles.infographicCenterText} textAnchor="middle" dominantBaseline="central">
+        <tspan className={styles.infographicCenterValue} x="0" dy="-0.18em">
+          {total.toLocaleString()}{unit}
+        </tspan>
+        <tspan className={styles.infographicCenterLabel} x="0" dy="1.35em">
+          {totalLabel}
+        </tspan>
+      </text>
+    </svg>
+  );
+};
 
 const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
   panel,
@@ -133,31 +286,40 @@ const ChargerStatusChartCard: React.FC<ChargerStatusChartCardProps> = ({
       <div className={detail ? styles.detailBody : styles.summaryBody}>
         <div className={detail ? styles.detailChartPane : styles.chartPane}>
           <div className={styles.chartViewport}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
-                <Pie
-                  data={chartData}
-                  dataKey="total"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius="82%"
-                  stroke="#ffffff"
-                  strokeWidth={2}
-                  isAnimationActive={false}
-                  labelLine={false}
-                  label={renderPieLabel}
-                >
-                  {chartData.map((item) => (
-                    <Cell key={item.id} fill={item.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  isAnimationActive={false}
-                  formatter={(value, name) => [`${Number(value).toLocaleString()}${unit}`, String(name)]}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            {panel.id === 'operation' ? (
+              <OperationInfographicPie
+                data={chartData}
+                total={totals.total}
+                unit={unit}
+                totalLabel={t('dashboard.chargerStatus.total')}
+              />
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
+                  <Pie
+                    data={chartData}
+                    dataKey="total"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius="82%"
+                    stroke="#ffffff"
+                    strokeWidth={2}
+                    isAnimationActive={false}
+                    labelLine={false}
+                    label={renderPieLabel}
+                  >
+                    {chartData.map((item) => (
+                      <Cell key={item.id} fill={item.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    isAnimationActive={false}
+                    formatter={(value, name) => [`${Number(value).toLocaleString()}${unit}`, String(name)]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
 
           <div className={styles.legendGrid}>

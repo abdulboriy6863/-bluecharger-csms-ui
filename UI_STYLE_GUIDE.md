@@ -49,6 +49,8 @@ Until lower dashboard sections receive final product UI, render them as simple m
 
 - Mock/API data must live outside the component and feed both the pie chart and detail table.
 - The summary view uses two stable chart cards for operation status and connector status.
+- The first operation-status chart uses a custom SVG infographic donut where each segment's outer radius increases with its percentage share.
+- Keep the connector-status chart as the simpler standard pie until its separate design pass.
 - Clicking a chart opens a full-width detail state with the same chart on the left and a count table on the right.
 - The expanded state must keep fixed chart/table dimensions so the section does not collapse or jump while switching views.
 - Pie labels, legends, table headers, category names, connector names, and action aria labels must use i18n keys across all supported languages.
