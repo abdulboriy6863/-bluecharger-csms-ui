@@ -4,56 +4,6 @@
 .sectionWrapper {
   width: 100%;
   margin-bottom: 24px;
-  padding: 24px 28px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color, #e0e0e0);
-  background: var(--bg-tertiary, #f8f9fa);
-  box-shadow: 0 4px 20px var(--shadow, rgba(46, 86, 166, 0.06));
-}
-
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.sectionTitle {
-  margin: 0;
-  color: var(--text-primary, #2E56A6);
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.refreshButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--primary-color, #2E56A6);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(46, 86, 166, 0.22);
-  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
-
-  &:hover {
-    background: var(--primary-light, #3F61A6);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(46, 86, 166, 0.3);
-  }
-
-  svg {
-    stroke-width: 2.2;
-  }
 }
 
 .cardGrid {
@@ -322,20 +272,6 @@
    Dark Mode Styles (:global(.darkAppMode))
    ========================================================================== */
 :global(.darkAppMode) {
-  .sectionWrapper {
-    background: #0f172a;
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-
-  .sectionTitle {
-    color: #ffffff;
-  }
-
-  .refreshButton {
-    background: var(--primary-color, #2E56A6);
-    color: #ffffff;
-  }
-
   .statCard {
     border-color: rgba(255, 255, 255, 0.12);
     background: #1c2541;

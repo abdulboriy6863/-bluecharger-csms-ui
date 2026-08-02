@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../../scss/systemHome/GeneralStatisticsSection.module.scss';
 import { GeneralStatisticsCard } from './GeneralStatisticsCard';
 import { mockGeneralStatistics } from '../../../data/mockGeneralStatistics';
-import { BatteryCharging, Fuel, RefreshCw, UsersRound, Zap } from 'lucide-react';
+import { BatteryCharging, Fuel, UsersRound, Zap } from 'lucide-react';
 import { useI18n } from '../../../i18n/I18nContext';
 
 export const GeneralStatisticsSection: React.FC = () => {
@@ -11,14 +11,6 @@ export const GeneralStatisticsSection: React.FC = () => {
 
   return (
     <section className={styles.sectionWrapper} aria-label="General Statistics Section">
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>{t('dashboard.stats.sectionOverviewTitle')}</h2>
-        <button className={styles.refreshButton} type="button" aria-label={t('overview.refresh')}>
-          <RefreshCw size={14} />
-          <span>{t('overview.refresh')}</span>
-        </button>
-      </div>
-
       <div className={styles.cardGrid}>
         <GeneralStatisticsCard
           title={t('dashboard.stats.stationsTitle')}
