@@ -8,11 +8,11 @@ export const mockInfrastructureUsage: InfrastructureUsageData = {
       descriptionKey: 'dashboard.infrastructure.distributionSubtitle',
       yAxisLabelKey: 'dashboard.infrastructure.axis.installedChargers',
       series: [
-        { id: 'slow', labelKey: 'dashboard.infrastructure.type.slow', color: '#2F80ED' },
-        { id: 'fast', labelKey: 'dashboard.infrastructure.type.fast', color: '#8B5CF6' },
-        { id: 'fastBus', labelKey: 'dashboard.infrastructure.type.fastBus', color: '#F43F5E' },
-        { id: 'distributed', labelKey: 'dashboard.infrastructure.type.distributed', color: '#00BFA6' },
-        { id: 'distributedBus', labelKey: 'dashboard.infrastructure.type.distributedBus', color: '#F2B84B' },
+        { id: 'fast', labelKey: 'dashboard.infrastructure.type.fast', color: '#2E56A6' },
+        { id: 'slow', labelKey: 'dashboard.infrastructure.type.slow', color: '#93C5FD' },
+        { id: 'fastBus', labelKey: 'dashboard.infrastructure.type.fastBus', color: '#4F46E5' },
+        { id: 'distributed', labelKey: 'dashboard.infrastructure.type.distributed', color: '#38BDF8' },
+        { id: 'distributedBus', labelKey: 'dashboard.infrastructure.type.distributedBus', color: '#A5B4FC' },
       ],
       regions: [
         { id: 'gangwonSpecial', labelKey: 'dashboard.infrastructure.region.gangwonSpecial', values: { slow: 36, fast: 18, fastBus: 2, distributed: 5, distributedBus: 1 } },
@@ -41,11 +41,11 @@ export const mockInfrastructureUsage: InfrastructureUsageData = {
       descriptionKey: 'dashboard.infrastructure.modelSubtitle',
       yAxisLabelKey: 'dashboard.infrastructure.axis.installedModels',
       series: [
-        { id: 'model7kw', labelKey: 'dashboard.infrastructure.model.7kw', color: '#3B82F6' },
-        { id: 'model40kw', labelKey: 'dashboard.infrastructure.model.40kw', color: '#7C3AED' },
-        { id: 'model100kwDual', labelKey: 'dashboard.infrastructure.model.100kwDual', color: '#F43F5E' },
-        { id: 'model50kwSingle', labelKey: 'dashboard.infrastructure.model.50kwSingle', color: '#0F9D8A' },
-        { id: 'model50kwDual', labelKey: 'dashboard.infrastructure.model.50kwDual', color: '#D97706' },
+        { id: 'model7kw', labelKey: 'dashboard.infrastructure.model.7kw', color: '#93C5FD' },
+        { id: 'model40kw', labelKey: 'dashboard.infrastructure.model.40kw', color: '#60A5FA' },
+        { id: 'model50kwSingle', labelKey: 'dashboard.infrastructure.model.50kwSingle', color: '#3B82F6' },
+        { id: 'model50kwDual', labelKey: 'dashboard.infrastructure.model.50kwDual', color: '#4F46E5' },
+        { id: 'model100kwDual', labelKey: 'dashboard.infrastructure.model.100kwDual', color: '#2E56A6' },
       ],
       regions: [
         { id: 'gangwonSpecial', labelKey: 'dashboard.infrastructure.region.gangwonSpecial', values: { model7kw: 38, model40kw: 12, model100kwDual: 4, model50kwSingle: 3, model50kwDual: 1 } },
