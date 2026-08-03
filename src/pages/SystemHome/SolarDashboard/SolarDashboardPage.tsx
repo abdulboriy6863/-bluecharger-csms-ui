@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/SolarDashboardPage.module.scss';
 import { SolarDashboardPageCard } from '../../../components/systemHome/solardashboard/SolarDashboardPageCard';
+import { mockSolarDashboard } from '../../../data/mockSolarDashboard';
 import { useI18n } from '../../../i18n/I18nContext';
 
 export const SolarDashboardPage: React.FC = () => {
@@ -8,7 +9,7 @@ export const SolarDashboardPage: React.FC = () => {
 
   return (
     <section className={styles.page} aria-label={t('home.solar')}>
-      <SolarDashboardPageCard titleKey="home.solar" />
+      <SolarDashboardPageCard data={mockSolarDashboard} />
     </section>
   );
 };
