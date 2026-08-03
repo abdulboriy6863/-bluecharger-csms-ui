@@ -1,5 +1,5 @@
 import React, { useId, useMemo, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Maximize2, X } from 'lucide-react';
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import {
   ChargerStatusBreakdownItem,
@@ -307,7 +307,7 @@ export const ChargerStatusSectionCard: React.FC<ChargerStatusSectionCardProps> =
             aria-label={t('dashboard.chargerStatus.closeDetail')}
             onClick={onClose}
           >
-            <X size={24} />
+            <X size={20} />
           </button>
         ) : (
           <button
@@ -316,7 +316,7 @@ export const ChargerStatusSectionCard: React.FC<ChargerStatusSectionCardProps> =
             aria-label={t('dashboard.chargerStatus.openDetail')}
             onClick={() => onSelect?.(panel.id)}
           >
-            <Menu size={26} />
+            <Maximize2 size={20} />
           </button>
         )}
       </header>
