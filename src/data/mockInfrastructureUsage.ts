@@ -75,12 +75,12 @@ export const mockInfrastructureUsage: InfrastructureUsageData = {
     leftAxisLabelKey: 'dashboard.infrastructure.axis.chargerCount',
     rightAxisLabelKey: 'dashboard.infrastructure.axis.energy',
     points: [
-      { id: 'fiveDaysAgo', labelKey: 'dashboard.infrastructure.period.fiveDaysAgo', fastEnergyKwh: 28500, slowEnergyKwh: 12800, totalEnergyKwh: 41500, fastChargerCount: 300, slowChargerCount: 455 },
-      { id: 'fourDaysAgo', labelKey: 'dashboard.infrastructure.period.fourDaysAgo', fastEnergyKwh: 29000, slowEnergyKwh: 13700, totalEnergyKwh: 43000, fastChargerCount: 302, slowChargerCount: 470 },
-      { id: 'threeDaysAgo', labelKey: 'dashboard.infrastructure.period.threeDaysAgo', fastEnergyKwh: 29100, slowEnergyKwh: 13900, totalEnergyKwh: 43800, fastChargerCount: 304, slowChargerCount: 466 },
-      { id: 'twoDaysAgo', labelKey: 'dashboard.infrastructure.period.twoDaysAgo', fastEnergyKwh: 29900, slowEnergyKwh: 13600, totalEnergyKwh: 43200, fastChargerCount: 314, slowChargerCount: 462 },
-      { id: 'oneDayAgo', labelKey: 'dashboard.infrastructure.period.oneDayAgo', fastEnergyKwh: 25000, slowEnergyKwh: 10100, totalEnergyKwh: 32800, fastChargerCount: 250, slowChargerCount: 305 },
-      { id: 'today', labelKey: 'dashboard.infrastructure.period.today', fastEnergyKwh: 20200, slowEnergyKwh: 6500, totalEnergyKwh: 24600, fastChargerCount: 235, slowChargerCount: 212 },
+      { id: 'fiveDaysAgo', labelKey: 'dashboard.infrastructure.period.fiveDaysAgo', fastEnergyKwh: 22403.18, slowEnergyKwh: 14032.38, totalEnergyKwh: 36435.56, fastChargerCount: 296, slowChargerCount: 462 },
+      { id: 'fourDaysAgo', labelKey: 'dashboard.infrastructure.period.fourDaysAgo', fastEnergyKwh: 22786.02, slowEnergyKwh: 14210.71, totalEnergyKwh: 36996.73, fastChargerCount: 297, slowChargerCount: 457 },
+      { id: 'threeDaysAgo', labelKey: 'dashboard.infrastructure.period.threeDaysAgo', fastEnergyKwh: 23072.02, slowEnergyKwh: 13919.38, totalEnergyKwh: 36991.40, fastChargerCount: 307, slowChargerCount: 453 },
+      { id: 'twoDaysAgo', labelKey: 'dashboard.infrastructure.period.twoDaysAgo', fastEnergyKwh: 18983.44, slowEnergyKwh: 9413.40, totalEnergyKwh: 28396.84, fastChargerCount: 243, slowChargerCount: 295 },
+      { id: 'oneDayAgo', labelKey: 'dashboard.infrastructure.period.oneDayAgo', fastEnergyKwh: 17053.22, slowEnergyKwh: 8390.35, totalEnergyKwh: 25443.57, fastChargerCount: 246, slowChargerCount: 277 },
+      { id: 'today', labelKey: 'dashboard.infrastructure.period.today', fastEnergyKwh: 2792.75, slowEnergyKwh: 346.91, totalEnergyKwh: 3139.66, fastChargerCount: 73, slowChargerCount: 27 },
     ],
   },
 };

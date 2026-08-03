@@ -47,16 +47,20 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
 
   const maxTotal = useMemo(() => Math.max(...allRegions.map((r) => r.total), 1), [allRegions]);
 
-  // 7-day usage trend data formatted for grouped bars & spline curve matching Stitch reference UI
+  const totalEnergyKwh = useMemo(
+    () => data.usageTrend.points.reduce((sum, point) => sum + point.totalEnergyKwh, 0),
+    [data.usageTrend.points],
+  );
+
+  // Keep the existing chart scale while sourcing labels and values from the six reference periods.
   const usageTrendData = useMemo(() => {
-    const dayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-    return data.usageTrend.points.slice(0, 7).map((point, index) => ({
-      day: dayLabels[index % 7],
+    return data.usageTrend.points.slice(0, 6).map((point) => ({
+      day: t(point.labelKey),
       fastKwh: Math.round(point.fastEnergyKwh / 100),
       slowKwh: Math.round(point.slowEnergyKwh / 100),
       activeCounts: Math.round((point.fastChargerCount + point.slowChargerCount) / 3),
     }));
-  }, [data.usageTrend.points]);
+  }, [data.usageTrend.points, t]);
 
   return (
     <div className={styles.infrastructureUsageGrid}>
@@ -126,15 +130,15 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
       <article className={styles.infrastructureCard}>
         <header className={styles.infrastructureHeader}>
           <div className={styles.infrastructureTitleGroup}>
-            <h3>{t('dashboard.infrastructure.energyTrendTitle')}</h3>
-            <p>{t('dashboard.infrastructure.usagePatternSubtitle')}</p>
+            <h3>{t(data.usageTrend.titleKey)}</h3>
+            <p>{t(data.usageTrend.descriptionKey)}</p>
           </div>
           <div className={styles.trendPillGroup}>
             <span className={styles.peakDayPill}>
-              {t('dashboard.infrastructure.peakDayLabel')}
+              {t('dashboard.infrastructure.summary.peak')}
             </span>
             <span className={styles.totalKwhPill}>
-              Total: <strong>228,000 kWh</strong>
+              {t('dashboard.infrastructure.summary.totalEnergy')}: <strong>{totalEnergyKwh.toLocaleString(undefined, { maximumFractionDigits: 2 })} kWh</strong>
             </span>
           </div>
         </header>
@@ -161,12 +165,12 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
                   color: '#2E56A6',
                 }}
               />
-              <ReBar dataKey="fastKwh" name={t('dashboard.infrastructure.fastKwh')} fill="#93C5FD" radius={[4, 4, 0, 0]} maxBarSize={24} />
-              <ReBar dataKey="slowKwh" name={t('dashboard.infrastructure.slowKwh')} fill="#2E56A6" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <ReBar dataKey="fastKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#93C5FD" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <ReBar dataKey="slowKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#2E56A6" radius={[4, 4, 0, 0]} maxBarSize={24} />
               <ReLine
                 type="monotone"
                 dataKey="activeCounts"
-                name={t('dashboard.infrastructure.activeCounts')}
+                name={t('dashboard.infrastructure.metric.fastChargers')}
                 stroke="#2E56A6"
                 strokeWidth={2.5}
                 strokeDasharray="4 4"
@@ -179,16 +183,16 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
         <div className={styles.trendFooterRow}>
           <div className={styles.trendLegendLeft}>
             <span className={styles.legendSquareItem}>
-              <i className={styles.lightSquare} /> {t('dashboard.infrastructure.fastKwh')}
+              <i className={styles.lightSquare} /> {t('dashboard.infrastructure.metric.fastEnergy')}
             </span>
             <span className={styles.legendSquareItem}>
-              <i className={styles.darkSquare} /> {t('dashboard.infrastructure.slowKwh')}
+              <i className={styles.darkSquare} /> {t('dashboard.infrastructure.metric.slowEnergy')}
             </span>
             <span className={styles.legendLineItem}>
-              <i className={styles.dashedLine} /> {t('dashboard.infrastructure.activeCounts')}
+              <i className={styles.dashedLine} /> {t('dashboard.infrastructure.metric.fastChargers')}
             </span>
           </div>
-          <span className={styles.updatedTimeText}>{t('dashboard.infrastructure.updatedTime')}</span>
+          <span className={styles.updatedTimeText}>{t('dashboard.infrastructure.summary.peak')}</span>
         </div>
       </article>
     </div>
