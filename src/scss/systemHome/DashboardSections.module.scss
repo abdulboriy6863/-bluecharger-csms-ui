@@ -166,59 +166,204 @@
 }
 
 .statusCardHeader {
-  min-height: 64px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 0 24px 0 28px;
-  background: var(--bg-tertiary, #f8f9fa);
+  padding: 16px 24px;
+  background: var(--bg-secondary, #ffffff);
   border-bottom: 1px solid var(--border-color, #e0e0e0);
 }
 
-.activeHeader {
-  background: var(--alert-info-bg, #e8f0ff);
-}
-
-.statusTitleButton {
-  min-width: 0;
-  border: 0;
-  background: transparent;
+.statusCardTitle {
+  margin: 0;
   color: var(--text-primary, #2E56A6);
-  padding: 0;
-  text-align: left;
   font-size: 18px;
   font-weight: 900;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  cursor: pointer;
-  overflow-wrap: anywhere;
 }
 
-.menuIcon {
-  flex: 0 0 auto;
-  width: 38px;
-  height: 38px;
+.expandIconButton {
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0;
+  border: 1px solid var(--border-color, #e0e0e0);
   border-radius: 8px;
-  background: transparent;
-  color: var(--text-muted, #7A91BF);
+  background: var(--bg-tertiary, #f8f9fa);
+  color: var(--primary-color, #2E56A6);
   cursor: pointer;
-  transition: background 0.16s ease, color 0.16s ease;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
 
   &:hover {
     background: var(--alert-info-bg, #e8f0ff);
-    color: var(--text-primary, #2E56A6);
+    border-color: var(--primary-color, #2E56A6);
+    transform: scale(1.04);
   }
+}
+
+.cardMainBody {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+  min-height: 210px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.donutPane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.donutSvg {
+  width: 190px;
+  height: 190px;
+  overflow: visible;
+  display: block;
+}
+
+.donutSegment {
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  stroke: #ffffff;
+  stroke-width: 2px;
+
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+.donutSegmentActive {
+  stroke-width: 3px;
+  opacity: 1;
+}
+
+.donutSegmentDimmed {
+  opacity: 0.35;
+}
+
+.donutCenterText {
+  pointer-events: none;
+}
+
+.donutCenterValue {
+  font-size: 26px;
+  font-weight: 900;
+  fill: var(--text-primary, #2E56A6);
+  font-variant-numeric: tabular-nums;
+}
+
+.donutCenterLabel {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--text-muted, #7A91BF);
+  text-transform: uppercase;
+}
+
+/* Operation Status List View */
+.listPane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.operationRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--bg-tertiary, #f8f9fa);
+  border: 1px solid var(--border-color, #e0e0e0);
+  transition: background 0.16s ease, border-color 0.16s ease;
+
+  &:hover {
+    background: #f1f5f9;
+    border-color: var(--primary-soft, #7A91BF);
+  }
+}
+
+.operationRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.colorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.operationName {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-secondary, #416CA6);
+}
+
+.operationValue {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-primary, #2E56A6);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Connector Status 2x2 Tinted Cards Grid View */
+.gridPane {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  align-content: center;
+}
+
+.connectorTintBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  min-height: 74px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.tintBoxTitle {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tintBoxValue {
+  font-size: 22px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .summaryBody {
   display: flex;
   flex-direction: column;
-  min-height: 390px;
   padding: 18px 24px 26px;
 }
 
