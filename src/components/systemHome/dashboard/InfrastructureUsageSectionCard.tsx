@@ -1,8 +1,11 @@
 import React, { useMemo, useState } from 'react';
+import { BarChart3, Download, Menu, Zap } from 'lucide-react';
 import {
   Bar,
+  BarChart,
   CartesianGrid,
   ComposedChart,
+  Legend,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -12,177 +15,336 @@ import {
 import styles from '../../../scss/systemHome/DashboardSections.module.scss';
 import { useI18n } from '../../../i18n/I18nContext';
 import type {
+  InfrastructureChartMenuProps,
+  InfrastructureDistributionChartRow,
   InfrastructureDistributionMode,
+  InfrastructureUsageChartPoint,
   InfrastructureUsageSectionCardProps,
 } from '../../../libs/types/dashboard/infrastructureUsage';
+
+const formatNumber = (value: number): string => value.toLocaleString();
+const formatEnergy = (value: number): string => `${value.toLocaleString()} kWh`;
+const formatCount = (value: number): string => value.toLocaleString();
+const normalizeTooltipValue = (value: unknown): number => {
+  if (Array.isArray(value)) return Number(value[0] ?? 0);
+  return Number(value);
+};
+
+const downloadCsv = (fileName: string, rows: string[][]) => {
+  const csv = rows
+    .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+const ChartMenu: React.FC<InfrastructureChartMenuProps> = ({
+  open,
+  onDownloadCsv,
+}) => {
+  const { t } = useI18n();
+
+  if (!open) return null;
+
+  return (
+    <div className={styles.infrastructureMenuPanel} role="menu">
+      <button type="button" role="menuitem" onClick={onDownloadCsv}>
+        <Download size={15} />
+        <span>{t('dashboard.infrastructure.menu.downloadCsv')}</span>
+      </button>
+    </div>
+  );
+};
 
 export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSectionCardProps> = ({
   data,
 }) => {
   const { t } = useI18n();
   const [activeMode, setActiveMode] = useState<InfrastructureDistributionMode>('chargerType');
-
-  // Filter top regions for clean density presentation matching screenshot
+  const [openMenu, setOpenMenu] = useState<'distribution' | 'usage' | null>(null);
   const distributionPanel = data.distributionPanels[activeMode];
-  const topRegions = useMemo(() => {
-    return distributionPanel.regions
-      .map((region) => {
-        const slow = region.values.slow ?? region.values.model7kw ?? 0;
-        const fast = (region.values.fast ?? 0) + (region.values.fastBus ?? 0) + (region.values.model40kw ?? 0) + (region.values.model100kwDual ?? 0);
-        const total = slow + fast;
-        return {
-          id: region.id,
-          name: t(region.labelKey).split(' ')[0], // short name e.g. Seoul, Gyeonggi
-          slow,
-          fast,
-          total,
-        };
-      })
-      .filter((r) => r.total > 0)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 4); // Top 4 key regions matching Stitch screenshot
-  }, [distributionPanel, t]);
+  const modeOptions: InfrastructureDistributionMode[] = ['chargerType', 'modelName'];
 
-  const maxRegionTotal = useMemo(() => {
-    return Math.max(...topRegions.map((r) => r.total), 1);
-  }, [topRegions]);
+  const distributionChartData = useMemo<InfrastructureDistributionChartRow[]>(() => distributionPanel.regions.map((region) => {
+    const total = distributionPanel.series.reduce((sum, series) => sum + (region.values[series.id] ?? 0), 0);
 
-  // 7-day usage data formatted for bar + spline curve matching reference screenshot
-  const usageTrendData = useMemo(() => {
-    const dayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-    return data.usageTrend.points.slice(0, 7).map((point, index) => ({
-      day: dayLabels[index % 7],
-      fastKwh: Math.round(point.fastEnergyKwh / 10),
-      slowKwh: Math.round(point.slowEnergyKwh / 10),
-      activeCounts: point.fastChargerCount + point.slowChargerCount,
-    }));
-  }, [data.usageTrend.points]);
+    return {
+      id: region.id,
+      name: t(region.labelKey),
+      total,
+      ...region.values,
+    };
+  }), [distributionPanel, t]);
+
+  const usageChartData = useMemo<InfrastructureUsageChartPoint[]>(() => data.usageTrend.points.map((point) => ({
+    ...point,
+    name: t(point.labelKey),
+  })), [data.usageTrend.points, t]);
+
+  const distributionTotal = distributionChartData.reduce((sum, region) => sum + region.total, 0);
+  const usageTotalEnergy = data.usageTrend.points.reduce((sum, point) => sum + point.totalEnergyKwh, 0);
+  const usagePeak = data.usageTrend.points.reduce(
+    (peak, point) => (point.totalEnergyKwh > peak.totalEnergyKwh ? point : peak),
+    data.usageTrend.points[0],
+  );
+  const energyMetricNames = useMemo(() => new Set([
+    t('dashboard.infrastructure.metric.fastEnergy'),
+    t('dashboard.infrastructure.metric.slowEnergy'),
+    t('dashboard.infrastructure.metric.totalEnergy'),
+  ]), [t]);
+
+  const handleDownloadDistributionCsv = () => {
+    const header = [
+      t('dashboard.infrastructure.table.region'),
+      ...distributionPanel.series.map((series) => t(series.labelKey)),
+      t('dashboard.infrastructure.table.total'),
+    ];
+    const rows = distributionChartData.map((region) => [
+      region.name,
+      ...distributionPanel.series.map((series) => String(region[series.id] ?? 0)),
+      String(region.total),
+    ]);
+
+    downloadCsv('infrastructure-distribution.csv', [header, ...rows]);
+    setOpenMenu(null);
+  };
+
+  const handleDownloadUsageCsv = () => {
+    const rows = usageChartData.map((point) => [
+      point.name,
+      String(point.fastEnergyKwh),
+      String(point.slowEnergyKwh),
+      String(point.totalEnergyKwh),
+      String(point.fastChargerCount),
+      String(point.slowChargerCount),
+    ]);
+
+    downloadCsv('charger-usage-trend.csv', [
+      [
+        t('dashboard.infrastructure.table.period'),
+        t('dashboard.infrastructure.metric.fastEnergy'),
+        t('dashboard.infrastructure.metric.slowEnergy'),
+        t('dashboard.infrastructure.metric.totalEnergy'),
+        t('dashboard.infrastructure.metric.fastChargers'),
+        t('dashboard.infrastructure.metric.slowChargers'),
+      ],
+      ...rows,
+    ]);
+    setOpenMenu(null);
+  };
 
   return (
     <div className={styles.infrastructureUsageGrid}>
-      {/* Left Card: Regional Infrastructure */}
       <article className={styles.infrastructureCard}>
         <header className={styles.infrastructureHeader}>
           <div className={styles.infrastructureTitleGroup}>
-            <h3>{t('dashboard.infrastructure.regionalTitle')}</h3>
-            <p>{t('dashboard.infrastructure.densitySubtitle')}</p>
+            <h3>{t(distributionPanel.titleKey)}</h3>
+            <p>{t(distributionPanel.descriptionKey)}</p>
           </div>
-          <div className={styles.typeModelSwitcher}>
-            <button
-              type="button"
-              className={`${styles.switcherBtn} ${activeMode === 'chargerType' ? styles.activeSwitcherBtn : ''}`}
-              onClick={() => setActiveMode('chargerType')}
-            >
-              Type
-            </button>
-            <button
-              type="button"
-              className={`${styles.switcherBtn} ${activeMode === 'modelName' ? styles.activeSwitcherBtn : ''}`}
-              onClick={() => setActiveMode('modelName')}
-            >
-              Model
-            </button>
+          <div className={styles.infrastructureControls}>
+            <div className={styles.infrastructureModeGroup} role="radiogroup" aria-label={t('dashboard.infrastructure.modeAria')}>
+              {modeOptions.map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  className={`${styles.infrastructureModeButton} ${activeMode === mode ? styles.infrastructureModeActive : ''}`}
+                  onClick={() => setActiveMode(mode)}
+                  role="radio"
+                  aria-checked={activeMode === mode}
+                >
+                  {t(`dashboard.infrastructure.mode.${mode}`)}
+                </button>
+              ))}
+            </div>
+            <div className={styles.infrastructureMenuWrap}>
+              <button
+                type="button"
+                className={styles.infrastructureIconButton}
+                aria-label={t('dashboard.infrastructure.menu.open')}
+                onClick={() => setOpenMenu((current) => (current === 'distribution' ? null : 'distribution'))}
+              >
+                <Menu size={24} />
+              </button>
+            <ChartMenu
+              open={openMenu === 'distribution'}
+              onDownloadCsv={handleDownloadDistributionCsv}
+            />
+            </div>
           </div>
         </header>
 
-        <div className={styles.regionalBarsBody}>
-          {topRegions.map((region) => {
-            const fastPercent = (region.fast / maxRegionTotal) * 100;
-            const slowPercent = (region.slow / maxRegionTotal) * 100;
-
-            return (
-              <div key={region.id} className={styles.regionRow}>
-                <div className={styles.regionHeader}>
-                  <span className={styles.regionName}>{region.name}</span>
-                  <span className={styles.regionTotal}>{region.total.toLocaleString()}</span>
-                </div>
-                <div className={styles.progressTrack}>
-                  <div
-                    className={styles.fastSegment}
-                    style={{ width: `${Math.min(fastPercent, 80)}%` }}
-                  />
-                  <div
-                    className={styles.slowSegment}
-                    style={{ width: `${Math.min(slowPercent, 60)}%` }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className={styles.regionalLegendRow}>
-          <span className={styles.legendDotItem}>
-            <i className={styles.darkBlueDot} /> Fast
+        <div className={styles.infrastructureSummaryRail}>
+          <span>
+            <BarChart3 size={16} />
+            {t('dashboard.infrastructure.summary.totalInstalled')} <strong>{formatNumber(distributionTotal)}</strong>
           </span>
-          <span className={styles.legendDotItem}>
-            <i className={styles.skyBlueDot} /> Slow
+          <span>
+            <Zap size={16} />
+            {t('dashboard.infrastructure.summary.series')} <strong>{distributionPanel.series.length}</strong>
           </span>
         </div>
+
+        <div className={styles.infrastructureChartFrame}>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              data={distributionChartData}
+              margin={{ top: 16, right: 16, left: -12, bottom: 4 }}
+              barCategoryGap="10%"
+            >
+              <CartesianGrid stroke="var(--border-color, #e0e0e0)" strokeDasharray="3 5" vertical={false} />
+              <XAxis
+                dataKey="name"
+                interval={0}
+                angle={-25}
+                textAnchor="end"
+                height={52}
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 10, fontWeight: 600 }}
+                tickLine={false}
+                axisLine={{ stroke: 'var(--border-color, #e0e0e0)' }}
+              />
+              <YAxis
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
+                tickFormatter={(value) => formatCount(Number(value))}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                cursor={{ fill: 'rgba(46, 86, 166, 0.04)' }}
+                contentStyle={{
+                  backgroundColor: 'var(--bg-secondary, #ffffff)',
+                  border: '1px solid var(--border-color, #e0e0e0)',
+                  borderRadius: 8,
+                  boxShadow: '0 8px 20px var(--shadow, rgba(46, 86, 166, 0.12))',
+                  fontWeight: 700,
+                  fontSize: 12,
+                  color: 'var(--text-primary, #2E56A6)',
+                }}
+                formatter={(value, name) => [formatNumber(normalizeTooltipValue(value)), String(name)]}
+              />
+              {distributionPanel.series.map((series, index) => {
+                const isLast = index === distributionPanel.series.length - 1;
+                return (
+                  <Bar
+                    key={series.id}
+                    dataKey={series.id}
+                    stackId="installed"
+                    name={t(series.labelKey)}
+                    fill={series.color}
+                    radius={isLast ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                    maxBarSize={36}
+                    animationDuration={700}
+                  />
+                );
+              })}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className={styles.infrastructureLegend}>
+          {distributionPanel.series.map((series) => (
+            <span key={series.id}>
+              <i style={{ backgroundColor: series.color }} />
+              {t(series.labelKey)}
+            </span>
+          ))}
+        </div>
+
       </article>
 
-      {/* Right Card: Energy Consumption Trend */}
       <article className={styles.infrastructureCard}>
         <header className={styles.infrastructureHeader}>
           <div className={styles.infrastructureTitleGroup}>
-            <h3>{t('dashboard.infrastructure.energyTrendTitle')}</h3>
-            <p>{t('dashboard.infrastructure.usagePatternSubtitle')}</p>
+            <h3>{t(data.usageTrend.titleKey)}</h3>
+            <p>{t(data.usageTrend.descriptionKey)}</p>
           </div>
-          <div className={styles.trendPillGroup}>
-            <span className={styles.peakDayPill}>Peak Day: 3 days ago</span>
-            <span className={styles.totalKwhPill}>Total: 228,000 kWh</span>
+          <div className={styles.infrastructureMenuWrap}>
+            <button
+              type="button"
+              className={styles.infrastructureIconButton}
+              aria-label={t('dashboard.infrastructure.menu.open')}
+              onClick={() => setOpenMenu((current) => (current === 'usage' ? null : 'usage'))}
+            >
+              <Menu size={24} />
+            </button>
+            <ChartMenu
+              open={openMenu === 'usage'}
+              onDownloadCsv={handleDownloadUsageCsv}
+            />
           </div>
         </header>
 
-        <div className={styles.trendChartBody}>
-          <ResponsiveContainer width="100%" height={210}>
-            <ComposedChart data={usageTrendData} margin={{ top: 12, right: 12, left: -20, bottom: 0 }}>
-              <CartesianGrid stroke="#f1f5f9" vertical={false} />
+        <div className={styles.infrastructureSummaryRail}>
+          <span>
+            {t('dashboard.infrastructure.summary.totalEnergy')} <strong>{formatEnergy(usageTotalEnergy)}</strong>
+          </span>
+          <span>
+            {t('dashboard.infrastructure.summary.peak')} <strong>{t(usagePeak.labelKey)}</strong>
+          </span>
+        </div>
+
+        <div className={styles.infrastructureChartFrame}>
+          <ResponsiveContainer width="100%" height={300}>
+            <ComposedChart data={usageChartData} margin={{ top: 16, right: 16, left: -12, bottom: 4 }}>
+              <CartesianGrid stroke="var(--border-color, #e0e0e0)" strokeDasharray="3 5" vertical={false} />
               <XAxis
-                dataKey="day"
-                tick={{ fill: '#7A91BF', fontSize: 11, fontWeight: 700 }}
+                dataKey="name"
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
                 tickLine={false}
-                axisLine={false}
+                axisLine={{ stroke: 'var(--border-color, #e0e0e0)' }}
               />
-              <YAxis hide />
+              <YAxis
+                yAxisId="chargers"
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
+                tickFormatter={(value) => formatCount(Number(value))}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                yAxisId="energy"
+                orientation="right"
+                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
+                tickFormatter={(value) => `${Math.round(Number(value) / 1000)}k`}
+                axisLine={false}
+                tickLine={false}
+              />
               <Tooltip
+                cursor={{ fill: 'rgba(46, 86, 166, 0.04)' }}
                 contentStyle={{
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e0e0e0',
+                  backgroundColor: 'var(--bg-secondary, #ffffff)',
+                  border: '1px solid var(--border-color, #e0e0e0)',
                   borderRadius: 8,
-                  fontSize: 12,
+                  boxShadow: '0 8px 20px var(--shadow, rgba(46, 86, 166, 0.12))',
                   fontWeight: 700,
-                  color: '#2E56A6',
+                  fontSize: 12,
+                  color: 'var(--text-primary, #2E56A6)',
+                }}
+                formatter={(value, name) => {
+                  const metricName = String(name);
+                  const formatted = energyMetricNames.has(metricName)
+                    ? formatEnergy(normalizeTooltipValue(value))
+                    : formatCount(normalizeTooltipValue(value));
+
+                  return [formatted, metricName];
                 }}
               />
-              <Bar dataKey="fastKwh" fill="#dbeafe" radius={[4, 4, 0, 0]} maxBarSize={32} />
-              <Bar dataKey="slowKwh" fill="#0f4c81" radius={[4, 4, 0, 0]} maxBarSize={32} />
-              <Line
-                type="monotone"
-                dataKey="activeCounts"
-                stroke="#0f4c81"
-                strokeWidth={2.5}
-                strokeDasharray="4 4"
-                dot={{ r: 4, fill: '#0f4c81' }}
-              />
+              <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary, #416CA6)' }} />
+              <Bar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#2F80ED" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Bar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#00BFA6" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Bar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#8B5CF6" radius={[4, 4, 0, 0]} maxBarSize={28} />
+              <Line yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#F43F5E" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <Line yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#F2B84B" strokeWidth={2.5} strokeDasharray="6 5" dot={{ r: 4 }} activeDot={{ r: 6 }} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
 
-        <div className={styles.trendFooterRow}>
-          <div className={styles.trendLegendLeft}>
-            <span className={styles.legendSquareItem}>
-              <i className={styles.lightSquare} /> Fast kWh
-            </span>
-            <span className={styles.legendSquareItem}>
-              <i className={styles.darkSquare} /> Slow kWh
-            </span>
-            <span className={styles.legendLineItem}>
-              <i className={styles.dashedLine} /> Active Counts
-            </span>
-          </div>
-          <span className={styles.updatedTimeText}>Updated: 2 mins ago</span>
-        </div>
       </article>
     </div>
   );
