@@ -166,18 +166,12 @@
 }
 
 .statusCardHeader {
-  min-height: 64px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 0 24px 0 28px;
-  background: var(--bg-tertiary, #f8f9fa);
-  border-bottom: 1px solid var(--border-color, #e0e0e0);
-}
-
-.activeHeader {
-  background: var(--alert-info-bg, #e8f0ff);
+  padding: 18px 24px 0 28px;
 }
 
 .statusTitleButton {
@@ -1003,12 +997,7 @@
   }
 
   .statusCardHeader {
-    background: #172033;
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .activeHeader {
-    background: rgba(46, 86, 166, 0.3);
+    background: transparent;
   }
 
   .statusTitleButton {
