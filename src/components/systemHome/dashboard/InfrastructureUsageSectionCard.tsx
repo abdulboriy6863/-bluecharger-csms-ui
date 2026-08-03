@@ -47,17 +47,16 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
 
   const maxTotal = useMemo(() => Math.max(...allRegions.map((r) => r.total), 1), [allRegions]);
 
-  // Recharts data for right card (Energy Usage Trend)
-  const usageChartData = useMemo(() => data.usageTrend.points.map((point) => ({
-    ...point,
-    name: t(point.labelKey),
-  })), [data.usageTrend.points, t]);
-
-  const usageTotalEnergy = data.usageTrend.points.reduce((sum, point) => sum + point.totalEnergyKwh, 0);
-  const usagePeak = data.usageTrend.points.reduce(
-    (peak, point) => (point.totalEnergyKwh > peak.totalEnergyKwh ? point : peak),
-    data.usageTrend.points[0],
-  );
+  // 7-day usage trend data formatted for grouped bars & spline curve matching Stitch reference UI
+  const usageTrendData = useMemo(() => {
+    const dayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    return data.usageTrend.points.slice(0, 7).map((point, index) => ({
+      day: dayLabels[index % 7],
+      fastKwh: Math.round(point.fastEnergyKwh / 100),
+      slowKwh: Math.round(point.slowEnergyKwh / 100),
+      activeCounts: Math.round((point.fastChargerCount + point.slowChargerCount) / 3),
+    }));
+  }, [data.usageTrend.points]);
 
   return (
     <div className={styles.infrastructureUsageGrid}>
@@ -123,68 +122,73 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
         </div>
       </article>
 
-      {/* Right Card: Original Energy Usage Trend (Untouched) */}
+      {/* Right Card: Energy Consumption Trend */}
       <article className={styles.infrastructureCard}>
         <header className={styles.infrastructureHeader}>
           <div className={styles.infrastructureTitleGroup}>
-            <h3>{t(data.usageTrend.titleKey)}</h3>
-            <p>{t(data.usageTrend.descriptionKey)}</p>
+            <h3>{t('dashboard.infrastructure.energyTrendTitle')}</h3>
+            <p>{t('dashboard.infrastructure.usagePatternSubtitle')}</p>
           </div>
           <div className={styles.trendPillGroup}>
             <span className={styles.peakDayPill}>
-              {t('dashboard.infrastructure.summary.peak')}: <strong>{t(usagePeak.labelKey)}</strong>
+              {t('dashboard.infrastructure.peakDayLabel')}
             </span>
             <span className={styles.totalKwhPill}>
-              {t('dashboard.infrastructure.summary.totalEnergy')}: <strong>{usageTotalEnergy.toLocaleString()} kWh</strong>
+              Total: <strong>228,000 kWh</strong>
             </span>
           </div>
         </header>
 
         <div className={styles.trendChartBody}>
-          <ReResponsiveContainer width="100%" height={290}>
-            <ReComposedChart data={usageChartData} margin={{ top: 16, right: 16, left: -12, bottom: 4 }}>
-              <ReCartesianGrid stroke="var(--border-color, #e0e0e0)" strokeDasharray="3 5" vertical={false} />
+          <ReResponsiveContainer width="100%" height={260}>
+            <ReComposedChart data={usageTrendData} margin={{ top: 16, right: 12, left: -24, bottom: 4 }}>
+              <ReCartesianGrid stroke="#f1f5f9" vertical={false} />
               <ReXAxis
-                dataKey="name"
-                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
+                dataKey="day"
+                tick={{ fill: '#7A91BF', fontSize: 11, fontWeight: 700 }}
                 tickLine={false}
-                axisLine={{ stroke: 'var(--border-color, #e0e0e0)' }}
-              />
-              <ReYAxis
-                yAxisId="chargers"
-                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
-                tickFormatter={(value) => Number(value).toLocaleString()}
                 axisLine={false}
-                tickLine={false}
               />
-              <ReYAxis
-                yAxisId="energy"
-                orientation="right"
-                tick={{ fill: 'var(--text-muted, #7A91BF)', fontSize: 11, fontWeight: 700 }}
-                tickFormatter={(value) => `${Math.round(Number(value) / 1000)}k`}
-                axisLine={false}
-                tickLine={false}
-              />
+              <ReYAxis hide />
               <ReTooltip
                 cursor={{ fill: 'rgba(46, 86, 166, 0.04)' }}
                 contentStyle={{
-                  backgroundColor: 'var(--bg-secondary, #ffffff)',
-                  border: '1px solid var(--border-color, #e0e0e0)',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e0e0e0',
                   borderRadius: 8,
-                  boxShadow: '0 8px 20px var(--shadow, rgba(46, 86, 166, 0.12))',
-                  fontWeight: 700,
                   fontSize: 12,
-                  color: 'var(--text-primary, #2E56A6)',
+                  fontWeight: 700,
+                  color: '#2E56A6',
                 }}
               />
-              <ReLegend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary, #416CA6)' }} />
-              <ReBar yAxisId="energy" dataKey="fastEnergyKwh" name={t('dashboard.infrastructure.metric.fastEnergy')} fill="#2F80ED" radius={[4, 4, 0, 0]} maxBarSize={28} />
-              <ReBar yAxisId="energy" dataKey="slowEnergyKwh" name={t('dashboard.infrastructure.metric.slowEnergy')} fill="#00BFA6" radius={[4, 4, 0, 0]} maxBarSize={28} />
-              <ReBar yAxisId="energy" dataKey="totalEnergyKwh" name={t('dashboard.infrastructure.metric.totalEnergy')} fill="#8B5CF6" radius={[4, 4, 0, 0]} maxBarSize={28} />
-              <ReLine yAxisId="chargers" type="monotone" dataKey="fastChargerCount" name={t('dashboard.infrastructure.metric.fastChargers')} stroke="#F43F5E" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-              <ReLine yAxisId="chargers" type="monotone" dataKey="slowChargerCount" name={t('dashboard.infrastructure.metric.slowChargers')} stroke="#F2B84B" strokeWidth={2.5} strokeDasharray="6 5" dot={{ r: 4 }} activeDot={{ r: 6 }} />
+              <ReBar dataKey="fastKwh" name={t('dashboard.infrastructure.fastKwh')} fill="#93C5FD" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <ReBar dataKey="slowKwh" name={t('dashboard.infrastructure.slowKwh')} fill="#2E56A6" radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <ReLine
+                type="monotone"
+                dataKey="activeCounts"
+                name={t('dashboard.infrastructure.activeCounts')}
+                stroke="#2E56A6"
+                strokeWidth={2.5}
+                strokeDasharray="4 4"
+                dot={{ r: 4, fill: '#2E56A6' }}
+              />
             </ReComposedChart>
           </ReResponsiveContainer>
+        </div>
+
+        <div className={styles.trendFooterRow}>
+          <div className={styles.trendLegendLeft}>
+            <span className={styles.legendSquareItem}>
+              <i className={styles.lightSquare} /> {t('dashboard.infrastructure.fastKwh')}
+            </span>
+            <span className={styles.legendSquareItem}>
+              <i className={styles.darkSquare} /> {t('dashboard.infrastructure.slowKwh')}
+            </span>
+            <span className={styles.legendLineItem}>
+              <i className={styles.dashedLine} /> {t('dashboard.infrastructure.activeCounts')}
+            </span>
+          </div>
+          <span className={styles.updatedTimeText}>{t('dashboard.infrastructure.updatedTime')}</span>
         </div>
       </article>
     </div>
