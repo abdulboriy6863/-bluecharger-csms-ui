@@ -11,13 +11,13 @@
 .dashboardHeader p { margin: 5px 0 0; color: #71839f; font-size: 14px; }
 .liveBadge { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border: 1px solid #dce9f2; border-radius: 999px; background: #fff; color: #6a819e; font-size: 12px; font-weight: 700; white-space: nowrap; }
 .liveBadge span { width: 7px; height: 7px; border-radius: 50%; background: #25c776; box-shadow: 0 0 0 4px #e5f8ee; }
-.dashboardGrid { display: grid; grid-template-columns: minmax(330px, .87fr) minmax(0, 1.3fr); gap: 24px; }
+.dashboardGrid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.3fr); gap: 26px; }
 .flowCard, .kpiCard, .powerCard, .carbonCard { border: 1px solid #e8eef5; border-radius: 16px; background: #fff; box-shadow: 0 5px 16px rgba(70, 91, 125, .05); }
-.flowCard { min-height: 720px; overflow: hidden; background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 72%, #fff 100%); }
+.flowCard { min-height: 760px; overflow: hidden; background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 72%, #fff 100%); }
 .weather { display: flex; align-items: center; gap: 11px; padding: 24px 26px; color: #f4b400; }
 .weather strong { color: #465875; font-size: 18px; }
 .weather span { color: #91a3bd; font-size: 14px; font-weight: 700; }
-.flowCanvas { position: relative; width: min(100%, 460px); height: 630px; margin: 0 auto; }
+.flowCanvas { position: relative; width: min(100%, 500px); height: 670px; margin: 0 auto; }
 .flowNode { position: absolute; z-index: 2; display: grid; place-items: center; width: 74px; height: 74px; border: 5px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 7px 14px rgba(63, 89, 125, .13); }
 .sunNode { top: 40px; left: calc(50% - 37px); color: #f5b800; border-color: #ffc400; }
 .gridNode { top: 370px; right: 26px; color: #afc4db; }
@@ -73,5 +73,5 @@
 .carbonStats strong { color: #34445d; font-size: 16px; }
 .chartWrap { height: 250px; margin-top: 20px; }
 
-@media (max-width: 900px) { .dashboardGrid { grid-template-columns: 1fr; } .flowCard { min-height: 560px; } .flowCanvas { height: 480px; } .batteryNode { top: 415px; } .batteryMetric { top: 462px; } .batteryToLoad { top: 450px; } .loadMetric { top: 394px; } }
+@media (max-width: 760px) { .dashboardGrid { grid-template-columns: 1fr; } .flowCard { min-height: 560px; } .flowCanvas { height: 480px; } .batteryNode { top: 415px; } .batteryMetric { top: 462px; } .batteryToLoad { top: 450px; } .loadMetric { top: 394px; } }
 @media (max-width: 650px) { .dashboard { padding: 18px; border-radius: 12px; } .dashboardHeader { margin-bottom: 18px; } .dashboardHeader h1 { font-size: 24px; } .liveBadge { display: none; } .flowCard { min-height: 505px; } .weather { padding: 18px; } .flowCanvas { height: 420px; transform: scale(.86); transform-origin: top center; margin-bottom: -55px; } .kpiGrid, .powerCard { grid-template-columns: 1fr; } .kpiCard { min-height: 210px; } .powerCard { gap: 16px; } .powerCard > div { padding: 0 12px 16px; border-right: 0; border-bottom: 1px solid #edf1f5; } .powerCard > div:last-child { padding-bottom: 0; border-bottom: 0; } .carbonCard { padding: 18px; } .carbonHeader { display: grid; } .carbonStats { justify-content: space-between; gap: 10px; } .chartWrap { height: 210px; } }
