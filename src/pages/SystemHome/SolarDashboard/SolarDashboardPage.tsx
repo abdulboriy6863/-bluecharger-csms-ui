@@ -1,11 +1,14 @@
 import React from 'react';
-import { SolarDashboardView } from '../../../components/systemHome/solardashboard/SolarDashboardView';
+import styles from '../../../scss/systemHome/SolarDashboardPage.module.scss';
+import { SolarDashboardPageCard } from '../../../components/systemHome/solardashboard/SolarDashboardPageCard';
+import { useI18n } from '../../../i18n/I18nContext';
 
 export const SolarDashboardPage: React.FC = () => {
+  const { t } = useI18n();
+
   return (
-    <section style={{ padding: '24px' }}>
-      <SolarDashboardView />
+    <section className={styles.page} aria-label={t('home.solar')}>
+      <SolarDashboardPageCard titleKey="home.solar" />
     </section>
   );
 };
-
