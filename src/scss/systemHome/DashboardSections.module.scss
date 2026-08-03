@@ -588,14 +588,12 @@
 }
 
 .infrastructureHeader {
-  min-height: 60px;
+  min-height: 54px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 18px 24px;
-  background: var(--bg-secondary, #ffffff);
-  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  padding: 18px 24px 0 24px;
 }
 
 .infrastructureTitleGroup {
@@ -626,7 +624,6 @@
   padding: 3px;
   background: #f1f5f9;
   border-radius: 999px;
-  border: 1px solid #e2e8f0;
 }
 
 .switcherBtn {
@@ -728,9 +725,7 @@
   justify-content: center;
   gap: 12px 20px;
   flex-wrap: wrap;
-  padding: 14px 24px;
-  border-top: 1px solid var(--border-color, #e0e0e0);
-  background: var(--bg-tertiary, #f8f9fa);
+  padding: 12px 24px 18px;
 }
 
 .legendDotItem {
