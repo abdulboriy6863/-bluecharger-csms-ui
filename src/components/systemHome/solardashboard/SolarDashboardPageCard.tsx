@@ -120,11 +120,11 @@ export const SolarDashboardPageCard: React.FC<SolarDashboardPageCardProps> = ({ 
             <div className={styles.chartWrap}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 12, right: 2, left: -24, bottom: 0 }}>
-                  <CartesianGrid vertical={false} stroke="#edf2f7" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#7f93b2', fontSize: 11 }} dy={8} />
+                  <CartesianGrid vertical={false} stroke="#263650" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#7f96b7', fontSize: 11 }} dy={8} />
                   <YAxis hide domain={[0, 5]} />
-                  <Tooltip cursor={{ fill: '#f4f8fc' }} formatter={(value: number) => [`${value} kg`, t('solarDashboard.carbon.title')]} />
-                  <Bar dataKey="value" fill="#cbd7e5" radius={[4, 4, 0, 0]} maxBarSize={13} />
+                  <Tooltip contentStyle={{ border: '1px solid #30445f', borderRadius: 6, background: '#17243a', color: '#edf3fc' }} cursor={{ fill: '#1b2a43' }} formatter={(value: number) => [`${value} kg`, t('solarDashboard.carbon.title')]} />
+                  <Bar dataKey="value" fill="#53647d" radius={[3, 3, 0, 0]} maxBarSize={18} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
