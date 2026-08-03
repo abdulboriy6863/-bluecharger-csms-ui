@@ -65,8 +65,8 @@ export const InfrastructureUsageSectionCard: React.FC<InfrastructureUsageSection
       <article className={styles.infrastructureCard}>
         <header className={styles.infrastructureHeader}>
           <div className={styles.infrastructureTitleGroup}>
-            <h3>{t('dashboard.infrastructure.regionalTitle')}</h3>
-            <p>{t('dashboard.infrastructure.densitySubtitle')}</p>
+            <h3>{t(distributionPanel.titleKey)}</h3>
+            <p>{t(distributionPanel.descriptionKey)}</p>
           </div>
           <div className={styles.typeModelSwitcher}>
             {modeOptions.map((mode) => (
