@@ -1,11 +1,9 @@
 .dashboard {
-  width: 100%;
-  padding: 28px;
-  border: 1px solid #e6edf5;
-  border-radius: 18px;
-  background: #f7f9fc;
+  width: min(100%, 1720px);
+  min-height: 820px;
+  margin: 0 auto;
+  padding: 28px 20px 54px;
   color: #2d3c55;
-  box-shadow: 0 10px 28px rgba(67, 91, 128, 0.08);
 }
 
 .dashboardHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
@@ -15,30 +13,30 @@
 .liveBadge span { width: 7px; height: 7px; border-radius: 50%; background: #25c776; box-shadow: 0 0 0 4px #e5f8ee; }
 .dashboardGrid { display: grid; grid-template-columns: minmax(330px, .87fr) minmax(0, 1.3fr); gap: 24px; }
 .flowCard, .kpiCard, .powerCard, .carbonCard { border: 1px solid #e8eef5; border-radius: 16px; background: #fff; box-shadow: 0 5px 16px rgba(70, 91, 125, .05); }
-.flowCard { min-height: 640px; overflow: hidden; background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 72%, #fff 100%); }
+.flowCard { min-height: 720px; overflow: hidden; background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 72%, #fff 100%); }
 .weather { display: flex; align-items: center; gap: 11px; padding: 24px 26px; color: #f4b400; }
 .weather strong { color: #465875; font-size: 18px; }
 .weather span { color: #91a3bd; font-size: 14px; font-weight: 700; }
-.flowCanvas { position: relative; width: min(100%, 460px); height: 550px; margin: 0 auto; }
+.flowCanvas { position: relative; width: min(100%, 460px); height: 630px; margin: 0 auto; }
 .flowNode { position: absolute; z-index: 2; display: grid; place-items: center; width: 74px; height: 74px; border: 5px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 7px 14px rgba(63, 89, 125, .13); }
-.sunNode { top: 28px; left: calc(50% - 37px); color: #f5b800; border-color: #ffc400; }
-.gridNode { top: 330px; right: 26px; color: #afc4db; }
-.batteryNode { top: 472px; left: calc(50% - 37px); color: #20c86c; }
-.solarPanel { position: absolute; top: 272px; left: calc(50% - 96px); width: 192px; height: 76px; overflow: hidden; transform: skew(-16deg); border: 5px solid #dbe7f6; border-radius: 2px; background: #2368df; box-shadow: 0 12px 16px rgba(40, 67, 109, .18); }
+.sunNode { top: 40px; left: calc(50% - 37px); color: #f5b800; border-color: #ffc400; }
+.gridNode { top: 370px; right: 26px; color: #afc4db; }
+.batteryNode { top: 550px; left: calc(50% - 37px); color: #20c86c; }
+.solarPanel { position: absolute; top: 300px; left: calc(50% - 96px); width: 192px; height: 76px; overflow: hidden; transform: skew(-16deg); border: 5px solid #dbe7f6; border-radius: 2px; background: #2368df; box-shadow: 0 12px 16px rgba(40, 67, 109, .18); }
 .panelCells { width: 100%; height: 100%; opacity: .7; background: repeating-linear-gradient(90deg, transparent 0 30px, rgba(255,255,255,.38) 31px 32px), repeating-linear-gradient(0deg, transparent 0 23px, rgba(255,255,255,.38) 24px 25px), linear-gradient(135deg, #397ef1, #1f5ed1); }
 .flowConnector { position: absolute; z-index: 1; border-color: #f8bd13; border-style: dashed; border-width: 0; }
-.sunToPv { top: 102px; left: calc(50% - 2px); height: 170px; border-left-width: 4px; }
-.pvToGrid { top: 309px; left: calc(50% + 94px); width: 91px; border-top-width: 4px; border-color: #4d8af5; }
-.pvToBattery { top: 348px; left: calc(50% - 2px); height: 124px; border-left-width: 4px; border-color: #27c86d; }
-.batteryToLoad { top: 509px; left: calc(50% + 37px); width: 118px; border-top-width: 4px; border-color: #27c86d; }
+.sunToPv { top: 114px; left: calc(50% - 2px); height: 186px; border-left-width: 4px; }
+.pvToGrid { top: 337px; left: calc(50% + 94px); width: 91px; border-top-width: 4px; border-color: #4d8af5; }
+.pvToBattery { top: 376px; left: calc(50% - 2px); height: 174px; border-left-width: 4px; border-color: #27c86d; }
+.batteryToLoad { top: 587px; left: calc(50% + 37px); width: 118px; border-top-width: 4px; border-color: #27c86d; }
 .flowMetric { position: absolute; z-index: 3; display: grid; gap: 3px; min-width: 128px; padding: 10px 14px; border: 1px solid #edf1f5; border-radius: 10px; background: rgba(255,255,255,.96); box-shadow: 0 5px 10px rgba(63, 89, 125, .10); }
 .flowMetric span { color: #778aa6; font-size: 12px; font-weight: 700; text-align: center; }
 .flowMetric strong { color: #25334b; font-size: 21px; text-align: center; }
 .flowMetric small { color: #71839f; font-size: 11px; font-weight: 500; }
-.pvMetric { top: 157px; left: calc(50% - 64px); }
-.gridMetric { top: 366px; right: 0; }
-.loadMetric { top: 453px; right: 0; }
-.batteryMetric { top: 520px; left: calc(50% - 64px); }
+.pvMetric { top: 180px; left: calc(50% - 64px); }
+.gridMetric { top: 408px; right: 0; }
+.loadMetric { top: 531px; right: 0; }
+.batteryMetric { top: 598px; left: calc(50% - 64px); }
 .mainColumn { min-width: 0; display: grid; align-content: start; gap: 24px; }
 .kpiGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .kpiCard { min-height: 238px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
