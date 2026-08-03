@@ -244,27 +244,27 @@
 
 .chartViewport {
   width: 100%;
-  height: 270px;
+  height: 310px;
   min-width: 0;
 }
 
 .detailCard .chartViewport {
-  height: 330px;
+  height: 360px;
 }
 
 .statusInfographicViewport {
-  height: 342px;
+  height: 380px;
 }
 
 .detailCard .statusInfographicViewport {
-  height: 408px;
+  height: 440px;
 }
 
 .infographicSvg {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: 520px;
+  max-width: 580px;
   margin: 0 auto;
   overflow: visible;
 }
