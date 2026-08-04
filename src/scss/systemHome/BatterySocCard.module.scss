@@ -1,0 +1,135 @@
+@import "../core/variables";
+@import "../core/mixins";
+
+.kpiCard {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
+    transform: translateY(-2px);
+  }
+
+  // Large translucent circle overlay inside gradient card
+  &::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(46, 86, 166, 0.03) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+  }
+}
+
+.title {
+  margin: 16px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-secondary, #416CA6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.gaugeContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svgRing {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circleBackground {
+  fill: none;
+  stroke: var(--neutral-light, #f2f2f2);
+  stroke-width: 8px;
+}
+
+.circleProgress {
+  fill: none;
+  stroke: url(#batteryGrad);
+  stroke-width: 8px;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.centerValue {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+
+  .percent {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-primary, #2E56A6);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .icon {
+    color: #f59e0b;
+    animation: batteryPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes batteryPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+// Dark Mode Overrides
+:global(.darkAppMode) {
+  .kpiCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+
+    &::after {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 70%);
+    }
+  }
+
+  .circleBackground {
+    stroke: #1e293b;
+  }
+
+  .title {
+    color: #7a91bf;
+  }
+
+  .centerValue {
+    .percent {
+      color: #ffffff;
+    }
+  }
+}

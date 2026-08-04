@@ -1,0 +1,145 @@
+@import "../core/variables";
+@import "../core/mixins";
+
+.powerCard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  overflow: hidden;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
+  }
+}
+
+.item {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-right: 1px solid var(--border-color, #edf1f5);
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+.iconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.importIcon {
+  background: rgba(59, 130, 246, 0.08);
+  color: #3b82f6;
+}
+
+.exportIcon {
+  background: rgba(249, 115, 22, 0.08);
+  color: #f97316;
+}
+
+.revenueIcon {
+  background: rgba(16, 185, 129, 0.08);
+  color: #10b981;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #7A91BF);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.valueGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-primary, #2E56A6);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.unit {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #7A91BF);
+}
+
+// Dark Mode Overrides
+:global(.darkAppMode) {
+  .powerCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+  }
+
+  .item {
+    border-color: #22324d;
+  }
+
+  .importIcon {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+  }
+
+  .exportIcon {
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c;
+  }
+
+  .revenueIcon {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+  }
+
+  .label {
+    color: #7f96b7;
+  }
+
+  .value {
+    color: #ffffff;
+  }
+
+  .unit {
+    color: #7f96b7;
+  }
+}
+
+@media (max-width: 768px) {
+  .powerCard {
+    grid-template-columns: 1fr;
+  }
+
+  .item {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-color, #edf1f5);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
