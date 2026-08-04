@@ -1,6 +1,7 @@
 @import "../core/variables";
 @import "../core/mixins";
 
+// Main container page styles
 .dashboard {
   width: 100%;
   max-width: 1600px;
@@ -20,7 +21,7 @@
 
   h1 {
     margin: 0;
-    color: var(--text-primary, #2E56A6);
+    color: var(--text-primary, #2e56a6);
     font-size: 28px;
     font-weight: 900;
     line-height: 1.2;
@@ -29,7 +30,7 @@
 
   p {
     margin: 4px 0 0;
-    color: var(--text-muted, #7A91BF);
+    color: var(--text-muted, #7a91bf);
     font-size: 13px;
     font-weight: 600;
   }
@@ -53,7 +54,9 @@
     height: 8px;
     border-radius: 50%;
     background: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 0 8px #10b981;
+    box-shadow:
+      0 0 0 3px rgba(16, 185, 129, 0.2),
+      0 0 8px #10b981;
     animation: livePulse 1.8s infinite;
   }
 }
@@ -85,19 +88,830 @@
   }
 }
 
-@keyframes livePulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4), 0 0 8px #10b981;
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0), 0 0 8px #10b981;
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0), 0 0 8px #10b981;
+// ---------------------------------------------------------
+// 1. SolarFlowCard Styles
+// ---------------------------------------------------------
+.flowCard {
+  width: 100%;
+  min-height: 750px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 16px;
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
   }
 }
 
-// Dark Mode Overrides
+.weatherWidget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color, #edf1f5);
+  background: linear-gradient(
+    180deg,
+    rgba(238, 246, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  .weatherInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .iconWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.05);
+    }
+
+    .temperature {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary, #2e56a6);
+    }
+
+    .plantName {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary, #416ca6);
+    }
+  }
+
+  .statusIndicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    font-size: 12px;
+    font-weight: 800;
+    color: #10b981;
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow:
+        0 0 0 3px rgba(16, 185, 129, 0.2),
+        0 0 8px #10b981;
+      animation: livePulse 1.8s infinite;
+    }
+  }
+}
+
+.diagramContainer {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.svgConnections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+
+  .connectionPath {
+    stroke: var(--border-color, #e2e8f0);
+    stroke-width: 4px;
+    stroke-linecap: round;
+    fill: none;
+    transition: stroke $transition-normal;
+  }
+
+  .flowParticle {
+    stroke-width: 4px;
+    stroke-linecap: round;
+    fill: none;
+    opacity: 0.15;
+    transition:
+      opacity $transition-normal,
+      stroke $transition-normal;
+
+    &.active {
+      opacity: 1;
+      stroke-dasharray: 10, 15;
+      animation: energyFlow 2s linear infinite;
+    }
+  }
+}
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+
+    .nodeCircle {
+      box-shadow: 0 10px 25px rgba(46, 86, 166, 0.15);
+    }
+  }
+}
+
+.nodeCircle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-secondary, #ffffff);
+  border: 2px solid var(--border-color, #e2e8f0);
+  box-shadow: 0 4px 12px var(--shadow, rgba(46, 86, 166, 0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all $transition-normal;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50%;
+    border: 1px dashed transparent;
+    transition: all $transition-normal;
+  }
+}
+
+.nodeLabelGroup {
+  min-width: 110px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border-color, #edf1f5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(46, 86, 166, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  backdrop-filter: blur(4px);
+
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted, #7a91bf);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .value {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary, #2e56a6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unit {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted, #7a91bf);
+    margin-left: 2px;
+  }
+}
+
+.sunNode {
+  .nodeCircle {
+    border-color: #fbbf24;
+    color: #d97706;
+    background: linear-gradient(135deg, #fffcf0 0%, #fffbeb 100%);
+    box-shadow: 0 0 16px rgba(251, 191, 36, 0.15);
+
+    &::before {
+      border-color: rgba(251, 191, 36, 0.25);
+      animation: rotateDashed 25s linear infinite;
+    }
+  }
+}
+
+.inverterNode {
+  .nodeCircle {
+    width: 90px;
+    height: 90px;
+    border-color: var(--primary-color, #2e56a6);
+    color: #ffffff;
+    background: var(
+      --gradient-primary,
+      linear-gradient(135deg, #2e56a6 0%, #3f61a6 100%)
+    );
+    box-shadow: 0 8px 20px rgba(46, 86, 166, 0.2);
+
+    &::before {
+      border-color: rgba(46, 86, 166, 0.3);
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      animation: rotateDashed 30s linear infinite reverse;
+    }
+  }
+
+  .solarPanelWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .solarPanelSkew {
+    width: 52px;
+    height: 28px;
+    transform: skew(-18deg);
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 3px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .panelCells {
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0 8px,
+        rgba(255, 255, 255, 0.4) 9px 10px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0 6px,
+        rgba(255, 255, 255, 0.4) 7px 8px
+      );
+  }
+}
+
+.gridNode {
+  .nodeCircle {
+    border-color: #3b82f6;
+    color: #2563eb;
+    background: linear-gradient(135deg, #f0f7ff 0%, #eff6ff 100%);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
+
+    &::before {
+      border-color: rgba(59, 130, 246, 0.25);
+      animation: rotateDashed 20s linear infinite;
+    }
+  }
+}
+
+.batteryNode {
+  .nodeCircle {
+    border-color: #10b981;
+    color: #059669;
+    background: linear-gradient(135deg, #f0fdf4 0%, #f0fdf4 100%);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
+
+    &::before {
+      border-color: rgba(16, 185, 129, 0.25);
+      animation: rotateDashed 22s linear infinite reverse;
+    }
+  }
+
+  .batteryLevel {
+    position: absolute;
+    bottom: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #059669;
+    background: rgba(16, 185, 129, 0.12);
+    padding: 1px 6px;
+    border-radius: 8px;
+    letter-spacing: -0.02em;
+  }
+}
+
+.loadNode {
+  .nodeCircle {
+    border-color: #f97316;
+    color: #ea580c;
+    background: linear-gradient(135deg, #fff7ed 0%, #fff7ed 100%);
+    box-shadow: 0 0 16px rgba(249, 115, 22, 0.15);
+
+    &::before {
+      border-color: rgba(249, 115, 22, 0.25);
+      animation: rotateDashed 24s linear infinite;
+    }
+  }
+}
+
+// ---------------------------------------------------------
+// 2. Shared KPI Card & SVG Dial Styles (Battery & Self-Consumption)
+// ---------------------------------------------------------
+.kpiCard {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  min-height: 220px;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
+    transform: translateY(-2px);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(46, 86, 166, 0.03) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    pointer-events: none;
+  }
+}
+
+// Battery SOC - Column Layout
+.columnCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .title {
+    margin: 16px 0 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-secondary, #416ca6);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+}
+
+// Self Consumption - Row Layout
+.rowCard {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 28px;
+
+  .title {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-secondary, #416ca6);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+}
+
+.gaugeContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svgRing {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circleBackground {
+  fill: none;
+  stroke: var(--neutral-light, #f2f2f2);
+  stroke-width: 8px;
+}
+
+.circleProgress {
+  fill: none;
+  stroke-width: 8px;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.batteryProgress {
+  stroke: url(#batteryGrad);
+}
+
+.selfConsumptionProgress {
+  stroke: url(#selfConsumeGrad);
+}
+
+.centerValue {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-primary, #2e56a6);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  .icon {
+    color: #f59e0b;
+    animation: batteryPulse 2s ease-in-out infinite;
+  }
+}
+
+.detailsWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.metricsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 2px solid var(--border-color, #edf1f5);
+  padding-left: 18px;
+
+  @media (max-width: 640px) {
+    border-left: 0;
+    border-top: 2px solid var(--border-color, #edf1f5);
+    padding-left: 0;
+    padding-top: 16px;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.metricItem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  @media (max-width: 640px) {
+    align-items: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted, #7a91bf);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .valueGroup {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary, #2e56a6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unit {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted, #7a91bf);
+  }
+}
+
+// ---------------------------------------------------------
+// 3. PowerSummaryCard Styles
+// ---------------------------------------------------------
+.powerCard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  overflow: hidden;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.powerItem {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-right: 1px solid var(--border-color, #edf1f5);
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  @media (max-width: 768px) {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-color, #edf1f5);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .iconWrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .importIcon {
+    background: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+  }
+
+  .exportIcon {
+    background: rgba(249, 115, 22, 0.08);
+    color: #f97316;
+  }
+
+  .revenueIcon {
+    background: rgba(16, 185, 129, 0.08);
+    color: #10b981;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted, #7a91bf);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .valueGroup {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .value {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text-primary, #2e56a6);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .unit {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted, #7a91bf);
+  }
+}
+
+// ---------------------------------------------------------
+// 4. CarbonReductionCard Styles
+// ---------------------------------------------------------
+.carbonCard {
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-secondary, #ffffff);
+  box-shadow: 0 4px 16px var(--shadow, rgba(46, 86, 166, 0.06));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 380px;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-hover, rgba(46, 86, 166, 0.12));
+  }
+}
+
+.carbonHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+.carbonTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary, #416ca6);
+
+  .icon {
+    color: #10b981;
+    animation: leafSway 3s ease-in-out infinite;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary, #416ca6);
+  }
+}
+
+.carbonStatsGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.carbonStatItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .bullet {
+    width: 6px;
+    height: 18px;
+    border-radius: 4px;
+  }
+
+  .todayBullet {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+  }
+
+  .totalBullet {
+    background: #cbd5e1;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted, #7a91bf);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .value {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary, #2e56a6);
+    }
+  }
+}
+
+.chartContainer {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+
+// ---------------------------------------------------------
+// Keyframe Animations
+// ---------------------------------------------------------
+@keyframes energyFlow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes rotateDashed {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes livePulse {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(16, 185, 129, 0.4),
+      0 0 8px #10b981;
+  }
+  70% {
+    box-shadow:
+      0 0 0 8px rgba(16, 185, 129, 0),
+      0 0 8px #10b981;
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(16, 185, 129, 0),
+      0 0 8px #10b981;
+  }
+}
+
+@keyframes batteryPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes leafSway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+// ---------------------------------------------------------
+// Dark Mode Overrides (:global(.darkAppMode))
+// ---------------------------------------------------------
 :global(.darkAppMode) {
   .dashboardHeader {
     h1 {
@@ -115,7 +929,240 @@
 
     span {
       background: #52e39d;
-      box-shadow: 0 0 0 3px rgba(82, 227, 157, 0.2), 0 0 8px #52e39d;
+      box-shadow:
+        0 0 0 3px rgba(82, 227, 157, 0.2),
+        0 0 8px #52e39d;
+    }
+  }
+
+  // 1. Flow Card Dark
+  .flowCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+
+    &:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .weatherWidget {
+    border-color: #22324d;
+    background: linear-gradient(
+      180deg,
+      rgba(30, 41, 59, 0.4) 0%,
+      rgba(17, 28, 49, 0) 100%
+    );
+
+    .weatherInfo {
+      .temperature {
+        color: #ffffff;
+      }
+      .plantName {
+        color: #94a3b8;
+      }
+    }
+
+    .statusIndicator {
+      background: #122b2b;
+      border-color: #2f614e;
+      color: #5ce19d;
+
+      .dot {
+        background: #52e39d;
+        box-shadow:
+          0 0 0 3px rgba(82, 227, 157, 0.2),
+          0 0 8px #52e39d;
+      }
+    }
+  }
+
+  .svgConnections {
+    .connectionPath {
+      stroke: #22324d;
+    }
+  }
+
+  .nodeCircle {
+    background: #18263d;
+    border-color: #314563;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .nodeLabelGroup {
+    background: rgba(20, 30, 48, 0.9);
+    border-color: #314563;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+    .label {
+      color: #7f96b7;
+    }
+    .value {
+      color: #ffffff;
+    }
+    .unit {
+      color: #7f96b7;
+    }
+  }
+
+  .sunNode {
+    .nodeCircle {
+      border-color: #ffd02f;
+      color: #ffd02f;
+      background: #202a3a;
+      box-shadow: 0 0 16px rgba(255, 208, 47, 0.15);
+    }
+  }
+
+  .inverterNode {
+    .nodeCircle {
+      border-color: #2a6ffd;
+      background: linear-gradient(135deg, #182d54 0%, #111c31 100%);
+      box-shadow: 0 0 20px rgba(42, 119, 255, 0.25);
+    }
+  }
+
+  .gridNode {
+    .nodeCircle {
+      border-color: #3b82f6;
+      color: #60a5fa;
+      background: #17243a;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
+    }
+  }
+
+  .batteryNode {
+    .nodeCircle {
+      border-color: #10b981;
+      color: #34d399;
+      background: #122b2b;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
+    }
+
+    .batteryLevel {
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  .loadNode {
+    .nodeCircle {
+      border-color: #f97316;
+      color: #fb923c;
+      background: #271e19;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.15);
+    }
+  }
+
+  // 2. KPI Cards Dark (Battery SOC & Self Consumption)
+  .kpiCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+
+    &::after {
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.02) 0%,
+        rgba(255, 255, 255, 0) 70%
+      );
+    }
+  }
+
+  .circleBackground {
+    stroke: #1e293b;
+  }
+  .title {
+    color: #7a91bf;
+  }
+
+  .centerValue {
+    color: #ffffff;
+    .percent {
+      color: #ffffff;
+    }
+  }
+
+  .metricsList {
+    border-color: #22324d;
+  }
+
+  .metricItem {
+    .label {
+      color: #7f96b7;
+    }
+    .value {
+      color: #ffffff;
+    }
+    .unit {
+      color: #7f96b7;
+    }
+  }
+
+  // 3. Power Summary Card Dark
+  .powerCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+  }
+
+  .powerItem {
+    border-color: #22324d;
+
+    .importIcon {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .exportIcon {
+      background: rgba(249, 115, 22, 0.15);
+      color: #fb923c;
+    }
+
+    .revenueIcon {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .label {
+      color: #7f96b7;
+    }
+    .value {
+      color: #ffffff;
+    }
+    .unit {
+      color: #7f96b7;
+    }
+  }
+
+  // 4. Carbon Card Dark
+  .carbonCard {
+    background: #111c31;
+    border-color: #22324d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+  }
+
+  .carbonTitleGroup {
+    color: #e2e8f0;
+    h2 {
+      color: #eaf1fb;
+    }
+    .icon {
+      color: #34d399;
+    }
+  }
+
+  .carbonStatItem {
+    .totalBullet {
+      background: #475569;
+    }
+    .details {
+      .label {
+        color: #7f96b7;
+      }
+      .value {
+        color: #ffffff;
+      }
     }
   }
 }
