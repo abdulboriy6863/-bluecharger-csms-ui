@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wifi, RefreshCw, Zap, CheckCircle2, AlertTriangle, XCircle, Clock } from 'lucide-react';
+import { Wifi, RefreshCw, Zap, CheckCircle2, AlertTriangle, XCircle, Clock, Server } from 'lucide-react';
 import type { Station } from '../../../../data/mockStations';
 import styles from '../../../../scss/systemHome/InstallationLocationsView.module.scss';
 
@@ -18,7 +18,6 @@ export const StatusCountersBar: React.FC<StatusCountersBarProps> = ({
   isWsConnected,
   onManualRefresh,
 }) => {
-  // Aggregate status counts across all stations & chargers
   let totalStations = stations.length;
   let totalChargers = 0;
   let availableCount = 0;
@@ -41,87 +40,88 @@ export const StatusCountersBar: React.FC<StatusCountersBarProps> = ({
   return (
     <div className={styles.statusCountersContainer}>
       <div className={styles.statusGrid}>
-        {/* Total Stations / Chargers */}
+        {/* TOTAL FLEET */}
         <button
           className={`${styles.statusCard} ${styles.totalCard} ${activeFilter === 'ALL' ? styles.activeFilter : ''}`}
           onClick={() => onFilterChange('ALL')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Total Fleet</span>
-            <span className={styles.totalBadge}>{totalStations} Stns</span>
+            <div className={styles.iconPill}>
+              <Server size={14} className={styles.iconNavy} />
+              <span className={styles.totalBadge}>{totalStations} Stns</span>
+            </div>
           </div>
-          <div className={styles.cardValue}>{totalChargers}</div>
-          <div className={styles.cardFooter}>
-            <span>{totalActiveKw.toFixed(0)} kW Active Load</span>
-          </div>
+          <div className={styles.cardMainValue}>{totalChargers} <small>CPs</small></div>
+          <div className={styles.cardSubText}>{totalActiveKw.toFixed(0)} kW Active Load</div>
         </button>
 
-        {/* Standby / Available */}
+        {/* STANDBY / AVAILABLE */}
         <button
           className={`${styles.statusCard} ${styles.availableCard} ${activeFilter === 'Available' ? styles.activeFilter : ''}`}
-          onClick={() => onFilterChange('Available')}
+          onClick={() => onFilterChange(activeFilter === 'Available' ? 'ALL' : 'Available')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Available</span>
             <CheckCircle2 size={16} className={styles.iconGreen} />
           </div>
-          <div className={`${styles.cardValue} ${styles.valGreen}`}>{availableCount}</div>
-          <div className={styles.cardFooter}>Standby Ready</div>
+          <div className={`${styles.cardMainValue} ${styles.valGreen}`}>{availableCount}</div>
+          <div className={styles.cardSubText}>Standby Ready</div>
         </button>
 
-        {/* Charging */}
+        {/* CHARGING / ACTIVE SESSION */}
         <button
           className={`${styles.statusCard} ${styles.chargingCard} ${activeFilter === 'Charging' ? styles.activeFilter : ''}`}
-          onClick={() => onFilterChange('Charging')}
+          onClick={() => onFilterChange(activeFilter === 'Charging' ? 'ALL' : 'Charging')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Charging</span>
             <Zap size={16} className={styles.iconBlue} />
           </div>
-          <div className={`${styles.cardValue} ${styles.valBlue}`}>{chargingCount}</div>
-          <div className={styles.cardFooter}>In Active Session</div>
+          <div className={`${styles.cardMainValue} ${styles.valBlue}`}>{chargingCount}</div>
+          <div className={styles.cardSubText}>In Active Session</div>
         </button>
 
-        {/* Faulted */}
+        {/* FAULTED / MALFUNCTION */}
         <button
           className={`${styles.statusCard} ${styles.faultedCard} ${activeFilter === 'Faulted' ? styles.activeFilter : ''}`}
-          onClick={() => onFilterChange('Faulted')}
+          onClick={() => onFilterChange(activeFilter === 'Faulted' ? 'ALL' : 'Faulted')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Faulted</span>
             <AlertTriangle size={16} className={styles.iconRed} />
           </div>
-          <div className={`${styles.cardValue} ${styles.valRed}`}>{faultedCount}</div>
-          <div className={styles.cardFooter}>Requires Service</div>
+          <div className={`${styles.cardMainValue} ${styles.valRed}`}>{faultedCount}</div>
+          <div className={styles.cardSubText}>Requires Service</div>
         </button>
 
-        {/* Offline / Disconnected */}
+        {/* OFFLINE / DISCONNECTED */}
         <button
           className={`${styles.statusCard} ${styles.offlineCard} ${activeFilter === 'Offline' ? styles.activeFilter : ''}`}
-          onClick={() => onFilterChange('Offline')}
+          onClick={() => onFilterChange(activeFilter === 'Offline' ? 'ALL' : 'Offline')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Offline</span>
             <XCircle size={16} className={styles.iconGray} />
           </div>
-          <div className={`${styles.cardValue} ${styles.valGray}`}>{offlineCount}</div>
-          <div className={styles.cardFooter}>Network Drop</div>
+          <div className={`${styles.cardMainValue} ${styles.valGray}`}>{offlineCount}</div>
+          <div className={styles.cardSubText}>Network Drop</div>
         </button>
 
-        {/* Reserved */}
+        {/* RESERVED */}
         <button
           className={`${styles.statusCard} ${styles.reservedCard} ${activeFilter === 'Reserved' ? styles.activeFilter : ''}`}
-          onClick={() => onFilterChange('Reserved')}
+          onClick={() => onFilterChange(activeFilter === 'Reserved' ? 'ALL' : 'Reserved')}
         >
           <div className={styles.statusHeader}>
             <span className={styles.cardTitle}>Reserved</span>
             <Clock size={16} className={styles.iconPurple} />
           </div>
-          <div className={`${styles.cardValue} ${styles.valPurple}`}>{reservedCount}</div>
-          <div className={styles.cardFooter}>Pre-booked</div>
+          <div className={`${styles.cardMainValue} ${styles.valPurple}`}>{reservedCount}</div>
+          <div className={styles.cardSubText}>Pre-booked</div>
         </button>
 
-        {/* Live WebSocket Status Indicator */}
+        {/* WEBSOCKET LIVE CONTROL */}
         <div className={styles.wsControlCard}>
           <div className={styles.wsHeader}>
             <span className={`${styles.wsPulseDot} ${isWsConnected ? styles.wsOnline : ''}`} />
@@ -129,12 +129,10 @@ export const StatusCountersBar: React.FC<StatusCountersBarProps> = ({
               {isWsConnected ? 'WS LIVE TELEMETRY' : 'WS DISCONNECTED'}
             </span>
           </div>
-          <div className={styles.wsActions}>
-            <button className={styles.refreshBtn} onClick={onManualRefresh} title="Trigger Heartbeat Refresh">
-              <RefreshCw size={14} className={styles.refreshIcon} />
-              <span>Refresh</span>
-            </button>
-          </div>
+          <button className={styles.refreshBtn} onClick={onManualRefresh} title="Sync Heartbeat">
+            <RefreshCw size={13} className={styles.refreshIcon} />
+            <span>Sync Live Data</span>
+          </button>
         </div>
       </div>
     </div>
