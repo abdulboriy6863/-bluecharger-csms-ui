@@ -348,8 +348,8 @@
   color: #ffffff !important;
 }
 
-/* APPLE MAPS TEARDROP PIN MARKERS */
-.appleMarkerWrapper {
+/* CSMS 3D GLOBE RADAR TARGET MARKERS (Reference Images 1 & 2 Spec) */
+.csmsRadarMarkerWrapper {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -361,75 +361,107 @@
 
   &:hover {
     z-index: 99;
-    transform: scale(1.15) translateY(-2px);
+    transform: scale(1.18) translateY(-3px);
   }
 }
 
-.appleMarkerSelected {
+.csmsRadarSelected {
   z-index: 100 !important;
-  transform: scale(1.22) translateY(-4px) !important;
+  transform: scale(1.25) translateY(-5px) !important;
 }
 
-.appleLabelCapsule {
-  margin-bottom: 3px;
+.radarLabelCapsule {
+  margin-bottom: 2px;
   white-space: nowrap;
   font-size: 10px;
   font-weight: 700;
   color: #ffffff;
-  padding: 3px 8px;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+  padding: 2px 7px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.appleCpText {
+.radarCpText {
   font-weight: 800;
 }
 
-.appleKwText {
-  background-color: rgba(0, 0, 0, 0.22);
-  padding: 0 5px;
+.radarKwText {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0 4px;
   border-radius: 4px;
 }
 
-.applePinBadge {
-  width: 36px;
-  height: 36px;
+.radarPillarLine {
+  width: 2px;
+  height: 12px;
+  opacity: 0.85;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.radarPinBadge {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2.5px solid #ffffff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
 }
 
-.appleIconWrapper {
+.radarIconWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
 }
 
-.applePulseGlow {
+.radarPulseRing {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.45);
-  animation: pulseGlow 1.6s infinite ease-out;
+  animation: pulseGlow 1.5s infinite ease-out;
   z-index: 1;
 }
 
-.applePinTail {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 8px solid;
-  margin-top: -1px;
+.radarTargetBase {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -2px;
+  box-shadow: 0 0 10px currentColor;
+  animation: radarTargetPulse 2s infinite ease-in-out;
+}
+
+.radarTargetCore {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+@keyframes radarTargetPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
 }
 
 /* APPLE MAPS POPUP STYLING */

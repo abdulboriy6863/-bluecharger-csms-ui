@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Navigation, Layers, Plus, Minus, Sun, Moon, Globe } from 'lucide-react';
+import { Navigation, Layers, Plus, Minus, Sun, Moon, Globe, Play, Pause } from 'lucide-react';
 import type { Station } from '../../../../data/mockStations';
 import styles from '../../../../scss/systemHome/InstallationLocationsView.module.scss';
 
@@ -15,7 +15,7 @@ interface MapViewProps {
 
 export type MapMode = 'standard' | 'satellite' | 'dark';
 
-// Center & Zoom presets for supported language markets (Apple Maps Globe & City Presets)
+// Center & Zoom presets for supported language markets
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
   ALL: { lat: 20.0, lng: 65.0, zoom: 2.3 },
   KR: { lat: 36.3, lng: 127.8, zoom: 7.0 },
@@ -25,6 +25,18 @@ const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }
   IN: { lat: 22.5, lng: 78.5, zoom: 4.8 },
   US: { lat: 37.78, lng: -122.41, zoom: 11.0 },
   RU: { lat: 55.75, lng: 37.61, zoom: 8.0 },
+};
+
+// Calculate angular distance on 3D sphere to hide markers on the back hemisphere of Globe
+const isStationOnVisibleGlobe = (cameraCenter: maplibregl.LngLat, stationLng: number, stationLat: number): boolean => {
+  const rad = Math.PI / 180;
+  const dLat = (stationLat - cameraCenter.lat) * rad;
+  const dLng = (stationLng - cameraCenter.lng) * rad;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(cameraCenter.lat * rad) * Math.cos(stationLat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+  return c < 1.35; // ~77 degrees horizon cutoff
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -40,6 +52,9 @@ export const MapView: React.FC<MapViewProps> = ({
 
   const [mapMode, setMapMode] = useState<MapMode>(isDarkMode ? 'dark' : 'standard');
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
+  const [isAutoRotating, setIsAutoRotating] = useState(true);
+  const isUserInteractingRef = useRef(false);
+  const animFrameIdRef = useRef<number | null>(null);
 
   // Sync navbar dark mode changes to map mode if satellite is not selected
   useEffect(() => {
@@ -48,8 +63,8 @@ export const MapView: React.FC<MapViewProps> = ({
     }
   }, [isDarkMode]);
 
-  // Generate MapLibre GL Apple 3D Globe Map Style Specification
-  const getAppleMapStyle = (mode: MapMode): maplibregl.StyleSpecification => {
+  // Generate MapLibre GL 3D Globe Style Specification (Matching Reference Images 1 & 2)
+  const getGlobeMapStyle = (mode: MapMode): maplibregl.StyleSpecification => {
     if (mode === 'satellite') {
       return {
         version: 8,
@@ -68,7 +83,7 @@ export const MapView: React.FC<MapViewProps> = ({
           {
             id: 'satellite-bg',
             type: 'background',
-            paint: { 'background-color': '#000000' },
+            paint: { 'background-color': '#010409' },
           },
           {
             id: 'satellite-tiles',
@@ -83,7 +98,7 @@ export const MapView: React.FC<MapViewProps> = ({
 
     const isDark = mode === 'dark';
     const tileSub = isDark ? 'dark_all' : 'rastertiles/voyager';
-    const bgColor = isDark ? '#030712' : '#ffffff';
+    const bgColor = isDark ? '#010409' : '#ffffff';
 
     return {
       version: 8,
@@ -103,12 +118,12 @@ export const MapView: React.FC<MapViewProps> = ({
       },
       layers: [
         {
-          id: 'apple-map-bg',
+          id: 'globe-bg',
           type: 'background',
           paint: { 'background-color': bgColor },
         },
         {
-          id: 'apple-map-tiles',
+          id: 'carto-tiles',
           type: 'raster',
           source: 'carto-tiles',
           minzoom: 0,
@@ -118,14 +133,12 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   };
 
-  // Build Apple Maps Signature Pin Marker DOM Element
-  // IMPORTANT: Order is Label (Top), Pin Badge (Middle), Pin Tip (Bottom).
-  // This guarantees anchor: 'bottom' locks the sharp tip EXACTLY to [lng, lat]!
-  const createAppleMarkerElement = (station: Station, isSelected: boolean) => {
+  // Build CSMS 3D Globe Radar Target Marker DOM Element (Matching Reference Images 1 & 2)
+  const createRadarMarkerElement = (station: Station, isSelected: boolean) => {
     const el = document.createElement('div');
-    el.className = `${styles.appleMarkerWrapper} ${isSelected ? styles.appleMarkerSelected : ''}`;
+    el.className = `${styles.csmsRadarMarkerWrapper} ${isSelected ? styles.csmsRadarSelected : ''}`;
 
-    let color = '#34c759'; // Apple System Green (Available)
+    let color = '#10b981'; // Green (Available / Active)
     let iconSvg = `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
@@ -133,14 +146,14 @@ export const MapView: React.FC<MapViewProps> = ({
     `;
 
     if (station.status === 'Charging') {
-      color = '#007aff'; // Apple System Blue
+      color = '#2563eb'; // Blue
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
       `;
     } else if (station.status === 'Faulted') {
-      color = '#ff3b30'; // Apple System Red
+      color = '#ef4444'; // Red (Warning)
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
@@ -149,7 +162,7 @@ export const MapView: React.FC<MapViewProps> = ({
         </svg>
       `;
     } else if (station.status === 'Offline') {
-      color = '#8e8e93'; // Apple System Gray
+      color = '#64748b'; // Gray
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <line x1="1" y1="1" x2="23" y2="23"></line>
@@ -158,7 +171,7 @@ export const MapView: React.FC<MapViewProps> = ({
         </svg>
       `;
     } else if (station.status === 'Reserved') {
-      color = '#af52de'; // Apple System Purple
+      color = '#8b5cf6'; // Purple
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -171,28 +184,61 @@ export const MapView: React.FC<MapViewProps> = ({
     const activeKw = station.activePowerKw > 0 ? `${station.activePowerKw.toFixed(0)}kW` : '';
 
     el.innerHTML = `
-      <div class="${styles.appleLabelCapsule}" style="background-color: ${color}">
-        <span class="${styles.appleCpText}">${station.chargers.length} CP</span>
-        ${activeKw ? `<span class="${styles.appleKwText}">${activeKw}</span>` : ''}
+      <div class="${styles.radarLabelCapsule}" style="background-color: ${color}">
+        <span class="${styles.radarCpText}">${station.chargers.length} CP</span>
+        ${activeKw ? `<span class="${styles.radarKwText}">${activeKw}</span>` : ''}
       </div>
-      <div class="${styles.applePinBadge}" style="background-color: ${color}">
-        ${isCharging ? `<div class="${styles.applePulseGlow}"></div>` : ''}
-        <div class="${styles.appleIconWrapper}">${iconSvg}</div>
+      <div class="${styles.radarPillarLine}" style="background-color: ${color}"></div>
+      <div class="${styles.radarPinBadge}" style="background-color: ${color}">
+        ${isCharging ? `<div class="${styles.radarPulseRing}"></div>` : ''}
+        <div class="${styles.radarIconWrapper}">${iconSvg}</div>
       </div>
-      <div class="${styles.applePinTail}" style="border-top-color: ${color}"></div>
+      <div class="${styles.radarTargetBase}" style="border-color: ${color}">
+        <div class="${styles.radarTargetCore}" style="background-color: ${color}"></div>
+      </div>
     `;
 
     return el;
   };
 
-  // Initialize MapLibre Canvas with Apple 3D Globe & Mercator rendering
+  // Function to update 3D Globe marker visibility (Hides backside markers smoothly)
+  const updateMarkersVisibility = () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const center = map.getCenter();
+    const currentZoom = map.getZoom();
+
+    Object.values(markersRef.current).forEach(({ station, el }) => {
+      const isSelected = selectedStation?.id === station.id;
+
+      if (currentZoom < 5.0) {
+        const isVisible = isStationOnVisibleGlobe(center, station.lng, station.lat);
+        if (isVisible || isSelected) {
+          el.style.display = 'flex';
+          el.style.visibility = 'visible';
+          el.style.opacity = '1';
+        } else {
+          el.style.display = 'none';
+          el.style.visibility = 'hidden';
+          el.style.opacity = '0';
+        }
+      } else {
+        el.style.display = 'flex';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+      }
+    });
+  };
+
+  // Initialize MapLibre Canvas with 3D Globe & Continuous Auto-Rotation
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: getAppleMapStyle(mapMode),
+        style: getGlobeMapStyle(mapMode),
         center: [65.0, 20.0],
         zoom: 2.3,
         minZoom: 2.0,
@@ -202,10 +248,21 @@ export const MapView: React.FC<MapViewProps> = ({
         attributionControl: false,
       });
 
+      // Track user interaction to pause/resume slow 3D Globe auto-rotation
+      map.on('mousedown', () => { isUserInteractingRef.current = true; });
+      map.on('dragstart', () => { isUserInteractingRef.current = true; });
+      map.on('zoomstart', () => { isUserInteractingRef.current = true; });
+      map.on('touchstart', () => { isUserInteractingRef.current = true; });
+
+      // Bind occlusion check on camera movement & render
+      map.on('move', updateMarkersVisibility);
+      map.on('render', updateMarkersVisibility);
+
       mapInstanceRef.current = map;
     }
 
     return () => {
+      if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -213,12 +270,41 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   }, []);
 
+  // Smooth Slow 3D Globe Auto-Rotation Loop (Rotates continuously when zoomed out)
+  useEffect(() => {
+    let lastTime = performance.now();
+
+    const rotateGlobe = (now: number) => {
+      const map = mapInstanceRef.current;
+      if (map && isAutoRotating && !isUserInteractingRef.current) {
+        const delta = now - lastTime;
+        if (delta > 30) { // ~30fps smooth rotation step
+          lastTime = now;
+          const currentZoom = map.getZoom();
+          if (currentZoom < 4.0) {
+            const center = map.getCenter();
+            center.lng = (center.lng + 0.08) % 360; // Calm slow rotation (Images 1 & 2 spec)
+            map.setCenter(center);
+            updateMarkersVisibility();
+          }
+        }
+      }
+      animFrameIdRef.current = requestAnimationFrame(rotateGlobe);
+    };
+
+    animFrameIdRef.current = requestAnimationFrame(rotateGlobe);
+
+    return () => {
+      if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
+    };
+  }, [isAutoRotating]);
+
   // Update Map Style when mapMode changes
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    map.setStyle(getAppleMapStyle(mapMode));
+    map.setStyle(getGlobeMapStyle(mapMode));
   }, [mapMode]);
 
   // Handle Container Resize Events
@@ -226,6 +312,7 @@ export const MapView: React.FC<MapViewProps> = ({
     const handleResize = () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.resize();
+        updateMarkersVisibility();
       }
     };
 
@@ -233,7 +320,7 @@ export const MapView: React.FC<MapViewProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Update Station Markers & Popups (Anchor: 'bottom' locks pin tip 100% to coordinates)
+  // Update Station Markers & Popups (Anchor: 'bottom' locks radar base 100% to coordinates)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -244,9 +331,9 @@ export const MapView: React.FC<MapViewProps> = ({
 
     stations.forEach((station) => {
       const isSelected = selectedStation?.id === station.id;
-      const el = createAppleMarkerElement(station, isSelected);
+      const el = createRadarMarkerElement(station, isSelected);
 
-      // Custom Apple Maps Style Popup Node
+      // Custom Popup Node
       const popupNode = document.createElement('div');
       popupNode.className = styles.appleMapPopup;
       popupNode.innerHTML = `
@@ -266,7 +353,7 @@ export const MapView: React.FC<MapViewProps> = ({
           </div>
           <div class="${styles.popupStatItem}">
             <span class="${styles.popupStatLabel}">Status</span>
-            <span class="${styles.popupStatusBadge}" style="color: ${station.status === 'Charging' ? '#007aff' : station.status === 'Available' ? '#34c759' : '#ff3b30'}">
+            <span class="${styles.popupStatusBadge}" style="color: ${station.status === 'Charging' ? '#2563eb' : station.status === 'Available' ? '#10b981' : '#ef4444'}">
               ● ${station.status}
             </span>
           </div>
@@ -289,6 +376,7 @@ export const MapView: React.FC<MapViewProps> = ({
 
       el.addEventListener('click', (e) => {
         e.stopPropagation();
+        isUserInteractingRef.current = true;
         onSelectStation(station);
       });
 
@@ -299,7 +387,7 @@ export const MapView: React.FC<MapViewProps> = ({
         }
       });
 
-      // Anchor: 'bottom' locks pin tip directly to [station.lng, station.lat]
+      // Anchor: 'bottom' locks target radar base directly to [station.lng, station.lat]
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([station.lng, station.lat])
         .setPopup(popup)
@@ -307,13 +395,16 @@ export const MapView: React.FC<MapViewProps> = ({
 
       markersRef.current[station.id] = { marker, station, el };
     });
+
+    updateMarkersVisibility();
   }, [stations, selectedStation]);
 
-  // Center Map on Country Select (Apple smooth flyTo)
+  // Center Map on Country Select (Pauses auto-rotation and flies smoothly)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
+    isUserInteractingRef.current = true;
     const preset = COUNTRY_CENTERS[activeCountry] || COUNTRY_CENTERS.ALL;
     map.flyTo({
       center: [preset.lng, preset.lat],
@@ -327,11 +418,12 @@ export const MapView: React.FC<MapViewProps> = ({
     });
   }, [activeCountry]);
 
-  // Center Map on Selected Station (Apple smooth flyTo)
+  // Center Map on Selected Station (Pauses auto-rotation and flies smoothly to station)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !selectedStation) return;
 
+    isUserInteractingRef.current = true;
     map.flyTo({
       center: [selectedStation.lng, selectedStation.lat],
       zoom: 14.0,
@@ -349,10 +441,19 @@ export const MapView: React.FC<MapViewProps> = ({
     }
   }, [selectedStation]);
 
-  // Apple Controls Handler
-  const handleZoomIn = () => mapInstanceRef.current?.zoomIn({ duration: 300 });
-  const handleZoomOut = () => mapInstanceRef.current?.zoomOut({ duration: 300 });
+  // Controls Handler
+  const handleZoomIn = () => {
+    isUserInteractingRef.current = true;
+    mapInstanceRef.current?.zoomIn({ duration: 300 });
+  };
+
+  const handleZoomOut = () => {
+    isUserInteractingRef.current = true;
+    mapInstanceRef.current?.zoomOut({ duration: 300 });
+  };
+
   const handleRecenter = () => {
+    isUserInteractingRef.current = false;
     mapInstanceRef.current?.flyTo({
       center: [65.0, 20.0],
       zoom: 2.3,
@@ -363,11 +464,18 @@ export const MapView: React.FC<MapViewProps> = ({
     });
   };
 
+  const toggleAutoRotate = () => {
+    if (!isAutoRotating) {
+      isUserInteractingRef.current = false;
+    }
+    setIsAutoRotating(!isAutoRotating);
+  };
+
   return (
     <div className={styles.globeMapWrapper}>
       <div ref={mapContainerRef} className={styles.mapLibreCanvas} />
 
-      {/* APPLE MAPS FLOATING LAYER SELECTOR (Top-Left) */}
+      {/* FLOATING LAYER SELECTOR (Top-Left) */}
       <div className={styles.appleLayerSwitcher}>
         <button
           className={`${styles.appleControlBtn} ${isLayerMenuOpen ? styles.appleControlActive : ''}`}
@@ -387,7 +495,7 @@ export const MapView: React.FC<MapViewProps> = ({
               }}
             >
               <Sun size={15} />
-              <span>Standard</span>
+              <span>Standard Day</span>
             </button>
             <button
               className={`${styles.appleLayerOption} ${mapMode === 'satellite' ? styles.activeOption : ''}`}
@@ -407,15 +515,22 @@ export const MapView: React.FC<MapViewProps> = ({
               }}
             >
               <Moon size={15} />
-              <span>Dark Mode</span>
+              <span>Dark Space</span>
             </button>
           </div>
         )}
       </div>
 
-      {/* APPLE MAPS FLOATING CONTROL STACK (Bottom-Left) */}
+      {/* FLOATING CONTROL STACK (Bottom-Left) */}
       <div className={styles.appleFloatingStack}>
-        <button className={styles.appleControlBtn} onClick={handleRecenter} title="Re-center Network">
+        <button
+          className={`${styles.appleControlBtn} ${isAutoRotating && !isUserInteractingRef.current ? styles.appleControlActive : ''}`}
+          onClick={toggleAutoRotate}
+          title={isAutoRotating ? 'Pause 3D Globe Rotation' : 'Rotate 3D Globe'}
+        >
+          {isAutoRotating && !isUserInteractingRef.current ? <Pause size={18} /> : <Play size={18} />}
+        </button>
+        <button className={styles.appleControlBtn} onClick={handleRecenter} title="Re-center Global Network">
           <Navigation size={18} />
         </button>
         <button className={styles.appleControlBtn} onClick={handleZoomIn} title="Zoom In">
