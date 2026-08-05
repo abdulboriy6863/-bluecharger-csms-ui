@@ -12,30 +12,16 @@ interface MapViewProps {
   activeCountry: string;
 }
 
-// Center & Zoom presets for supported language markets
+// Center & Zoom presets for supported language markets (2D Mercator Map like Image 2)
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 15.0, lng: 65.0, zoom: 2.15 },
-  KR: { lat: 36.3, lng: 127.8, zoom: 5.5 },
-  UZ: { lat: 41.0, lng: 66.5, zoom: 5.2 },
-  KG: { lat: 41.5, lng: 73.5, zoom: 5.5 },
-  ID: { lat: -2.5, lng: 115.0, zoom: 4.8 },
-  IN: { lat: 22.0, lng: 78.0, zoom: 4.8 },
-  US: { lat: 38.0, lng: -98.0, zoom: 4.2 },
-  RU: { lat: 56.0, lng: 45.0, zoom: 4.2 },
-};
-
-// Calculate angular distance on sphere to hide markers on the backside of 3D Globe
-const isStationOnVisibleGlobe = (cameraCenter: maplibregl.LngLat, stationLng: number, stationLat: number): boolean => {
-  const rad = Math.PI / 180;
-  const dLat = (stationLat - cameraCenter.lat) * rad;
-  const dLng = (stationLng - cameraCenter.lng) * rad;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(cameraCenter.lat * rad) * Math.cos(stationLat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
-
-  // If angular distance > ~1.40 radians (~80 degrees), it's behind the globe horizon
-  return c < 1.40;
+  ALL: { lat: 28.0, lng: 65.0, zoom: 2.5 },
+  KR: { lat: 36.3, lng: 127.8, zoom: 7.0 },
+  UZ: { lat: 41.2, lng: 66.5, zoom: 6.2 },
+  KG: { lat: 41.5, lng: 74.5, zoom: 6.8 },
+  ID: { lat: -2.5, lng: 118.0, zoom: 5.0 },
+  IN: { lat: 22.5, lng: 78.5, zoom: 4.8 },
+  US: { lat: 38.0, lng: -96.0, zoom: 4.2 },
+  RU: { lat: 56.0, lng: 55.0, zoom: 4.0 },
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -49,18 +35,18 @@ export const MapView: React.FC<MapViewProps> = ({
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Record<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>({});
 
-  // Generate MapLibre GL 3D Globe Style Specification
-  const getGlobeStyle = (dark: boolean): maplibregl.StyleSpecification => {
+  // Generate MapLibre GL Mercator Style Specification (Matching Image 2)
+  const getMapStyle = (dark: boolean): maplibregl.StyleSpecification => {
     const tileSub = dark ? 'dark_all' : 'rastertiles/voyager';
     const bgColor = dark ? '#030712' : '#ffffff';
 
     return {
       version: 8,
       projection: {
-        type: 'globe',
+        type: 'mercator',
       },
       sources: {
-        'carto-globe-tiles': {
+        'carto-map-tiles': {
           type: 'raster',
           tiles: [
             `https://a.basemaps.cartocdn.com/${tileSub}/{z}/{x}/{y}{r}.png`,
@@ -74,16 +60,16 @@ export const MapView: React.FC<MapViewProps> = ({
       },
       layers: [
         {
-          id: 'globe-bg-layer',
+          id: 'map-bg-layer',
           type: 'background',
           paint: {
             'background-color': bgColor,
           },
         },
         {
-          id: 'carto-globe-layer',
+          id: 'carto-map-layer',
           type: 'raster',
-          source: 'carto-globe-tiles',
+          source: 'carto-map-tiles',
           minzoom: 0,
           maxzoom: 20,
         },
@@ -91,7 +77,7 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   };
 
-  // Build DOM element for CSMS Location Pin Marker (Matching CSMS PDF 1 style specs)
+  // Build DOM element for CSMS Location Pin Marker (Matching CSMS Image 3 Pin Spec)
   const createMarkerElement = (station: Station, isSelected: boolean) => {
     const el = document.createElement('div');
     el.className = `${styles.csmsMarkerWrapper} ${isSelected ? styles.csmsMarkerSelected : ''}`;
@@ -156,61 +142,25 @@ export const MapView: React.FC<MapViewProps> = ({
     return el;
   };
 
-  // Function to update marker visibility based on 3D Globe camera orientation
-  // Ensures markers stay 100% visible on zoom-in (currentZoom >= 3.5 or selected station)
-  const updateMarkersVisibility = () => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-
-    const center = map.getCenter();
-    const currentZoom = map.getZoom();
-
-    Object.values(markersRef.current).forEach(({ station, el }) => {
-      const isSelected = selectedStation?.id === station.id;
-
-      // At zoom >= 3.5 or for selected station, ALWAYS keep marker 100% visible
-      if (isSelected || currentZoom >= 3.5) {
-        el.style.display = 'flex';
-        el.style.visibility = 'visible';
-        el.style.opacity = '1';
-      } else {
-        const isVisible = isStationOnVisibleGlobe(center, station.lng, station.lat);
-        if (isVisible) {
-          el.style.display = 'flex';
-          el.style.visibility = 'visible';
-          el.style.opacity = '1';
-        } else {
-          el.style.display = 'none';
-          el.style.visibility = 'hidden';
-          el.style.opacity = '0';
-        }
-      }
-    });
-  };
-
-  // Initialize MapLibre 3D Globe perfectly centered (pitch: 0 permanently)
+  // Initialize MapLibre 2D Mercator Map (Like Image 2 - Pins 100% locked to coordinates)
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: getGlobeStyle(isDarkMode),
-        center: [65.0, 15.0], // Centered vertically & horizontally inside rectangular viewport
-        zoom: 2.15,
-        minZoom: 2.0, // Prevents shrinking distortion while allowing full globe view
+        style: getMapStyle(isDarkMode),
+        center: [65.0, 28.0],
+        zoom: 2.5,
+        minZoom: 1.5,
         maxZoom: 19,
-        pitch: 0, // Flat upright 3D globe axis permanently centered
+        pitch: 0,
         bearing: 0,
         attributionControl: false,
       });
 
-      // Add navigation controls (zoom, rotate)
+      // Add navigation controls (zoom in/out)
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-left');
-
-      // Bind occlusion check on camera movement/render
-      map.on('move', updateMarkersVisibility);
-      map.on('render', updateMarkersVisibility);
 
       mapInstanceRef.current = map;
     }
@@ -228,7 +178,7 @@ export const MapView: React.FC<MapViewProps> = ({
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    map.setStyle(getGlobeStyle(isDarkMode));
+    map.setStyle(getMapStyle(isDarkMode));
   }, [isDarkMode]);
 
   // Handle Resize Events
@@ -236,7 +186,6 @@ export const MapView: React.FC<MapViewProps> = ({
     const handleResize = () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.resize();
-        updateMarkersVisibility();
       }
     };
 
@@ -244,7 +193,7 @@ export const MapView: React.FC<MapViewProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Update Station Markers & Popups (Anchor: 'bottom' ensures markers NEVER shift off position)
+  // Update Station Markers & Popups (Anchor: 'bottom' locks tip to coordinates 100%)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -310,7 +259,7 @@ export const MapView: React.FC<MapViewProps> = ({
         }
       });
 
-      // Anchor: 'bottom' locks the exact bottom tip of the pin to [lng, lat]
+      // Anchor: 'bottom' locks pin tip to [station.lng, station.lat]
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([station.lng, station.lat])
         .setPopup(popup)
@@ -318,11 +267,9 @@ export const MapView: React.FC<MapViewProps> = ({
 
       markersRef.current[station.id] = { marker, station, el };
     });
-
-    updateMarkersVisibility();
   }, [stations, selectedStation]);
 
-  // Center Map on Country Select (Pitch 0, calm smooth speed)
+  // Center Map on Country Select (Calm smooth flyTo)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -333,37 +280,30 @@ export const MapView: React.FC<MapViewProps> = ({
       zoom: preset.zoom,
       pitch: 0,
       bearing: 0,
-      speed: 0.35, // Calm, smooth camera travel
+      speed: 0.35,
       curve: 1.4,
-      duration: 2800,
+      duration: 2500,
       essential: true,
     });
   }, [activeCountry]);
 
-  // Center Map on Selected Station (Calm smooth flyTo, marker NEVER disappears)
+  // Center Map on Selected Station (Calm smooth flyTo, pin stays 100% on location)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !selectedStation) return;
 
-    // Force marker visibility immediately
-    const item = markersRef.current[selectedStation.id];
-    if (item) {
-      item.el.style.display = 'flex';
-      item.el.style.visibility = 'visible';
-      item.el.style.opacity = '1';
-    }
-
     map.flyTo({
       center: [selectedStation.lng, selectedStation.lat],
-      zoom: 13.5,
-      pitch: 0, // Keeps map flat and centered without dropping
+      zoom: 14.0,
+      pitch: 0,
       bearing: 0,
-      speed: 0.35, // Slow calm camera travel (2.8s)
+      speed: 0.35,
       curve: 1.4,
-      duration: 2800,
+      duration: 2500,
       essential: true,
     });
 
+    const item = markersRef.current[selectedStation.id];
     if (item) {
       item.marker.togglePopup();
     }
