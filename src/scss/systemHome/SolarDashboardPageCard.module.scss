@@ -331,13 +331,13 @@
 }
 
 .nodeCircle {
-  width: 80px;
-  height: 80px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
   background: var(--bg-secondary, #ffffff);
   border: 2px solid var(--border-color, #e2e8f0);
   box-shadow: 
-    0 10px 24px var(--shadow, rgba(46, 86, 166, 0.1)),
+    0 8px 20px var(--shadow, rgba(46, 86, 166, 0.08)),
     inset 0 2px 4px rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
@@ -348,10 +348,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: -7px;
-    left: -7px;
-    right: -7px;
-    bottom: -7px;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
     border-radius: 50%;
     border: 1.5px dashed transparent;
     transition: all $transition-normal;
@@ -395,14 +395,32 @@
 
 .sunNode {
   .nodeCircle {
+    width: 104px;
+    height: 104px;
     border-color: #fbbf24;
     color: #d97706;
-    background: linear-gradient(135deg, #fffcf0 0%, #fffbeb 100%);
-    box-shadow: 0 0 16px rgba(251, 191, 36, 0.15);
+    background: linear-gradient(135deg, #fffdf2 0%, #fef3c7 100%);
+    box-shadow: 
+      0 0 24px rgba(251, 191, 36, 0.28),
+      0 12px 28px rgba(217, 119, 6, 0.15);
 
     &::before {
-      border-color: rgba(251, 191, 36, 0.25);
+      border-color: rgba(251, 191, 36, 0.4);
+      top: -9px;
+      left: -9px;
+      right: -9px;
+      bottom: -9px;
       animation: rotateDashed 25s linear infinite;
+    }
+  }
+
+  .nodeLabelGroup {
+    min-width: 130px;
+    padding: 10px 16px;
+
+    .value {
+      font-size: 18px;
+      font-weight: 900;
     }
   }
 }

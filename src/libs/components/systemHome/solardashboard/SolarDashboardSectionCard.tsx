@@ -182,7 +182,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         {/* PV Node */}
         <div className={`${styles.node} ${styles.sunNode}`} style={{ top: '14%', left: '50%' }}>
           <div className={styles.nodeCircle}>
-            <Sun size={32} strokeWidth={1.8} />
+            <Sun size={42} strokeWidth={2} />
           </div>
           <div className={styles.nodeLabelGroup}>
             <span className={styles.label}>{t('solarDashboard.flow.pv')}</span>
@@ -211,7 +211,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         {/* Grid Node */}
         <div className={`${styles.node} ${styles.gridNode}`} style={{ top: '48%', left: '80%' }}>
           <div className={styles.nodeCircle}>
-            <Zap size={28} strokeWidth={1.8} />
+            <Zap size={22} strokeWidth={2} />
           </div>
           <div className={styles.nodeLabelGroup}>
             <span className={styles.label}>{t('solarDashboard.flow.grid')}</span>
@@ -225,7 +225,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         {/* Battery Node */}
         <div className={`${styles.node} ${styles.batteryNode}`} style={{ top: '82%', left: '26%' }}>
           <div className={styles.nodeCircle}>
-            <BatteryCharging size={26} strokeWidth={1.8} />
+            <BatteryCharging size={20} strokeWidth={2} />
             <span className={styles.batteryLevel}>{batterySoc}%</span>
           </div>
           <div className={styles.nodeLabelGroup}>
@@ -240,7 +240,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         {/* Power Load Node */}
         <div className={`${styles.node} ${styles.loadNode}`} style={{ top: '82%', left: '74%' }}>
           <div className={styles.nodeCircle}>
-            <Home size={26} strokeWidth={1.8} />
+            <Home size={20} strokeWidth={2} />
           </div>
           <div className={styles.nodeLabelGroup}>
             <span className={styles.label}>{t('solarDashboard.flow.load')}</span>
