@@ -10,7 +10,7 @@ export interface StationCharger {
   ocppVersion: string;
   firmwareVersion: string;
   ipAddress: string;
-  status: 'Available' | 'Charging' | 'Faulted' | 'Offline' | 'Reserved';
+  status: ChargerStatus;
   connectors: StationConnector[];
   todayEnergyKwh: number;
   totalSessionsToday: number;
@@ -21,14 +21,14 @@ export interface Station {
   id: string;
   name: string;
   operator: string;
-  country: 'Uzbekistan' | 'South Korea' | 'USA' | 'Germany' | 'UAE';
-  countryCode: 'UZ' | 'KR' | 'US' | 'DE' | 'AE';
+  country: 'Uzbekistan' | 'South Korea' | 'Kyrgyzstan' | 'Indonesia' | 'India' | 'USA' | 'Russia';
+  countryCode: 'UZ' | 'KR' | 'KG' | 'ID' | 'IN' | 'US' | 'RU';
   region: string;
   city: string;
   address: string;
   lat: number;
   lng: number;
-  status: 'Available' | 'Charging' | 'Faulted' | 'Offline' | 'Reserved';
+  status: ChargerStatus;
   totalChargers: number;
   availableChargers: number;
   chargingChargers: number;
@@ -42,7 +42,7 @@ export interface Station {
 }
 
 export const mockStations: Station[] = [
-  // SOUTH KOREA STATIONS
+  // 1. SOUTH KOREA (KOR) STATIONS
   {
     id: 'ST-KR-01',
     name: 'Seoul Gangnam Smart Hub',
@@ -97,39 +97,6 @@ export const mockStations: Station[] = [
         connectors: [
           { id: 1, type: 'CCS2', maxPowerKw: 200, status: 'Charging', currentPowerKw: 165.2, energyDeliveredKwh: 42.1 },
           { id: 2, type: 'CCS2', maxPowerKw: 200, status: 'Available', currentPowerKw: 0 }
-        ]
-      },
-      {
-        id: 'CP-1020',
-        name: 'Seoul Gangnam DC HighPower #3',
-        manufacturer: 'Signet EV',
-        model: 'HyperCharger 200kW',
-        firmwareVersion: 'v4.1.2',
-        ocppVersion: 'OCPP 2.0.1',
-        ipAddress: '10.200.4.57',
-        status: 'Charging',
-        todayEnergyKwh: 540.8,
-        totalSessionsToday: 18,
-        lastHeartbeat: '4 sec ago',
-        connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 200, status: 'Charging', currentPowerKw: 142.0, energyDeliveredKwh: 28.6 }
-        ]
-      },
-      {
-        id: 'CP-1021',
-        name: 'Seoul Gangnam AC Wallbox #4',
-        manufacturer: 'Signet EV',
-        model: 'AC Dual 22kW',
-        firmwareVersion: 'v1.2.0',
-        ocppVersion: 'OCPP 1.6J',
-        ipAddress: '10.200.4.58',
-        status: 'Available',
-        todayEnergyKwh: 88.0,
-        totalSessionsToday: 4,
-        lastHeartbeat: '10 sec ago',
-        connectors: [
-          { id: 1, type: 'Type 2', maxPowerKw: 22, status: 'Available' },
-          { id: 2, type: 'Type 2', maxPowerKw: 22, status: 'Available' }
         ]
       }
     ]
@@ -187,13 +154,13 @@ export const mockStations: Station[] = [
     lat: 36.9921,
     lng: 127.0886,
     status: 'Available',
-    totalChargers: 3,
-    availableChargers: 3,
+    totalChargers: 2,
+    availableChargers: 2,
     chargingChargers: 0,
     faultedChargers: 0,
     offlineChargers: 0,
     reservedChargers: 0,
-    totalPowerKw: 360,
+    totalPowerKw: 240,
     activePowerKw: 0,
     lastHeartbeat: '5 sec ago',
     chargers: [
@@ -217,64 +184,7 @@ export const mockStations: Station[] = [
   },
   {
     id: 'ST-KR-04',
-    name: 'Cheonan Seobuk 3-Ga Depot',
-    operator: 'BlueNetworks Korea',
-    country: 'South Korea',
-    countryCode: 'KR',
-    region: 'Chungnam',
-    city: 'Cheonan-si',
-    address: '168 Ipsang 3-gil, Seobuk-gu, Cheonan-si, Chungcheongnam-do',
-    lat: 36.8151,
-    lng: 127.1139,
-    status: 'Charging',
-    totalChargers: 3,
-    availableChargers: 1,
-    chargingChargers: 2,
-    faultedChargers: 0,
-    offlineChargers: 0,
-    reservedChargers: 0,
-    totalPowerKw: 300,
-    activePowerKw: 184.5,
-    lastHeartbeat: '6 sec ago',
-    chargers: [
-      {
-        id: 'BNS0607',
-        name: '7kW 3-Ga Test Station',
-        manufacturer: 'Secon Power',
-        model: 'AC Wallbox 7kW',
-        firmwareVersion: 'v1.0.4',
-        ocppVersion: 'OCPP 1.6J',
-        ipAddress: '10.106.8.12',
-        status: 'Available',
-        todayEnergyKwh: 45.0,
-        totalSessionsToday: 3,
-        lastHeartbeat: '20 sec ago',
-        connectors: [
-          { id: 1, type: 'Type 2', maxPowerKw: 7, status: 'Available' }
-        ]
-      },
-      {
-        id: 'BNS1240',
-        name: 'REVO Ultra-Fast Station',
-        manufacturer: 'REVO',
-        model: 'DC Dual 150kW',
-        firmwareVersion: 'v2.8.0',
-        ocppVersion: 'OCPP 2.0.1',
-        ipAddress: '10.106.8.14',
-        status: 'Charging',
-        todayEnergyKwh: 580.4,
-        totalSessionsToday: 19,
-        lastHeartbeat: '6 sec ago',
-        connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Charging', currentPowerKw: 124.5, energyDeliveredKwh: 36.8 },
-          { id: 2, type: 'CHAdeMO', maxPowerKw: 50, status: 'Charging', currentPowerKw: 60.0, energyDeliveredKwh: 12.4 }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'ST-KR-05',
-    name: 'Busan Logistics Port E-Park',
+    name: 'Busan Port Terminal Logistics Hub',
     operator: 'BlueNetworks Korea',
     country: 'South Korea',
     countryCode: 'KR',
@@ -314,7 +224,7 @@ export const mockStations: Station[] = [
     ]
   },
 
-  // UZBEKISTAN STATIONS
+  // 2. UZBEKISTAN (UZB) STATIONS
   {
     id: 'ST-UZ-01',
     name: 'Tashkent Central Mall Station',
@@ -327,13 +237,13 @@ export const mockStations: Station[] = [
     lat: 41.3322,
     lng: 69.2845,
     status: 'Charging',
-    totalChargers: 4,
-    availableChargers: 2,
+    totalChargers: 3,
+    availableChargers: 1,
     chargingChargers: 2,
     faultedChargers: 0,
     offlineChargers: 0,
     reservedChargers: 0,
-    totalPowerKw: 540,
+    totalPowerKw: 420,
     activePowerKw: 213.0,
     lastHeartbeat: '3 sec ago',
     chargers: [
@@ -352,23 +262,6 @@ export const mockStations: Station[] = [
         connectors: [
           { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Charging', currentPowerKw: 118.4, energyDeliveredKwh: 34.2 },
           { id: 2, type: 'GB/T', maxPowerKw: 120, status: 'Available', currentPowerKw: 0 }
-        ]
-      },
-      {
-        id: 'CP-1002',
-        name: 'Tashkent City Center Ultra DC-2',
-        manufacturer: 'Signet EV Systems',
-        model: 'HyperCharger 150kW Dual',
-        firmwareVersion: 'v3.8.12-pro',
-        ocppVersion: 'OCPP 1.6J',
-        ipAddress: '192.168.10.102',
-        status: 'Available',
-        todayEnergyKwh: 298.0,
-        totalSessionsToday: 9,
-        lastHeartbeat: '15 sec ago',
-        connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Available' },
-          { id: 2, type: 'GB/T', maxPowerKw: 120, status: 'Available' }
         ]
       },
       {
@@ -392,62 +285,6 @@ export const mockStations: Station[] = [
   },
   {
     id: 'ST-UZ-02',
-    name: 'Tashkent Airport VIP Parking P1',
-    operator: 'BlueCharger Uzbekistan',
-    country: 'Uzbekistan',
-    countryCode: 'UZ',
-    region: 'Tashkent',
-    city: 'Yakkasaray',
-    address: 'Kumarik Street 13, Tashkent Airport P1',
-    lat: 41.2579,
-    lng: 69.2812,
-    status: 'Reserved',
-    totalChargers: 2,
-    availableChargers: 0,
-    chargingChargers: 0,
-    faultedChargers: 0,
-    offlineChargers: 1,
-    reservedChargers: 1,
-    totalPowerKw: 320,
-    activePowerKw: 0,
-    lastHeartbeat: '12 sec ago',
-    chargers: [
-      {
-        id: 'CP-1007',
-        name: 'Tashkent Airport VIP Parking P1',
-        manufacturer: 'StarCharge',
-        model: 'Titan 160kW',
-        firmwareVersion: 'v4.0.2',
-        ocppVersion: 'OCPP 1.6J',
-        ipAddress: '192.168.15.5',
-        status: 'Reserved',
-        todayEnergyKwh: 520.4,
-        totalSessionsToday: 18,
-        lastHeartbeat: '12 sec ago',
-        connectors: [
-          { id: 1, type: 'GB/T', maxPowerKw: 160, status: 'Reserved' }
-        ]
-      },
-      {
-        id: 'CP-1008',
-        name: 'Tashkent Airport Express P2',
-        manufacturer: 'StarCharge',
-        model: 'Titan 160kW',
-        firmwareVersion: 'v4.0.2',
-        ocppVersion: 'OCPP 1.6J',
-        ipAddress: '192.168.15.6',
-        status: 'Offline',
-        todayEnergyKwh: 120.0,
-        totalSessionsToday: 4,
-        lastHeartbeat: '45 mins ago',
-        connectors: [
-          { id: 1, type: 'GB/T', maxPowerKw: 160, status: 'Offline' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'ST-UZ-03',
     name: 'Samarkand Silk Road Hub',
     operator: 'BlueCharger Uzbekistan',
     country: 'Uzbekistan',
@@ -484,27 +321,301 @@ export const mockStations: Station[] = [
           { id: 1, type: 'CCS2', maxPowerKw: 120, status: 'Charging', currentPowerKw: 94.6, energyDeliveredKwh: 18.9 },
           { id: 2, type: 'CHAdeMO', maxPowerKw: 50, status: 'Available' }
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: 'ST-UZ-03',
+    name: 'Bukhara Ancient City EV Station',
+    operator: 'BlueCharger Uzbekistan',
+    country: 'Uzbekistan',
+    countryCode: 'UZ',
+    region: 'Bukhara',
+    city: 'Bukhara City',
+    address: 'Bahauddin Naqshband Street 42, Bukhara',
+    lat: 39.7747,
+    lng: 64.4286,
+    status: 'Available',
+    totalChargers: 2,
+    availableChargers: 2,
+    chargingChargers: 0,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 240,
+    activePowerKw: 0,
+    lastHeartbeat: '8 sec ago',
+    chargers: [
       {
-        id: 'CP-1009',
-        name: 'Samarkand Railway Plaza #1',
-        manufacturer: 'ABB E-mobility',
-        model: 'Terra 124',
-        firmwareVersion: 'v4.2.0',
+        id: 'CP-UZ-201',
+        name: 'Bukhara Oasis DC 120kW',
+        manufacturer: 'StarCharge',
+        model: 'Titan 120kW',
+        firmwareVersion: 'v4.1.0',
         ocppVersion: 'OCPP 1.6J',
-        ipAddress: '192.168.12.88',
-        status: 'Charging',
-        todayEnergyKwh: 480.9,
-        totalSessionsToday: 16,
-        lastHeartbeat: '4 sec ago',
+        ipAddress: '192.168.22.10',
+        status: 'Available',
+        todayEnergyKwh: 210.0,
+        totalSessionsToday: 7,
+        lastHeartbeat: '8 sec ago',
         connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 120, status: 'Charging', currentPowerKw: 110.2, energyDeliveredKwh: 52.0 }
+          { id: 1, type: 'GB/T', maxPowerKw: 120, status: 'Available' },
+          { id: 2, type: 'CCS2', maxPowerKw: 120, status: 'Available' }
         ]
       }
     ]
   },
 
-  // USA STATIONS
+  // 3. KYRGYZSTAN (KYR) STATIONS
+  {
+    id: 'ST-KG-01',
+    name: 'Bishkek Ala-Too Square Hub',
+    operator: 'BlueNetworks Kyrgyzstan',
+    country: 'Kyrgyzstan',
+    countryCode: 'KG',
+    region: 'Bishkek',
+    city: 'Bishkek Central',
+    address: 'Chuy Avenue 114, Bishkek',
+    lat: 42.8746,
+    lng: 74.6122,
+    status: 'Charging',
+    totalChargers: 2,
+    availableChargers: 1,
+    chargingChargers: 1,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 300,
+    activePowerKw: 128.5,
+    lastHeartbeat: '2 sec ago',
+    chargers: [
+      {
+        id: 'CP-KG-301',
+        name: 'Bishkek Chuy DC Fast #1',
+        manufacturer: 'StarCharge',
+        model: 'Titan 150kW Dual',
+        firmwareVersion: 'v4.2.1',
+        ocppVersion: 'OCPP 1.6J',
+        ipAddress: '10.74.10.5',
+        status: 'Charging',
+        todayEnergyKwh: 480.0,
+        totalSessionsToday: 16,
+        lastHeartbeat: '2 sec ago',
+        connectors: [
+          { id: 1, type: 'GB/T', maxPowerKw: 150, status: 'Charging', currentPowerKw: 128.5, energyDeliveredKwh: 31.4 },
+          { id: 2, type: 'CCS2', maxPowerKw: 150, status: 'Available' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'ST-KG-02',
+    name: 'Osh Sulaiman-Too EV Depot',
+    operator: 'BlueNetworks Kyrgyzstan',
+    country: 'Kyrgyzstan',
+    countryCode: 'KG',
+    region: 'Osh',
+    city: 'Osh City',
+    address: 'Kurmanjan Datka Street 201, Osh',
+    lat: 40.5140,
+    lng: 72.8058,
+    status: 'Available',
+    totalChargers: 2,
+    availableChargers: 2,
+    chargingChargers: 0,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 240,
+    activePowerKw: 0,
+    lastHeartbeat: '14 sec ago',
+    chargers: [
+      {
+        id: 'CP-KG-302',
+        name: 'Osh Central Fast #1',
+        manufacturer: 'Signet EV',
+        model: 'HyperCharger 120kW',
+        firmwareVersion: 'v3.5.0',
+        ocppVersion: 'OCPP 1.6J',
+        ipAddress: '10.74.20.12',
+        status: 'Available',
+        todayEnergyKwh: 190.5,
+        totalSessionsToday: 6,
+        lastHeartbeat: '14 sec ago',
+        connectors: [
+          { id: 1, type: 'GB/T', maxPowerKw: 120, status: 'Available' }
+        ]
+      }
+    ]
+  },
+
+  // 4. INDONESIA (IDN) STATIONS
+  {
+    id: 'ST-ID-01',
+    name: 'Jakarta Sudirman EV Central',
+    operator: 'BlueNetworks Indonesia',
+    country: 'Indonesia',
+    countryCode: 'ID',
+    region: 'Jakarta',
+    city: 'South Jakarta',
+    address: 'Jend. Sudirman Kav 52-53, Jakarta',
+    lat: -6.2297,
+    lng: 106.8074,
+    status: 'Charging',
+    totalChargers: 3,
+    availableChargers: 1,
+    chargingChargers: 2,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 450,
+    activePowerKw: 280.0,
+    lastHeartbeat: '4 sec ago',
+    chargers: [
+      {
+        id: 'CP-ID-401',
+        name: 'Jakarta SCBD UltraFast #1',
+        manufacturer: 'ABB E-mobility',
+        model: 'Terra 184 Dual',
+        firmwareVersion: 'v5.1.2',
+        ocppVersion: 'OCPP 2.0.1',
+        ipAddress: '10.106.4.15',
+        status: 'Charging',
+        todayEnergyKwh: 750.2,
+        totalSessionsToday: 24,
+        lastHeartbeat: '4 sec ago',
+        connectors: [
+          { id: 1, type: 'CCS2', maxPowerKw: 180, status: 'Charging', currentPowerKw: 155.0, energyDeliveredKwh: 48.2 },
+          { id: 2, type: 'CCS2', maxPowerKw: 180, status: 'Charging', currentPowerKw: 125.0, energyDeliveredKwh: 39.1 }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'ST-ID-02',
+    name: 'Bali Denpasar Resort EV Hub',
+    operator: 'BlueNetworks Indonesia',
+    country: 'Indonesia',
+    countryCode: 'ID',
+    region: 'Bali',
+    city: 'Denpasar',
+    address: 'Bypass Ngurah Rai 100, Sanur, Bali',
+    lat: -8.6705,
+    lng: 115.2126,
+    status: 'Available',
+    totalChargers: 2,
+    availableChargers: 2,
+    chargingChargers: 0,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 300,
+    activePowerKw: 0,
+    lastHeartbeat: '10 sec ago',
+    chargers: [
+      {
+        id: 'CP-ID-402',
+        name: 'Bali Sanur Fast Charger #1',
+        manufacturer: 'StarCharge',
+        model: 'Titan 150kW',
+        firmwareVersion: 'v4.0.0',
+        ocppVersion: 'OCPP 1.6J',
+        ipAddress: '10.115.8.20',
+        status: 'Available',
+        todayEnergyKwh: 340.0,
+        totalSessionsToday: 11,
+        lastHeartbeat: '10 sec ago',
+        connectors: [
+          { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Available' }
+        ]
+      }
+    ]
+  },
+
+  // 5. INDIA (HIN) STATIONS
+  {
+    id: 'ST-IN-01',
+    name: 'New Delhi Connaught Plaza Hub',
+    operator: 'BlueNetworks India',
+    country: 'India',
+    countryCode: 'IN',
+    region: 'Delhi',
+    city: 'New Delhi',
+    address: 'Connaught Place Outer Circle, New Delhi',
+    lat: 28.6315,
+    lng: 77.2167,
+    status: 'Charging',
+    totalChargers: 3,
+    availableChargers: 1,
+    chargingChargers: 2,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 480,
+    activePowerKw: 245.0,
+    lastHeartbeat: '3 sec ago',
+    chargers: [
+      {
+        id: 'CP-IN-501',
+        name: 'Delhi CP HighPower #1',
+        manufacturer: 'ABB E-mobility',
+        model: 'Terra 180kW',
+        firmwareVersion: 'v5.2.0',
+        ocppVersion: 'OCPP 2.0.1',
+        ipAddress: '10.77.1.50',
+        status: 'Charging',
+        todayEnergyKwh: 820.0,
+        totalSessionsToday: 27,
+        lastHeartbeat: '3 sec ago',
+        connectors: [
+          { id: 1, type: 'CCS2', maxPowerKw: 180, status: 'Charging', currentPowerKw: 145.0, energyDeliveredKwh: 41.2 },
+          { id: 2, type: 'CCS2', maxPowerKw: 180, status: 'Charging', currentPowerKw: 100.0, energyDeliveredKwh: 28.4 }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'ST-IN-02',
+    name: 'Mumbai BKC Financial Center Depot',
+    operator: 'BlueNetworks India',
+    country: 'India',
+    countryCode: 'IN',
+    region: 'Maharashtra',
+    city: 'Mumbai',
+    address: 'Bandra Kurla Complex, Mumbai',
+    lat: 19.0600,
+    lng: 72.8700,
+    status: 'Available',
+    totalChargers: 2,
+    availableChargers: 2,
+    chargingChargers: 0,
+    faultedChargers: 0,
+    offlineChargers: 0,
+    reservedChargers: 0,
+    totalPowerKw: 300,
+    activePowerKw: 0,
+    lastHeartbeat: '6 sec ago',
+    chargers: [
+      {
+        id: 'CP-IN-502',
+        name: 'Mumbai BKC Fast #1',
+        manufacturer: 'Signet EV',
+        model: 'DC Dual 150kW',
+        firmwareVersion: 'v4.1.0',
+        ocppVersion: 'OCPP 1.6J',
+        ipAddress: '10.72.10.88',
+        status: 'Available',
+        todayEnergyKwh: 610.0,
+        totalSessionsToday: 19,
+        lastHeartbeat: '6 sec ago',
+        connectors: [
+          { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Available' }
+        ]
+      }
+    ]
+  },
+
+  // 6. USA (ENG) STATIONS
   {
     id: 'ST-US-01',
     name: 'San Francisco Financial District Hub',
@@ -517,18 +628,18 @@ export const mockStations: Station[] = [
     lat: 37.7922,
     lng: -122.4038,
     status: 'Available',
-    totalChargers: 4,
-    availableChargers: 3,
+    totalChargers: 3,
+    availableChargers: 2,
     chargingChargers: 1,
     faultedChargers: 0,
     offlineChargers: 0,
     reservedChargers: 0,
-    totalPowerKw: 1400,
+    totalPowerKw: 1080,
     activePowerKw: 240.0,
     lastHeartbeat: '2 sec ago',
     chargers: [
       {
-        id: 'CP-US-301',
+        id: 'CP-US-601',
         name: 'SF Downtown MegaCharger #1',
         manufacturer: 'ABB E-mobility',
         model: 'Terra 360 Mega',
@@ -543,38 +654,22 @@ export const mockStations: Station[] = [
           { id: 1, type: 'CCS2', maxPowerKw: 360, status: 'Charging', currentPowerKw: 240.0, energyDeliveredKwh: 65.4 },
           { id: 2, type: 'NACS', maxPowerKw: 360, status: 'Available' }
         ]
-      },
-      {
-        id: 'CP-US-302',
-        name: 'SF Downtown MegaCharger #2',
-        manufacturer: 'ABB E-mobility',
-        model: 'Terra 360 Mega',
-        firmwareVersion: 'v6.1.0',
-        ocppVersion: 'OCPP 2.0.1',
-        ipAddress: '172.16.4.102',
-        status: 'Available',
-        todayEnergyKwh: 890.0,
-        totalSessionsToday: 29,
-        lastHeartbeat: '5 sec ago',
-        connectors: [
-          { id: 1, type: 'NACS', maxPowerKw: 360, status: 'Available' }
-        ]
       }
     ]
   },
 
-  // GERMANY / EUROPE STATIONS
+  // 7. RUSSIA (RUS) STATIONS
   {
-    id: 'ST-DE-01',
-    name: 'Berlin Alexanderplatz SuperHub',
-    operator: 'BlueNetworks Europe',
-    country: 'Germany',
-    countryCode: 'DE',
-    region: 'Berlin',
-    city: 'Berlin Mitte',
-    address: 'Alexanderplatz 1, 10178 Berlin',
-    lat: 52.5219,
-    lng: 13.4132,
+    id: 'ST-RU-01',
+    name: 'Moscow City Business Center',
+    operator: 'BlueNetworks Eurasia',
+    country: 'Russia',
+    countryCode: 'RU',
+    region: 'Moscow',
+    city: 'Presnensky',
+    address: 'Presnenskaya Naberezhnaya 12, Moscow',
+    lat: 55.7472,
+    lng: 37.5375,
     status: 'Charging',
     totalChargers: 3,
     availableChargers: 1,
@@ -582,67 +677,25 @@ export const mockStations: Station[] = [
     faultedChargers: 0,
     offlineChargers: 0,
     reservedChargers: 0,
-    totalPowerKw: 900,
-    activePowerKw: 380.0,
-    lastHeartbeat: '1 sec ago',
+    totalPowerKw: 450,
+    activePowerKw: 260.0,
+    lastHeartbeat: '5 sec ago',
     chargers: [
       {
-        id: 'CP-DE-401',
-        name: 'Berlin Mitte HPC #1',
-        manufacturer: 'Alpitronic',
-        model: 'HYC 300 Dual',
-        firmwareVersion: 'v5.4.1',
-        ocppVersion: 'OCPP 2.0.1',
-        ipAddress: '10.88.2.14',
-        status: 'Charging',
-        todayEnergyKwh: 1120.0,
-        totalSessionsToday: 41,
-        lastHeartbeat: '1 sec ago',
-        connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 300, status: 'Charging', currentPowerKw: 210.0, energyDeliveredKwh: 58.2 },
-          { id: 2, type: 'CCS2', maxPowerKw: 300, status: 'Charging', currentPowerKw: 170.0, energyDeliveredKwh: 45.1 }
-        ]
-      }
-    ]
-  },
-
-  // UAE STATIONS
-  {
-    id: 'ST-AE-01',
-    name: 'Dubai Downtown EV Oasis',
-    operator: 'BlueNetworks Middle East',
-    country: 'UAE',
-    countryCode: 'AE',
-    region: 'Dubai',
-    city: 'Downtown Dubai',
-    address: 'Sheikh Zayed Rd, Downtown Dubai',
-    lat: 25.1972,
-    lng: 55.2744,
-    status: 'Available',
-    totalChargers: 4,
-    availableChargers: 4,
-    chargingChargers: 0,
-    faultedChargers: 0,
-    offlineChargers: 0,
-    reservedChargers: 0,
-    totalPowerKw: 960,
-    activePowerKw: 0,
-    lastHeartbeat: '4 sec ago',
-    chargers: [
-      {
-        id: 'CP-AE-501',
-        name: 'Dubai Oasis Fast #1',
+        id: 'CP-RU-701',
+        name: 'Moscow City UltraFast #1',
         manufacturer: 'Signet EV',
-        model: 'HyperCharger 240kW',
-        firmwareVersion: 'v4.5.0',
-        ocppVersion: 'OCPP 2.0.1',
-        ipAddress: '10.50.1.10',
-        status: 'Available',
-        todayEnergyKwh: 850.4,
-        totalSessionsToday: 26,
-        lastHeartbeat: '4 sec ago',
+        model: 'HyperCharger 150kW',
+        firmwareVersion: 'v4.5.1',
+        ocppVersion: 'OCPP 1.6J',
+        ipAddress: '10.37.12.14',
+        status: 'Charging',
+        todayEnergyKwh: 690.0,
+        totalSessionsToday: 21,
+        lastHeartbeat: '5 sec ago',
         connectors: [
-          { id: 1, type: 'CCS2', maxPowerKw: 240, status: 'Available' }
+          { id: 1, type: 'CCS2', maxPowerKw: 150, status: 'Charging', currentPowerKw: 140.0, energyDeliveredKwh: 44.5 },
+          { id: 2, type: 'GB/T', maxPowerKw: 150, status: 'Charging', currentPowerKw: 120.0, energyDeliveredKwh: 36.2 }
         ]
       }
     ]

@@ -70,11 +70,13 @@ export const StationListSidebar: React.FC<StationListSidebarProps> = ({
               className={styles.countrySelect}
             >
               <option value="ALL">🌐 All Countries (Global)</option>
-              <option value="KR">🇰🇷 South Korea</option>
-              <option value="UZ">🇺🇿 Uzbekistan</option>
-              <option value="US">🇺🇸 United States</option>
-              <option value="DE">🇩🇪 Germany (EU)</option>
-              <option value="AE">🇦🇪 United Arab Emirates</option>
+              <option value="KR">🇰🇷 South Korea (KOR)</option>
+              <option value="UZ">🇺🇿 Uzbekistan (UZB)</option>
+              <option value="KG">🇰🇬 Kyrgyzstan (KYR)</option>
+              <option value="ID">🇮🇩 Indonesia (IDN)</option>
+              <option value="IN">🇮🇳 India (HIN)</option>
+              <option value="US">🇺🇸 United States (ENG)</option>
+              <option value="RU">🇷🇺 Russia (RUS)</option>
             </select>
           </div>
 

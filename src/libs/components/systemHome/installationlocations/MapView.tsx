@@ -12,14 +12,30 @@ interface MapViewProps {
   activeCountry: string;
 }
 
-// Center presets for regional navigation
+// Center presets for supported language markets (KR, UZ, KG, ID, IN, US, RU)
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 25.0, lng: 45.0, zoom: 2.5 },
-  KR: { lat: 36.3, lng: 127.8, zoom: 7.2 },
+  ALL: { lat: 25.0, lng: 70.0, zoom: 2.8 },
+  KR: { lat: 36.3, lng: 127.8, zoom: 7.0 },
   UZ: { lat: 40.5, lng: 67.5, zoom: 6.5 },
-  US: { lat: 37.78, lng: -122.41, zoom: 10.5 },
-  DE: { lat: 52.52, lng: 13.40, zoom: 10.5 },
-  AE: { lat: 25.20, lng: 55.27, zoom: 10.5 },
+  KG: { lat: 42.0, lng: 73.5, zoom: 6.8 },
+  ID: { lat: -2.5, lng: 115.0, zoom: 5.5 },
+  IN: { lat: 22.0, lng: 78.0, zoom: 5.2 },
+  US: { lat: 37.78, lng: -122.41, zoom: 10.0 },
+  RU: { lat: 55.75, lng: 37.61, zoom: 8.0 },
+};
+
+// Calculate angular distance on sphere to hide markers on the backside of 3D Globe
+const isStationOnVisibleGlobe = (cameraCenter: maplibregl.LngLat, stationLng: number, stationLat: number): boolean => {
+  const rad = Math.PI / 180;
+  const dLat = (stationLat - cameraCenter.lat) * rad;
+  const dLng = (stationLng - cameraCenter.lng) * rad;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(cameraCenter.lat * rad) * Math.cos(stationLat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+  
+  // If angular distance > ~1.40 radians (~80 degrees), it's behind the globe horizon
+  return c < 1.40;
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -31,7 +47,7 @@ export const MapView: React.FC<MapViewProps> = ({
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
-  const markersRef = useRef<Record<string, maplibregl.Marker>>({});
+  const markersRef = useRef<Record<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>({});
 
   // Generate MapLibre GL 3D Globe Style Specification
   const getGlobeStyle = (dark: boolean): maplibregl.StyleSpecification => {
@@ -75,7 +91,7 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   };
 
-  // Helper to build DOM element for custom SVG Pin Marker
+  // Build DOM element for custom SVG Pin Marker
   const createMarkerElement = (station: Station, isSelected: boolean) => {
     const el = document.createElement('div');
     el.className = `${styles.markerPinWrapper} ${isSelected ? styles.markerSelected : ''}`;
@@ -105,7 +121,26 @@ export const MapView: React.FC<MapViewProps> = ({
     return el;
   };
 
-  // Initialize MapLibre 3D Globe with strict minZoom & bounds safety
+  // Function to update marker visibility based on 3D Globe camera orientation
+  const updateMarkersVisibility = () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const center = map.getCenter();
+    const currentZoom = map.getZoom();
+
+    Object.values(markersRef.current).forEach(({ station, el }) => {
+      // If zoomed out on 3D globe, hide markers that rotate behind the Earth horizon
+      if (currentZoom < 4.5) {
+        const isVisible = isStationOnVisibleGlobe(center, station.lng, station.lat);
+        el.style.display = isVisible ? 'flex' : 'none';
+      } else {
+        el.style.display = 'flex';
+      }
+    });
+  };
+
+  // Initialize MapLibre 3D Globe perfectly centered (pitch: 0)
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -113,16 +148,20 @@ export const MapView: React.FC<MapViewProps> = ({
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: getGlobeStyle(isDarkMode),
-        center: [45.0, 25.0],
-        zoom: 2.5,
-        minZoom: 2.0, // Prevents extreme zoom-out shrinking & marker detachment
+        center: [70.0, 25.0], // Centered vertically & horizontally
+        zoom: 2.8,
+        minZoom: 2.8, // Keeps globe centered and prevents shrinking distortion
         maxZoom: 19,
-        pitch: 15,
+        pitch: 0, // Flat upright 3D globe axis centered in viewport
         attributionControl: false,
       });
 
       // Add navigation controls (zoom, rotate, pitch)
       map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-left');
+
+      // Bind occlusion check on camera movement/render
+      map.on('move', updateMarkersVisibility);
+      map.on('render', updateMarkersVisibility);
 
       mapInstanceRef.current = map;
     }
@@ -149,7 +188,7 @@ export const MapView: React.FC<MapViewProps> = ({
     if (!map) return;
 
     // Clear existing markers
-    Object.values(markersRef.current).forEach((m) => m.remove());
+    Object.values(markersRef.current).forEach(({ marker }) => marker.remove());
     markersRef.current = {};
 
     stations.forEach((station) => {
@@ -214,8 +253,10 @@ export const MapView: React.FC<MapViewProps> = ({
         .setPopup(popup)
         .addTo(map);
 
-      markersRef.current[station.id] = marker;
+      markersRef.current[station.id] = { marker, station, el };
     });
+
+    updateMarkersVisibility();
   }, [stations, selectedStation]);
 
   // Center Map on Country Select
@@ -227,6 +268,7 @@ export const MapView: React.FC<MapViewProps> = ({
     map.flyTo({
       center: [preset.lng, preset.lat],
       zoom: preset.zoom,
+      pitch: activeCountry === 'ALL' ? 0 : 20,
       essential: true,
       duration: 1800,
     });
@@ -240,14 +282,14 @@ export const MapView: React.FC<MapViewProps> = ({
     map.flyTo({
       center: [selectedStation.lng, selectedStation.lat],
       zoom: 14,
-      pitch: 35,
+      pitch: 25,
       essential: true,
       duration: 1500,
     });
 
-    const marker = markersRef.current[selectedStation.id];
-    if (marker) {
-      marker.togglePopup();
+    const item = markersRef.current[selectedStation.id];
+    if (item) {
+      item.marker.togglePopup();
     }
   }, [selectedStation]);
 
