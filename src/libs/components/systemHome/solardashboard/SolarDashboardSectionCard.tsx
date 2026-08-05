@@ -49,7 +49,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
 
   return (
     <section className={styles.flowCard} aria-label={t('solarDashboard.flow.aria')}>
-      {/* Weather Header */}
+      {/* Weather & Plant Header */}
       <div className={styles.weatherWidget}>
         <div className={styles.weatherInfo}>
           <div className={styles.iconWrapper}>
@@ -57,12 +57,18 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
           </div>
           <div>
             <div className={styles.temperature}>{weather.temperatureC}°C</div>
-            <div className={styles.plantName}>{t(weather.plantNameKey)}</div>
+            <div className={styles.plantName}>{t(weather.plantNameKey)} • 120 kWp</div>
           </div>
         </div>
-        <div className={styles.statusIndicator}>
-          <span className={styles.dot} />
-          <span>{t('solarDashboard.live')}</span>
+
+        <div className={styles.headerRightStats}>
+          <span className={styles.inverterStatusBadge}>
+            <span className={styles.inverterDot} /> Grid-Tied Synchronized
+          </span>
+          <div className={styles.statusIndicator}>
+            <span className={styles.dot} />
+            <span>{t('solarDashboard.live')}</span>
+          </div>
         </div>
       </div>
 
@@ -87,7 +93,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
               <stop offset="100%" stopColor="#ea580c" />
             </linearGradient>
             <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feGaussianBlur stdDeviation="4" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
           </defs>
@@ -126,7 +132,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         </svg>
 
         {/* PV Node */}
-        <div className={`${styles.node} ${styles.sunNode}`} style={{ top: '15%', left: '50%' }}>
+        <div className={`${styles.node} ${styles.sunNode}`} style={{ top: '14%', left: '50%' }}>
           <div className={styles.nodeCircle}>
             <Sun size={32} strokeWidth={1.8} />
           </div>
@@ -147,6 +153,10 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
                 <div className={styles.panelCells} />
               </div>
             </div>
+          </div>
+          <div className={styles.inverterTelemetryBadge}>
+            <span className={styles.inverterTitle}>3-Phase Smart Inverter</span>
+            <span className={styles.inverterMeta}>Efficiency 98.4% • 50.0 Hz</span>
           </div>
         </div>
 
@@ -191,6 +201,22 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
               <small className={styles.unit}>kWh</small>
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* Summary Telemetry Footer Bar */}
+      <div className={styles.flowSummaryFooter}>
+        <div className={styles.summaryPill}>
+          <span className={styles.pillDot} style={{ background: '#f59e0b' }} />
+          <span>PV Generation: <strong>{format(flow.pvKwh)} kWh</strong></span>
+        </div>
+        <div className={styles.summaryPill}>
+          <span className={styles.pillDot} style={{ background: '#3b82f6' }} />
+          <span>Grid Supply: <strong>{format(flow.gridKwh)} kWh</strong></span>
+        </div>
+        <div className={styles.summaryPill}>
+          <span className={styles.pillDot} style={{ background: '#10b981' }} />
+          <span>BESS Buffer: <strong>{batterySoc}% ({format(flow.batteryKwh)} kWh)</strong></span>
         </div>
       </div>
     </section>

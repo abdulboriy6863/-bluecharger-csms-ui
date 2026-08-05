@@ -152,6 +152,33 @@
     }
   }
 
+  .headerRightStats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .inverterStatusBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2563eb;
+
+    .inverterDot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2563eb;
+      box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+    }
+  }
+
   .statusIndicator {
     display: flex;
     align-items: center;
@@ -173,6 +200,63 @@
         0 0 0 3px rgba(16, 185, 129, 0.2),
         0 0 8px #10b981;
       animation: livePulse 1.8s infinite;
+    }
+  }
+}
+
+.inverterTelemetryBadge {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  background: rgba(46, 86, 166, 0.06);
+  border: 1px solid rgba(46, 86, 166, 0.12);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+
+  .inverterTitle {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-primary, #2e56a6);
+  }
+
+  .inverterMeta {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted, #7a91bf);
+  }
+}
+
+.flowSummaryFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 14px 20px;
+  background: #f8fafc;
+  border-top: 1px solid var(--border-color, #edf1f5);
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .summaryPill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary, #416ca6);
+
+    strong {
+      color: var(--text-primary, #2e56a6);
+      font-weight: 800;
+    }
+
+    .pillDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
   }
 }
@@ -946,33 +1030,38 @@
     }
   }
 
-  .weatherWidget {
-    border-color: #22324d;
-    background: linear-gradient(
-      180deg,
-      rgba(30, 41, 59, 0.4) 0%,
-      rgba(17, 28, 49, 0) 100%
-    );
+  .inverterStatusBadge {
+    background: #1e293b;
+    border-color: #334155;
+    color: #60a5fa;
 
-    .weatherInfo {
-      .temperature {
-        color: #ffffff;
-      }
-      .plantName {
-        color: #94a3b8;
-      }
+    .inverterDot {
+      background: #60a5fa;
+      box-shadow: 0 0 6px rgba(96, 165, 250, 0.4);
     }
+  }
 
-    .statusIndicator {
-      background: #122b2b;
-      border-color: #2f614e;
-      color: #5ce19d;
+  .inverterTelemetryBadge {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: #334155;
 
-      .dot {
-        background: #52e39d;
-        box-shadow:
-          0 0 0 3px rgba(82, 227, 157, 0.2),
-          0 0 8px #52e39d;
+    .inverterTitle {
+      color: #ffffff;
+    }
+    .inverterMeta {
+      color: #94a3b8;
+    }
+  }
+
+  .flowSummaryFooter {
+    background: #0f172a;
+    border-color: #1e293b;
+
+    .summaryPill {
+      color: #94a3b8;
+
+      strong {
+        color: #ffffff;
       }
     }
   }
