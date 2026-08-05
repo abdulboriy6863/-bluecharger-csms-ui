@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Compass, Navigation, Layers, Plus, Minus, Sun, Moon, Globe } from 'lucide-react';
+import { Navigation, Layers, Plus, Minus, Sun, Moon, Globe } from 'lucide-react';
 import type { Station } from '../../../../data/mockStations';
 import styles from '../../../../scss/systemHome/InstallationLocationsView.module.scss';
 
@@ -15,16 +15,16 @@ interface MapViewProps {
 
 export type MapMode = 'standard' | 'satellite' | 'dark';
 
-// Center & Zoom presets for supported language markets (Apple Maps Mercator)
+// Center & Zoom presets for supported language markets (Apple Maps Globe & City Presets)
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 28.0, lng: 65.0, zoom: 2.5 },
+  ALL: { lat: 20.0, lng: 65.0, zoom: 2.3 },
   KR: { lat: 36.3, lng: 127.8, zoom: 7.0 },
   UZ: { lat: 41.2, lng: 66.5, zoom: 6.2 },
   KG: { lat: 41.5, lng: 74.5, zoom: 6.8 },
   ID: { lat: -2.5, lng: 118.0, zoom: 5.0 },
   IN: { lat: 22.5, lng: 78.5, zoom: 4.8 },
-  US: { lat: 38.0, lng: -96.0, zoom: 4.2 },
-  RU: { lat: 56.0, lng: 55.0, zoom: 4.0 },
+  US: { lat: 37.78, lng: -122.41, zoom: 11.0 },
+  RU: { lat: 55.75, lng: 37.61, zoom: 8.0 },
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -37,7 +37,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Record<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>({});
-  
+
   const [mapMode, setMapMode] = useState<MapMode>(isDarkMode ? 'dark' : 'standard');
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
 
@@ -48,12 +48,12 @@ export const MapView: React.FC<MapViewProps> = ({
     }
   }, [isDarkMode]);
 
-  // Generate MapLibre GL Apple Maps Style Specification (Standard, Satellite, Dark)
+  // Generate MapLibre GL Apple 3D Globe Map Style Specification
   const getAppleMapStyle = (mode: MapMode): maplibregl.StyleSpecification => {
     if (mode === 'satellite') {
       return {
         version: 8,
-        projection: { type: 'mercator' },
+        projection: { type: 'globe' },
         sources: {
           'esri-satellite': {
             type: 'raster',
@@ -61,7 +61,7 @@ export const MapView: React.FC<MapViewProps> = ({
               'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
             ],
             tileSize: 256,
-            attribution: '&copy; Esri &copy; Maxar &copy; Earthstar Geographics',
+            attribution: '&copy; Esri &copy; Maxar',
           },
         },
         layers: [
@@ -83,11 +83,11 @@ export const MapView: React.FC<MapViewProps> = ({
 
     const isDark = mode === 'dark';
     const tileSub = isDark ? 'dark_all' : 'rastertiles/voyager';
-    const bgColor = isDark ? '#030712' : '#f4f7fb';
+    const bgColor = isDark ? '#030712' : '#ffffff';
 
     return {
       version: 8,
-      projection: { type: 'mercator' },
+      projection: { type: 'globe' },
       sources: {
         'carto-tiles': {
           type: 'raster',
@@ -119,11 +119,12 @@ export const MapView: React.FC<MapViewProps> = ({
   };
 
   // Build Apple Maps Signature Pin Marker DOM Element
+  // IMPORTANT: Order is Label (Top), Pin Badge (Middle), Pin Tip (Bottom).
+  // This guarantees anchor: 'bottom' locks the sharp tip EXACTLY to [lng, lat]!
   const createAppleMarkerElement = (station: Station, isSelected: boolean) => {
     const el = document.createElement('div');
     el.className = `${styles.appleMarkerWrapper} ${isSelected ? styles.appleMarkerSelected : ''}`;
 
-    // Apple Maps System Colors
     let color = '#34c759'; // Apple System Green (Available)
     let iconSvg = `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -170,21 +171,21 @@ export const MapView: React.FC<MapViewProps> = ({
     const activeKw = station.activePowerKw > 0 ? `${station.activePowerKw.toFixed(0)}kW` : '';
 
     el.innerHTML = `
+      <div class="${styles.appleLabelCapsule}" style="background-color: ${color}">
+        <span class="${styles.appleCpText}">${station.chargers.length} CP</span>
+        ${activeKw ? `<span class="${styles.appleKwText}">${activeKw}</span>` : ''}
+      </div>
       <div class="${styles.applePinBadge}" style="background-color: ${color}">
         ${isCharging ? `<div class="${styles.applePulseGlow}"></div>` : ''}
         <div class="${styles.appleIconWrapper}">${iconSvg}</div>
       </div>
       <div class="${styles.applePinTail}" style="border-top-color: ${color}"></div>
-      <div class="${styles.appleLabelCapsule}" style="background-color: ${color}">
-        <span class="${styles.appleCpText}">${station.chargers.length} CP</span>
-        ${activeKw ? `<span class="${styles.appleKwText}">${activeKw}</span>` : ''}
-      </div>
     `;
 
     return el;
   };
 
-  // Initialize MapLibre Canvas with Apple Maps styling & Mercator projection
+  // Initialize MapLibre Canvas with Apple 3D Globe & Mercator rendering
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -192,9 +193,9 @@ export const MapView: React.FC<MapViewProps> = ({
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: getAppleMapStyle(mapMode),
-        center: [65.0, 28.0],
-        zoom: 2.5,
-        minZoom: 1.5,
+        center: [65.0, 20.0],
+        zoom: 2.3,
+        minZoom: 2.0,
         maxZoom: 19,
         pitch: 0,
         bearing: 0,
@@ -280,7 +281,7 @@ export const MapView: React.FC<MapViewProps> = ({
       `;
 
       const popup = new maplibregl.Popup({
-        offset: [0, -44],
+        offset: [0, -48],
         closeButton: true,
         closeOnClick: false,
         className: styles.customApplePopup,
@@ -298,6 +299,7 @@ export const MapView: React.FC<MapViewProps> = ({
         }
       });
 
+      // Anchor: 'bottom' locks pin tip directly to [station.lng, station.lat]
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([station.lng, station.lat])
         .setPopup(popup)
@@ -352,8 +354,8 @@ export const MapView: React.FC<MapViewProps> = ({
   const handleZoomOut = () => mapInstanceRef.current?.zoomOut({ duration: 300 });
   const handleRecenter = () => {
     mapInstanceRef.current?.flyTo({
-      center: [65.0, 28.0],
-      zoom: 2.5,
+      center: [65.0, 20.0],
+      zoom: 2.3,
       pitch: 0,
       bearing: 0,
       speed: 0.4,

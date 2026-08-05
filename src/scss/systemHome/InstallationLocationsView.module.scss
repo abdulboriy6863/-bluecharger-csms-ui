@@ -370,6 +370,30 @@
   transform: scale(1.22) translateY(-4px) !important;
 }
 
+.appleLabelCapsule {
+  margin-bottom: 3px;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.appleCpText {
+  font-weight: 800;
+}
+
+.appleKwText {
+  background-color: rgba(0, 0, 0, 0.22);
+  padding: 0 5px;
+  border-radius: 4px;
+}
+
 .applePinBadge {
   width: 36px;
   height: 36px;
@@ -406,30 +430,6 @@
   border-right: 6px solid transparent;
   border-top: 8px solid;
   margin-top: -1px;
-}
-
-.appleLabelCapsule {
-  margin-top: 3px;
-  white-space: nowrap;
-  font-size: 10px;
-  font-weight: 700;
-  color: #ffffff;
-  padding: 3px 8px;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.appleCpText {
-  font-weight: 800;
-}
-
-.appleKwText {
-  background-color: rgba(0, 0, 0, 0.22);
-  padding: 0 5px;
-  border-radius: 4px;
 }
 
 /* APPLE MAPS POPUP STYLING */
