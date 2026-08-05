@@ -233,58 +233,173 @@
   }
 }
 
-/* MARKER PINS & POPUPS (CSMS Image 3 Pin Spec) */
-.csmsMarkerWrapper {
+/* APPLE MAPS FLOATING CONTROLS & LAYER SWITCHER */
+.appleLayerSwitcher {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 25;
+}
+
+.appleFloatingStack {
+  position: absolute;
+  bottom: 20px;
+  left: 14px;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.appleControlBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  :global(.darkAppMode) & {
+    background: rgba(30, 41, 59, 0.88);
+    border-color: rgba(51, 65, 85, 0.8);
+    color: #f1f5f9;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  &:hover {
+    transform: scale(1.06);
+    background: #ffffff;
+    color: #007aff;
+
+    :global(.darkAppMode) & {
+      background: #1e293b;
+      color: #38bdf8;
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.appleControlActive {
+  background: #007aff !important;
+  color: #ffffff !important;
+  border-color: #007aff !important;
+}
+
+.appleLayerMenu {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+
+  :global(.darkAppMode) & {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(30, 41, 59, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.appleLayerOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  :global(.darkAppMode) & {
+    color: #94a3b8;
+  }
+
+  &:hover {
+    background: rgba(0, 122, 255, 0.08);
+    color: #007aff;
+  }
+}
+
+.activeOption {
+  background: #007aff !important;
+  color: #ffffff !important;
+}
+
+/* APPLE MAPS TEARDROP PIN MARKERS */
+.appleMarkerWrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   z-index: 10;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   contain: layout paint;
 
   &:hover {
     z-index: 99;
-    transform: scale(1.12);
+    transform: scale(1.15) translateY(-2px);
   }
 }
 
-.csmsMarkerSelected {
+.appleMarkerSelected {
   z-index: 100 !important;
-  transform: scale(1.2) !important;
+  transform: scale(1.22) translateY(-4px) !important;
 }
 
-.csmsPinBadge {
-  width: 34px;
-  height: 34px;
+.applePinBadge {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2.5px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   position: relative;
   overflow: hidden;
 }
 
-.csmsIconContainer {
+.appleIconWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
 }
 
-.csmsPulseRing {
+.applePulseGlow {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.45);
   animation: pulseGlow 1.6s infinite ease-out;
   z-index: 1;
 }
 
-.csmsPinTip {
+.applePinTail {
   width: 0;
   height: 0;
   border-left: 6px solid transparent;
@@ -293,28 +408,53 @@
   margin-top: -1px;
 }
 
-.csmsLabelBadge {
-  margin-top: 2px;
+.appleLabelCapsule {
+  margin-top: 3px;
   white-space: nowrap;
   font-size: 10px;
   font-weight: 700;
   color: #ffffff;
-  padding: 2px 7px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  padding: 3px 8px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.csmsCpCount {
+.appleCpText {
   font-weight: 800;
 }
 
-.csmsKwVal {
-  background-color: rgba(0, 0, 0, 0.25);
-  padding: 0 4px;
+.appleKwText {
+  background-color: rgba(0, 0, 0, 0.22);
+  padding: 0 5px;
   border-radius: 4px;
+}
+
+/* APPLE MAPS POPUP STYLING */
+.appleMapPopup {
+  padding: 14px;
+  width: 260px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+}
+
+.applePopupBtn {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #007aff;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
 /* MAPLIBRE POPUP STYLING */
