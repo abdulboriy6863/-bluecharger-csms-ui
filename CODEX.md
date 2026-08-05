@@ -2,15 +2,13 @@
 
 ## Context For Codex
 
-This file exists for human readability. Codex-oriented project instructions are also in:
+This file exists for human readability. Codex-oriented project instructions are in:
 
-`AGENTS.md`
+`GLOBAL_ARCHITECTURE_GUIDE.md` (Mandatory architecture & directory standard)
+`AGENTS.md` (Agent execution guidelines)
+`ATIGRAVITY_PROJECT_BRIEF.md` (Full business context)
 
-Full project context is in:
-
-`ATIGRAVITY_PROJECT_BRIEF.md`
-
-Read both before starting implementation.
+Read all of them before starting implementation.
 
 ## What We Are Building
 

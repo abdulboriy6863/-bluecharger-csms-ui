@@ -18,7 +18,7 @@ The CSMS frontend is a code-first enterprise operations UI. New screens and sect
 - Section files map mock or API data into display-ready card data.
 - Card files render reusable presentation primitives.
 - Do not hard-code layout-specific metric JSX in the section when a card prop can describe it.
-- Keep visual components in `src/components/<module>/<feature>/`.
+- Keep visual components in `src/libs/components/<module>/<feature>/`.
 - Keep page files as route/container entry points only.
 
 ## Card Design Rules

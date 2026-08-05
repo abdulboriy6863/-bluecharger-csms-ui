@@ -2,7 +2,9 @@
 
 ## Primary Instruction
 
-Read `ATIGRAVITY_PROJECT_BRIEF.md` first. It is the source of truth for this project.
+Read `GLOBAL_ARCHITECTURE_GUIDE.md` first. It specifies the mandatory Domain-Driven Clean Architecture (Nestar-Next Standard) for this project.
+
+Read `ATIGRAVITY_PROJECT_BRIEF.md` for business requirements and scope.
 
 Then read `UI_STYLE_GUIDE.md` before changing UI components. It records the reusable visual and component patterns we want to keep across the app.
 
@@ -133,7 +135,7 @@ Avoid marketing-page composition inside the app. The login can be cinematic, but
 5. Prioritize visual polish and workflow clarity.
 6. Start a dev server and provide the localhost URL after implementation.
 7. Verify the UI in browser before final response when possible.
-8. **Page vs Component Architecture Rule**: All UI elements, sectional components, cards, modals, and presentation blocks MUST live inside `src/components/<moduleName>/<featureName>/`. Files in `src/pages/<ModuleName>/` act purely as page entry doors/containers that manage page-level state and render components imported from `src/components/`.
+8. **Page vs Component Architecture Rule**: All UI elements, sectional components, cards, modals, and presentation blocks MUST live inside `src/libs/components/<moduleName>/<featureName>/`. Files in `src/pages/<ModuleName>/` act purely as page entry doors/containers that manage page-level state and render components imported from `src/libs/components/`.
 9. **Git Commit Workflow**: Always stage (`git add`), commit with descriptive messages (`git commit`), and push (`git push`) after completing a logical feature or refactoring step.
 10. **i18n & Responsiveness Rule**: After every feature or UI update, all new text strings MUST be added to the i18n translation system across all supported languages (EN, KO, UZ, etc.), and all UI components MUST be fully responsive across mobile, tablet, and desktop screens.
 11. **Strict Typography & Color Rule**: Large-size metric values and primary headings MUST use `--text-primary: #2E56A6;`. Medium-size text MUST use `--text-secondary: #416CA6;`. Small-size text, subtitles, unit labels, footers, and badges MUST use `--text-muted: #7A91BF;`. On primary royal blue surface cards, text MUST be crisp white (`#FFFFFF`) to ensure 100% contrast readability.
