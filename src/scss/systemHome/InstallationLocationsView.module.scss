@@ -233,73 +233,88 @@
   }
 }
 
-/* MARKER PINS & POPUPS */
-.markerPinWrapper {
+/* MARKER PINS & POPUPS (CSMS Image 3 Pin Spec) */
+.csmsMarkerWrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
   contain: layout paint;
+
+  &:hover {
+    z-index: 99;
+    transform: scale(1.12);
+  }
 }
 
-.markerPin {
-  width: 32px;
-  height: 32px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
+.csmsMarkerSelected {
+  z-index: 100 !important;
+  transform: scale(1.2) !important;
+}
+
+.csmsPinBadge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
-
-  svg {
-    transform: rotate(45deg);
-    z-index: 2;
-  }
 }
 
-.pulseRingInner {
+.csmsIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.csmsPulseRing {
   position: absolute;
-  inset: -2px;
+  inset: 0;
   border-radius: 50%;
-  border: 2px solid;
-  opacity: 0.8;
-  animation: pulseGlow 1.8s infinite ease-out;
-  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: pulseGlow 1.6s infinite ease-out;
   z-index: 1;
 }
 
-.markerSelected {
-  z-index: 999;
-  .markerPin {
-    transform: rotate(-45deg) scale(1.25);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.5);
-  }
+.csmsPinTip {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid;
+  margin-top: -1px;
 }
 
-.markerLabel {
-  position: absolute;
-  bottom: -18px;
+.csmsLabelBadge {
+  margin-top: 2px;
   white-space: nowrap;
   font-size: 10px;
   font-weight: 700;
   color: #ffffff;
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   display: flex;
+  align-items: center;
   gap: 4px;
 }
 
-.kwBadge {
-  background-color: rgba(0, 0, 0, 0.3);
+.csmsCpCount {
+  font-weight: 800;
+}
+
+.csmsKwVal {
+  background-color: rgba(0, 0, 0, 0.25);
   padding: 0 4px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* MAPLIBRE POPUP STYLING */
