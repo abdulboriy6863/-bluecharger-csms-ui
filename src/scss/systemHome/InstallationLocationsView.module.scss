@@ -982,3 +982,54 @@
     color: #1e293b;
   }
 }
+
+/* RESPONSIVE MOBILE & TABLET STYLES */
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    min-height: calc(100vh - 90px);
+    border-radius: 8px;
+  }
+
+  .statusGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .sidebarWrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    width: 280px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .collapsed {
+    width: 0;
+  }
+
+  .overlayContainer {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-width: none;
+    z-index: 40;
+  }
+
+  .telemetryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .statusGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wsControlCard {
+    grid-column: span 2;
+  }
+}

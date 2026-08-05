@@ -13,16 +13,16 @@ interface MapViewProps {
 }
 
 // Center & Zoom presets for supported language markets
-// Enforcing pitch: 0 and balanced zoom levels keeps the 3D Globe perfectly centered
+// Balanced zoom levels and lat 15.0° keep the Globe centered without dropping or overflowing canvas
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 25.0, lng: 65.0, zoom: 2.8 },
-  KR: { lat: 36.3, lng: 127.8, zoom: 5.2 },
-  UZ: { lat: 41.0, lng: 66.5, zoom: 4.8 },
-  KG: { lat: 41.5, lng: 73.5, zoom: 5.0 },
-  ID: { lat: -2.5, lng: 115.0, zoom: 4.2 },
-  IN: { lat: 22.0, lng: 78.0, zoom: 4.2 },
-  US: { lat: 38.0, lng: -98.0, zoom: 3.8 },
-  RU: { lat: 56.0, lng: 45.0, zoom: 3.8 },
+  ALL: { lat: 15.0, lng: 65.0, zoom: 2.15 },
+  KR: { lat: 36.3, lng: 127.8, zoom: 5.5 },
+  UZ: { lat: 41.0, lng: 66.5, zoom: 5.2 },
+  KG: { lat: 41.5, lng: 73.5, zoom: 5.5 },
+  ID: { lat: -2.5, lng: 115.0, zoom: 4.5 },
+  IN: { lat: 22.0, lng: 78.0, zoom: 4.5 },
+  US: { lat: 38.0, lng: -98.0, zoom: 4.0 },
+  RU: { lat: 56.0, lng: 45.0, zoom: 4.0 },
 };
 
 // Calculate angular distance on sphere to hide markers on the backside of 3D Globe
@@ -35,8 +35,8 @@ const isStationOnVisibleGlobe = (cameraCenter: maplibregl.LngLat, stationLng: nu
     Math.cos(cameraCenter.lat * rad) * Math.cos(stationLat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
 
-  // If angular distance > ~1.35 radians (~77 degrees), it's behind the globe horizon
-  return c < 1.35;
+  // If angular distance > ~1.40 radians (~80 degrees), it's behind the globe horizon
+  return c < 1.40;
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -123,6 +123,7 @@ export const MapView: React.FC<MapViewProps> = ({
   };
 
   // Function to update marker visibility based on 3D Globe camera orientation
+  // ALWAYS keeps markers 100% visible when zoomed in (currentZoom >= 3.8 or selected station)
   const updateMarkersVisibility = () => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -131,8 +132,14 @@ export const MapView: React.FC<MapViewProps> = ({
     const currentZoom = map.getZoom();
 
     Object.values(markersRef.current).forEach(({ station, el }) => {
-      // If zoomed out on 3D globe, hide markers that rotate behind the Earth horizon
-      if (currentZoom < 5.0) {
+      const isSelected = selectedStation?.id === station.id;
+
+      // When zoomed in (zoom >= 3.8) or selected station, ALWAYS force marker to be visible
+      if (isSelected || currentZoom >= 3.8) {
+        el.style.display = 'flex';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+      } else {
         const isVisible = isStationOnVisibleGlobe(center, station.lng, station.lat);
         if (isVisible) {
           el.style.display = 'flex';
@@ -143,10 +150,6 @@ export const MapView: React.FC<MapViewProps> = ({
           el.style.visibility = 'hidden';
           el.style.opacity = '0';
         }
-      } else {
-        el.style.display = 'flex';
-        el.style.visibility = 'visible';
-        el.style.opacity = '1';
       }
     });
   };
@@ -159,11 +162,11 @@ export const MapView: React.FC<MapViewProps> = ({
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: getGlobeStyle(isDarkMode),
-        center: [65.0, 25.0], // Centered vertically & horizontally
-        zoom: 2.8,
-        minZoom: 2.8, // Keeps globe centered and prevents shrinking distortion
+        center: [65.0, 15.0], // Centered vertically & horizontally inside rectangular viewport
+        zoom: 2.15,
+        minZoom: 2.0, // Prevents shrinking distortion while allowing full globe view
         maxZoom: 19,
-        pitch: 0, // Flat upright 3D globe axis centered in viewport
+        pitch: 0, // Flat upright 3D globe axis permanently centered
         bearing: 0,
         attributionControl: false,
       });
@@ -193,6 +196,19 @@ export const MapView: React.FC<MapViewProps> = ({
 
     map.setStyle(getGlobeStyle(isDarkMode));
   }, [isDarkMode]);
+
+  // Handle Resize Events
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.resize();
+        updateMarkersVisibility();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Update Station Markers & Popups
   useEffect(() => {
@@ -271,7 +287,7 @@ export const MapView: React.FC<MapViewProps> = ({
     updateMarkersVisibility();
   }, [stations, selectedStation]);
 
-  // Center Map on Country Select (Pitch 0, slow calm speed)
+  // Center Map on Country Select (Pitch 0, calm smooth speed)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -282,30 +298,37 @@ export const MapView: React.FC<MapViewProps> = ({
       zoom: preset.zoom,
       pitch: 0, // Flat upright 3D globe axis permanently centered
       bearing: 0,
-      speed: 0.45, // Smooth slow speed (Point 5)
+      speed: 0.45, // Smooth slow speed
       curve: 1.4,
       duration: 2400,
       essential: true,
     });
   }, [activeCountry]);
 
-  // Center Map on Selected Station (Slow, calm, smooth fly-to transition)
+  // Center Map on Selected Station (Smooth calm fly-to transition, ensures markers stay 100% visible)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !selectedStation) return;
+
+    // Immediately force marker visibility for selected station
+    const item = markersRef.current[selectedStation.id];
+    if (item) {
+      item.el.style.display = 'flex';
+      item.el.style.visibility = 'visible';
+      item.el.style.opacity = '1';
+    }
 
     map.flyTo({
       center: [selectedStation.lng, selectedStation.lat],
       zoom: 13.5,
       pitch: 0, // Keeps map flat and centered without dropping
       bearing: 0,
-      speed: 0.4, // Slow, calm camera transition (Point 5)
+      speed: 0.4, // Slow, calm camera transition
       curve: 1.4,
       duration: 2600, // 2.6 seconds smooth motion
       essential: true,
     });
 
-    const item = markersRef.current[selectedStation.id];
     if (item) {
       item.marker.togglePopup();
     }
