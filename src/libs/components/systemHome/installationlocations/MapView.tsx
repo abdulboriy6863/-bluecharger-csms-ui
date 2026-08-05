@@ -48,7 +48,9 @@ export const MapView: React.FC<MapViewProps> = ({
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
-  const markersRef = useRef<Record<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>({});
+
+  // Client-side state management (ID-based Map) preventing duplicate markers and object breakups
+  const markersMapRef = useRef<Map<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>(new Map());
 
   const [mapMode, setMapMode] = useState<MapMode>(isDarkMode ? 'dark' : 'standard');
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
@@ -63,7 +65,7 @@ export const MapView: React.FC<MapViewProps> = ({
     }
   }, [isDarkMode]);
 
-  // Generate MapLibre GL 3D Globe Style Specification (Matching Reference Images 1 & 2)
+  // Generate MapLibre GL 3D Globe Style Specification (Adaptive Day / Night Space Atmosphere)
   const getGlobeMapStyle = (mode: MapMode): maplibregl.StyleSpecification => {
     if (mode === 'satellite') {
       return {
@@ -98,7 +100,7 @@ export const MapView: React.FC<MapViewProps> = ({
 
     const isDark = mode === 'dark';
     const tileSub = isDark ? 'dark_all' : 'rastertiles/voyager';
-    const bgColor = isDark ? '#010409' : '#ffffff';
+    const bgColor = isDark ? '#010409' : '#f8fafc';
 
     return {
       version: 8,
@@ -133,27 +135,45 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   };
 
-  // Build CSMS 3D Globe Radar Target Marker DOM Element (Matching Reference Images 1 & 2)
-  const createRadarMarkerElement = (station: Station, isSelected: boolean) => {
+  // Build Diegetic CSMS Holographic Pillar Marker (4 Korean CSMS Infrastructure Categories)
+  const createRadarMarkerElement = (station: Station, isSelected: boolean, isDark: boolean) => {
     const el = document.createElement('div');
-    el.className = `${styles.csmsRadarMarkerWrapper} ${isSelected ? styles.csmsRadarSelected : ''}`;
+    el.className = `${styles.csmsRadarMarkerWrapper} ${isSelected ? styles.csmsRadarSelected : ''} ${isDark ? styles.nightModeMarker : styles.dayModeMarker}`;
 
-    let color = '#10b981'; // Green (Available / Active)
+    // 1. Standby (대기중 - Blue #007aff)
+    // 2. Active Flow (충전중 - Green #10b981)
+    // 3. Malfunction (고장 - Red #ef4444)
+    // 4. Connection Lost (끊김 - Yellow #f59e0b)
+    let color = '#007aff'; // Default Blue (대기중)
+    let krStatus = '대기중';
     let iconSvg = `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+        <path d="M18 10h-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4h2a2 2 0 0 1 2 2v3a1 1 0 0 1-2 1v1"></path>
       </svg>
     `;
+    let animationClass = '';
 
-    if (station.status === 'Charging') {
-      color = '#2563eb'; // Blue
+    if (station.status === 'Charging') { // 충전중 (Active Flow - Green)
+      color = '#10b981';
+      krStatus = '충전중';
+      animationClass = styles.activeFlowParticleStream;
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
       `;
-    } else if (station.status === 'Faulted') {
-      color = '#ef4444'; // Red (Warning)
+    } else if (station.status === 'Available') { // 대기중 (Standby - Blue)
+      color = '#007aff';
+      krStatus = '대기중';
+      iconSvg = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+        </svg>
+      `;
+    } else if (station.status === 'Faulted') { // 고장 (Malfunction - Red)
+      color = '#ef4444';
+      krStatus = '고장';
+      animationClass = styles.fracturedRedSparks;
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
@@ -161,17 +181,19 @@ export const MapView: React.FC<MapViewProps> = ({
           <line x1="12" y1="17" x2="12.01" y2="17"></line>
         </svg>
       `;
-    } else if (station.status === 'Offline') {
-      color = '#64748b'; // Gray
+    } else if (station.status === 'Offline') { // 끊김 (Connection Lost - Yellow)
+      color = '#f59e0b';
+      krStatus = '끊김';
+      animationClass = styles.breakingCommLines;
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="1" y1="1" x2="23" y2="23"></line>
-          <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
-          <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
         </svg>
       `;
-    } else if (station.status === 'Reserved') {
-      color = '#8b5cf6'; // Purple
+    } else if (station.status === 'Reserved') { // 예약 (Pre-booked - Purple)
+      color = '#8b5cf6';
+      krStatus = '예약';
       iconSvg = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -180,17 +202,17 @@ export const MapView: React.FC<MapViewProps> = ({
       `;
     }
 
-    const isCharging = station.status === 'Charging';
-    const activeKw = station.activePowerKw > 0 ? `${station.activePowerKw.toFixed(0)}kW` : '';
+    const totalCapacityKw = station.totalPowerKw;
+    const labelDataText = `${station.chargers.length} CP | ${totalCapacityKw}kW`;
 
     el.innerHTML = `
-      <div class="${styles.radarLabelCapsule}" style="background-color: ${color}">
-        <span class="${styles.radarCpText}">${station.chargers.length} CP</span>
-        ${activeKw ? `<span class="${styles.radarKwText}">${activeKw}</span>` : ''}
+      <div class="${styles.radarLabelCapsule} ${animationClass}" style="border-color: ${color}; background-color: ${isDark ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)'}">
+        <span class="${styles.krStatusBadge}" style="background-color: ${color}">${krStatus}</span>
+        <span class="${styles.radarCpText}" style="color: ${isDark ? '#f8fafc' : '#0f172a'}">${labelDataText}</span>
       </div>
-      <div class="${styles.radarPillarLine}" style="background-color: ${color}"></div>
-      <div class="${styles.radarPinBadge}" style="background-color: ${color}">
-        ${isCharging ? `<div class="${styles.radarPulseRing}"></div>` : ''}
+      <div class="${styles.holographicPillarLine}" style="background: linear-gradient(to top, ${color}, transparent)"></div>
+      <div class="${styles.radarPinBadge}" style="background-color: ${color}; border-color: ${isDark ? '#ffffff' : color}">
+        ${station.status === 'Charging' ? `<div class="${styles.radarPulseRing}"></div>` : ''}
         <div class="${styles.radarIconWrapper}">${iconSvg}</div>
       </div>
       <div class="${styles.radarTargetBase}" style="border-color: ${color}">
@@ -209,7 +231,7 @@ export const MapView: React.FC<MapViewProps> = ({
     const center = map.getCenter();
     const currentZoom = map.getZoom();
 
-    Object.values(markersRef.current).forEach(({ station, el }) => {
+    markersMapRef.current.forEach(({ station, el }) => {
       const isSelected = selectedStation?.id === station.id;
 
       if (currentZoom < 5.0) {
@@ -248,13 +270,11 @@ export const MapView: React.FC<MapViewProps> = ({
         attributionControl: false,
       });
 
-      // Track user interaction to pause/resume slow 3D Globe auto-rotation
       map.on('mousedown', () => { isUserInteractingRef.current = true; });
       map.on('dragstart', () => { isUserInteractingRef.current = true; });
       map.on('zoomstart', () => { isUserInteractingRef.current = true; });
       map.on('touchstart', () => { isUserInteractingRef.current = true; });
 
-      // Bind occlusion check on camera movement & render
       map.on('move', updateMarkersVisibility);
       map.on('render', updateMarkersVisibility);
 
@@ -270,7 +290,7 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   }, []);
 
-  // Smooth Slow 3D Globe Auto-Rotation Loop (Rotates continuously when zoomed out)
+  // Smooth Slow 3D Globe Auto-Rotation Loop
   useEffect(() => {
     let lastTime = performance.now();
 
@@ -278,12 +298,12 @@ export const MapView: React.FC<MapViewProps> = ({
       const map = mapInstanceRef.current;
       if (map && isAutoRotating && !isUserInteractingRef.current) {
         const delta = now - lastTime;
-        if (delta > 30) { // ~30fps smooth rotation step
+        if (delta > 30) {
           lastTime = now;
           const currentZoom = map.getZoom();
           if (currentZoom < 4.0) {
             const center = map.getCenter();
-            center.lng = (center.lng + 0.08) % 360; // Calm slow rotation (Images 1 & 2 spec)
+            center.lng = (center.lng + 0.08) % 360;
             map.setCenter(center);
             updateMarkersVisibility();
           }
@@ -320,86 +340,105 @@ export const MapView: React.FC<MapViewProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Update Station Markers & Popups (Anchor: 'bottom' locks radar base 100% to coordinates)
+  // Update Station Markers using ID-based Map State Management to prevent duplicates/breakups
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    // Clear existing markers
-    Object.values(markersRef.current).forEach(({ marker }) => marker.remove());
-    markersRef.current = {};
+    const activeStationIds = new Set<string>();
+    const isDark = mapMode === 'dark' || (mapMode !== 'standard' && isDarkMode);
 
     stations.forEach((station) => {
+      activeStationIds.add(station.id);
       const isSelected = selectedStation?.id === station.id;
-      const el = createRadarMarkerElement(station, isSelected);
 
-      // Custom Popup Node
-      const popupNode = document.createElement('div');
-      popupNode.className = styles.appleMapPopup;
-      popupNode.innerHTML = `
-        <div class="${styles.popupHeader}">
-          <span class="${styles.popupCountryBadge}">${station.countryCode}</span>
-          <strong class="${styles.popupTitle}">${station.name}</strong>
-        </div>
-        <div class="${styles.popupAddress}">${station.address}</div>
-        <div class="${styles.popupStatsGrid}">
-          <div class="${styles.popupStatItem}">
-            <span class="${styles.popupStatLabel}">Operator</span>
-            <span class="${styles.popupStatVal}">${station.operator}</span>
+      let existing = markersMapRef.current.get(station.id);
+
+      if (existing) {
+        // Update existing marker DOM element cleanly without recreate/flicker
+        const newEl = createRadarMarkerElement(station, isSelected, isDark);
+        existing.marker.getElement().innerHTML = newEl.innerHTML;
+        existing.marker.getElement().className = newEl.className;
+        existing.marker.setLngLat([station.lng, station.lat]);
+        existing.station = station;
+      } else {
+        // Create new anchored marker
+        const el = createRadarMarkerElement(station, isSelected, isDark);
+
+        const popupNode = document.createElement('div');
+        popupNode.className = styles.appleMapPopup;
+        popupNode.innerHTML = `
+          <div class="${styles.popupHeader}">
+            <span class="${styles.popupCountryBadge}">${station.countryCode}</span>
+            <strong class="${styles.popupTitle}">${station.name}</strong>
           </div>
-          <div class="${styles.popupStatItem}">
-            <span class="${styles.popupStatLabel}">Chargers</span>
-            <span class="${styles.popupStatVal}">${station.chargers.length} Units</span>
+          <div class="${styles.popupAddress}">${station.address}</div>
+          <div class="${styles.popupStatsGrid}">
+            <div class="${styles.popupStatItem}">
+              <span class="${styles.popupStatLabel}">Operator</span>
+              <span class="${styles.popupStatVal}">${station.operator}</span>
+            </div>
+            <div class="${styles.popupStatItem}">
+              <span class="${styles.popupStatLabel}">Chargers</span>
+              <span class="${styles.popupStatVal}">${station.chargers.length} Units</span>
+            </div>
+            <div class="${styles.popupStatItem}">
+              <span class="${styles.popupStatLabel}">Status</span>
+              <span class="${styles.popupStatusBadge}" style="color: ${station.status === 'Charging' ? '#10b981' : station.status === 'Available' ? '#007aff' : '#ef4444'}">
+                ● ${station.status}
+              </span>
+            </div>
+            <div class="${styles.popupStatItem}">
+              <span class="${styles.popupStatLabel}">Active Load</span>
+              <span class="${styles.popupStatVal}">${station.activePowerKw.toFixed(1)} kW</span>
+            </div>
           </div>
-          <div class="${styles.popupStatItem}">
-            <span class="${styles.popupStatLabel}">Status</span>
-            <span class="${styles.popupStatusBadge}" style="color: ${station.status === 'Charging' ? '#2563eb' : station.status === 'Available' ? '#10b981' : '#ef4444'}">
-              ● ${station.status}
-            </span>
-          </div>
-          <div class="${styles.popupStatItem}">
-            <span class="${styles.popupStatLabel}">Active Load</span>
-            <span class="${styles.popupStatVal}">${station.activePowerKw.toFixed(1)} kW</span>
-          </div>
-        </div>
-        <button id="btn-inspect-${station.id}" class="${styles.applePopupBtn}">
-          Inspect Station & Remote Control →
-        </button>
-      `;
+          <button id="btn-inspect-${station.id}" class="${styles.applePopupBtn}">
+            Inspect Station & Remote Control →
+          </button>
+        `;
 
-      const popup = new maplibregl.Popup({
-        offset: [0, -48],
-        closeButton: true,
-        closeOnClick: false,
-        className: styles.customApplePopup,
-      }).setDOMContent(popupNode);
+        const popup = new maplibregl.Popup({
+          offset: [0, -48],
+          closeButton: true,
+          closeOnClick: false,
+          className: styles.customApplePopup,
+        }).setDOMContent(popupNode);
 
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isUserInteractingRef.current = true;
-        onSelectStation(station);
-      });
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isUserInteractingRef.current = true;
+          onSelectStation(station);
+        });
 
-      popup.on('open', () => {
-        const btn = document.getElementById(`btn-inspect-${station.id}`);
-        if (btn) {
-          btn.onclick = () => onSelectStation(station);
-        }
-      });
+        popup.on('open', () => {
+          const btn = document.getElementById(`btn-inspect-${station.id}`);
+          if (btn) {
+            btn.onclick = () => onSelectStation(station);
+          }
+        });
 
-      // Anchor: 'bottom' locks target radar base directly to [station.lng, station.lat]
-      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-        .setLngLat([station.lng, station.lat])
-        .setPopup(popup)
-        .addTo(map);
+        const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
+          .setLngLat([station.lng, station.lat])
+          .setPopup(popup)
+          .addTo(map);
 
-      markersRef.current[station.id] = { marker, station, el };
+        markersMapRef.current.set(station.id, { marker, station, el });
+      }
+    });
+
+    // Remove any obsolete station markers no longer in dataset
+    markersMapRef.current.forEach((val, id) => {
+      if (!activeStationIds.has(id)) {
+        val.marker.remove();
+        markersMapRef.current.delete(id);
+      }
     });
 
     updateMarkersVisibility();
-  }, [stations, selectedStation]);
+  }, [stations, selectedStation, mapMode, isDarkMode]);
 
-  // Center Map on Country Select (Pauses auto-rotation and flies smoothly)
+  // Center Map on Country Select
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -418,7 +457,7 @@ export const MapView: React.FC<MapViewProps> = ({
     });
   }, [activeCountry]);
 
-  // Center Map on Selected Station (Pauses auto-rotation and flies smoothly to station)
+  // Center Map on Selected Station
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !selectedStation) return;
@@ -435,7 +474,7 @@ export const MapView: React.FC<MapViewProps> = ({
       essential: true,
     });
 
-    const item = markersRef.current[selectedStation.id];
+    const item = markersMapRef.current.get(selectedStation.id);
     if (item) {
       item.marker.togglePopup();
     }

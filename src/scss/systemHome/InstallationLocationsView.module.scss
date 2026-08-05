@@ -348,7 +348,7 @@
   color: #ffffff !important;
 }
 
-/* CSMS 3D GLOBE RADAR TARGET MARKERS (Reference Images 1 & 2 Spec) */
+/* CSMS 3D GLOBE RADAR TARGET MARKERS (Reference Images 0, 1, 2 & Korean CSMS Spec) */
 .csmsRadarMarkerWrapper {
   position: relative;
   display: flex;
@@ -370,35 +370,90 @@
   transform: scale(1.25) translateY(-5px) !important;
 }
 
+.nightModeMarker {
+  .radarLabelCapsule {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.dayModeMarker {
+  .radarLabelCapsule {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
 .radarLabelCapsule {
   margin-bottom: 2px;
   white-space: nowrap;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  color: #ffffff;
-  padding: 2px 7px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1.5px solid;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+}
+
+.krStatusBadge {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
 }
 
 .radarCpText {
-  font-weight: 800;
+  font-weight: 700;
 }
 
-.radarKwText {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 0 4px;
-  border-radius: 4px;
-}
-
-.radarPillarLine {
+.holographicPillarLine {
   width: 2px;
-  height: 12px;
-  opacity: 0.85;
-  box-shadow: 0 0 8px currentColor;
+  height: 16px;
+  opacity: 0.9;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* 1. Active Flow Particle Stream Animation (Green) */
+.activeFlowParticleStream {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 14px;
+    border: 1px dashed #10b981;
+    animation: particleStreamGlow 2s infinite linear;
+  }
+}
+
+@keyframes particleStreamGlow {
+  0% { opacity: 0.3; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 0.3; transform: scale(0.98); }
+}
+
+/* 3. Fractured Red Sparks Animation (Red) */
+.fracturedRedSparks {
+  animation: redSparkFlicker 1.2s infinite ease-in-out;
+}
+
+@keyframes redSparkFlicker {
+  0%, 100% { box-shadow: 0 0 6px #ef4444; }
+  50% { box-shadow: 0 0 18px #ef4444, 0 0 30px rgba(239, 68, 68, 0.6); }
+}
+
+/* 4. Breaking Comm Lines Animation (Yellow) */
+.breakingCommLines {
+  animation: commLinePulse 1.8s infinite steps(2, start);
+}
+
+@keyframes commLinePulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
 }
 
 .radarPinBadge {
@@ -408,7 +463,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffffff;
+  border: 2px solid;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
