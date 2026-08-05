@@ -397,31 +397,29 @@
 
 .sunNode {
   .nodeCircle {
-    width: 104px;
-    height: 104px;
+    width: 64px;
+    height: 64px;
     border-color: #fbbf24;
     color: #d97706;
     background: linear-gradient(135deg, #fffdf2 0%, #fef3c7 100%);
-    box-shadow: 
-      0 0 24px rgba(251, 191, 36, 0.28),
-      0 12px 28px rgba(217, 119, 6, 0.15);
+    box-shadow: 0 0 14px rgba(251, 191, 36, 0.2);
 
     &::before {
-      border-color: rgba(251, 191, 36, 0.4);
-      top: -9px;
-      left: -9px;
-      right: -9px;
-      bottom: -9px;
+      border-color: rgba(251, 191, 36, 0.35);
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
       animation: rotateDashed 25s linear infinite;
     }
   }
 
   .nodeLabelGroup {
-    min-width: 100px;
-    padding: 6px 12px;
+    min-width: 90px;
+    padding: 5px 10px;
 
     .value {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
     }
   }
@@ -429,8 +427,8 @@
 
 .inverterNode {
   .nodeCircle {
-    width: 98px;
-    height: 98px;
+    width: 120px;
+    height: 120px;
     border-color: var(--primary-color, #2e56a6);
     color: #ffffff;
     background: var(
@@ -438,15 +436,15 @@
       linear-gradient(135deg, #2e56a6 0%, #1e3a8a 100%)
     );
     box-shadow: 
-      0 12px 28px rgba(46, 86, 166, 0.28),
-      inset 0 2px 6px rgba(255, 255, 255, 0.4);
+      0 14px 32px rgba(46, 86, 166, 0.35),
+      inset 0 3px 8px rgba(255, 255, 255, 0.45);
 
     &::before {
-      border-color: rgba(46, 86, 166, 0.4);
-      top: -9px;
-      left: -9px;
-      right: -9px;
-      bottom: -9px;
+      border-color: rgba(46, 86, 166, 0.45);
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
       animation: rotateDashed 30s linear infinite reverse;
     }
   }
@@ -461,13 +459,13 @@
   }
 
   .solarPanelSkew {
-    width: 52px;
-    height: 28px;
+    width: 72px;
+    height: 40px;
     transform: skew(-18deg);
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    border-radius: 3px;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
     overflow: hidden;
     position: relative;
   }

@@ -182,7 +182,7 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
         {/* PV Node */}
         <div className={`${styles.node} ${styles.sunNode}`} style={{ top: '14%', left: '50%' }}>
           <div className={styles.nodeCircle}>
-            <Sun size={42} strokeWidth={2} />
+            <Sun size={22} strokeWidth={2} />
           </div>
           <div className={styles.nodeLabelGroup}>
             <span className={styles.label}>{t('solarDashboard.flow.pv')}</span>
