@@ -1,5 +1,5 @@
 import React from 'react';
-import { InstallationLocationsView } from '../../../components/systemHome/installationlocations/InstallationLocationsView';
+import { InstallationLocationsView } from '../../../libs/components/systemHome/installationlocations/InstallationLocationsView';
 
 export const InstallationLocationsPage: React.FC = () => {
   return (

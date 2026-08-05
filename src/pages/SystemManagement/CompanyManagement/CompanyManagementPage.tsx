@@ -1,5 +1,5 @@
 import React from 'react';
-import { CompanyManagementView } from '../../../components/systemManagement/companyManagement/CompanyManagementView';
+import { CompanyManagementView } from '../../../libs/components/systemManagement/companyManagement/CompanyManagementView';
 
 export const CompanyManagementPage: React.FC = () => {
   return (

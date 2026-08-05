@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../../scss/systemHome/DashboardPage.module.scss';
-import { OverviewDashboard } from '../../../components/overview/OverviewDashboard';
+import { OverviewDashboard } from '../../../libs/components/overview/OverviewDashboard';
 import type { DashboardPageProps } from '../../../libs/types/pages/pageProps';
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({

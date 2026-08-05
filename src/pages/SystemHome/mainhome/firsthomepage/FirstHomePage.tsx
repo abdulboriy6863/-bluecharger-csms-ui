@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from '../../../../scss/systemHome/FirstHomePage.module.scss';
-import { GeneralStatisticsSection } from '../../../../components/systemHome/dashboard/GeneralStatisticsSection';
-import { ChargerStatusSection } from '../../../../components/systemHome/dashboard/ChargerStatusSection';
-import { InfrastructureUsageSection } from '../../../../components/systemHome/dashboard/InfrastructureUsageSection';
+import { GeneralStatisticsSection } from '../../../../libs/components/systemHome/dashboard/GeneralStatisticsSection';
+import { ChargerStatusSection } from '../../../../libs/components/systemHome/dashboard/ChargerStatusSection';
+import { InfrastructureUsageSection } from '../../../../libs/components/systemHome/dashboard/InfrastructureUsageSection';
 
 export const FirstHomePage: React.FC = () => {
   return (

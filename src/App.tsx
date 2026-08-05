@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './scss/core/global.scss';
-import { AppShell } from './components/layout/AppShell/AppShell';
-import { LoginScreen } from './components/login/LoginScreen';
-import { ChargerDetailDrawer } from './components/chargerDetail/ChargerDetailDrawer';
-import { ControlCommandModal } from './components/control/ControlCommandModal';
+import { AppShell } from './libs/components/layout/AppShell/AppShell';
+import { LoginScreen } from './libs/components/login/LoginScreen';
+import { ChargerDetailDrawer } from './libs/components/chargerDetail/ChargerDetailDrawer';
+import { ControlCommandModal } from './libs/components/control/ControlCommandModal';
 import { mockChargers } from './data/mockChargers';
 import type { Charger, CommandType, CommandResult } from './libs/types/charger/charger';
 import type { User } from './libs/types/auth/auth';

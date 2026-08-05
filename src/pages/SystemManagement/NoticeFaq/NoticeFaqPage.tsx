@@ -1,5 +1,5 @@
 import React from 'react';
-import { NoticeFaqView } from '../../../components/systemManagement/noticeFaq/NoticeFaqView';
+import { NoticeFaqView } from '../../../libs/components/systemManagement/noticeFaq/NoticeFaqView';
 
 export const NoticeFaqPage: React.FC = () => {
   return (

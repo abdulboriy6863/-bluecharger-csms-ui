@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiveMonitoring } from '../../../components/monitoring/LiveMonitoring';
+import { LiveMonitoring } from '../../../libs/components/monitoring/LiveMonitoring';
 import type { ChargerControlPageProps } from '../../../libs/types/pages/pageProps';
 
 export const ChargerControlPage: React.FC<ChargerControlPageProps> = ({

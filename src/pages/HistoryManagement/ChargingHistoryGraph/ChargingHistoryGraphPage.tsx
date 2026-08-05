@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChargingHistoryGraphView } from '../../../components/history/chargingHistoryGraph/ChargingHistoryGraphView';
+import { ChargingHistoryGraphView } from '../../../libs/components/history/chargingHistoryGraph/ChargingHistoryGraphView';
 
 export const ChargingHistoryGraphPage: React.FC = () => (
   <section style={{ padding: '24px' }}>

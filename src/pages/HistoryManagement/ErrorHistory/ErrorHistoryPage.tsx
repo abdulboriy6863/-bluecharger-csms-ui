@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorHistoryView } from '../../../components/history/errorHistory/ErrorHistoryView';
+import { ErrorHistoryView } from '../../../libs/components/history/errorHistory/ErrorHistoryView';
 
 export const ErrorHistoryPage: React.FC = () => (
   <section style={{ padding: '24px' }}>

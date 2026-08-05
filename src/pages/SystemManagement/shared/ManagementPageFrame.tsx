@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plus, Search } from 'lucide-react';
-import { Card } from '../../../components/common/Card/Card';
+import { Card } from '../../../libs/components/common/Card/Card';
 import styles from '../../../scss/systemManagement/ManagementPageFrame.module.scss';
 import type { ManagementPageFrameProps } from '../../../libs/types/pages/pageProps';
 

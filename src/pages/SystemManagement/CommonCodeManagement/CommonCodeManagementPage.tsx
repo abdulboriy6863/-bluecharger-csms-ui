@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommonCodeManagementView } from '../../../components/systemManagement/commonCodeManagement/CommonCodeManagementView';
+import { CommonCodeManagementView } from '../../../libs/components/systemManagement/commonCodeManagement/CommonCodeManagementView';
 
 export const CommonCodeManagementPage: React.FC = () => {
   return (

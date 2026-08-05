@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelManagementView } from '../../../components/infrastructure/modelManagement/ModelManagementView';
+import { ModelManagementView } from '../../../libs/components/infrastructure/modelManagement/ModelManagementView';
 
 export const ModelManagementPage: React.FC = () => (
   <section style={{ padding: '24px' }}>

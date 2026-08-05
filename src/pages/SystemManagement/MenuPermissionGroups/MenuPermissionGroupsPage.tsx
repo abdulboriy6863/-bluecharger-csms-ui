@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuPermissionGroupsView } from '../../../components/systemManagement/menuPermissionGroups/MenuPermissionGroupsView';
+import { MenuPermissionGroupsView } from '../../../libs/components/systemManagement/menuPermissionGroups/MenuPermissionGroupsView';
 
 export const MenuPermissionGroupsPage: React.FC = () => {
   return (
