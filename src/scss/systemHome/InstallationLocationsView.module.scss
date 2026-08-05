@@ -206,6 +206,8 @@
   height: 100%;
   position: relative;
   background-color: #ffffff;
+  overflow: hidden !important;
+  contain: paint;
   transition: background-color 0.3s ease;
 
   :global(.darkAppMode) & {
@@ -217,6 +219,12 @@
   width: 100%;
   height: 100%;
   z-index: 1;
+  overflow: hidden !important;
+  contain: paint;
+
+  :global(.maplibregl-canvas-container) {
+    overflow: hidden !important;
+  }
 }
 
 /* MARKER PINS & POPUPS */
@@ -226,6 +234,7 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  contain: layout paint;
 }
 
 .markerPin {
@@ -239,21 +248,24 @@
   border: 2px solid #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
 
   svg {
     transform: rotate(45deg);
+    z-index: 2;
   }
 }
 
-.pulseRing {
+.pulseRingInner {
   position: absolute;
-  top: -6px;
-  left: -6px;
-  width: 44px;
-  height: 44px;
+  inset: -2px;
   border-radius: 50%;
-  opacity: 0.4;
+  border: 2px solid;
+  opacity: 0.8;
   animation: pulseGlow 1.8s infinite ease-out;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .markerSelected {

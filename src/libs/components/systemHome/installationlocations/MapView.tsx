@@ -12,16 +12,17 @@ interface MapViewProps {
   activeCountry: string;
 }
 
-// Center presets for supported language markets (KR, UZ, KG, ID, IN, US, RU)
+// Center & Zoom presets for supported language markets
+// Enforcing pitch: 0 and balanced zoom levels keeps the 3D Globe perfectly centered
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 25.0, lng: 70.0, zoom: 2.8 },
-  KR: { lat: 36.3, lng: 127.8, zoom: 7.0 },
-  UZ: { lat: 40.5, lng: 67.5, zoom: 6.5 },
-  KG: { lat: 42.0, lng: 73.5, zoom: 6.8 },
-  ID: { lat: -2.5, lng: 115.0, zoom: 5.5 },
-  IN: { lat: 22.0, lng: 78.0, zoom: 5.2 },
-  US: { lat: 37.78, lng: -122.41, zoom: 10.0 },
-  RU: { lat: 55.75, lng: 37.61, zoom: 8.0 },
+  ALL: { lat: 25.0, lng: 65.0, zoom: 2.8 },
+  KR: { lat: 36.3, lng: 127.8, zoom: 5.2 },
+  UZ: { lat: 41.0, lng: 66.5, zoom: 4.8 },
+  KG: { lat: 41.5, lng: 73.5, zoom: 5.0 },
+  ID: { lat: -2.5, lng: 115.0, zoom: 4.2 },
+  IN: { lat: 22.0, lng: 78.0, zoom: 4.2 },
+  US: { lat: 38.0, lng: -98.0, zoom: 3.8 },
+  RU: { lat: 56.0, lng: 45.0, zoom: 3.8 },
 };
 
 // Calculate angular distance on sphere to hide markers on the backside of 3D Globe
@@ -33,9 +34,9 @@ const isStationOnVisibleGlobe = (cameraCenter: maplibregl.LngLat, stationLng: nu
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(cameraCenter.lat * rad) * Math.cos(stationLat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
-  
-  // If angular distance > ~1.40 radians (~80 degrees), it's behind the globe horizon
-  return c < 1.40;
+
+  // If angular distance > ~1.35 radians (~77 degrees), it's behind the globe horizon
+  return c < 1.35;
 };
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -106,8 +107,8 @@ export const MapView: React.FC<MapViewProps> = ({
     const activeKw = station.activePowerKw > 0 ? `${station.activePowerKw.toFixed(0)}kW` : '';
 
     el.innerHTML = `
-      ${isCharging ? `<div class="${styles.pulseRing}" style="background-color: ${color}"></div>` : ''}
       <div class="${styles.markerPin}" style="background-color: ${color}; border-color: ${isSelected ? '#ffffff' : color}">
+        ${isCharging ? `<div class="${styles.pulseRingInner}" style="border-color: ${color}"></div>` : ''}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
@@ -131,16 +132,26 @@ export const MapView: React.FC<MapViewProps> = ({
 
     Object.values(markersRef.current).forEach(({ station, el }) => {
       // If zoomed out on 3D globe, hide markers that rotate behind the Earth horizon
-      if (currentZoom < 4.5) {
+      if (currentZoom < 5.0) {
         const isVisible = isStationOnVisibleGlobe(center, station.lng, station.lat);
-        el.style.display = isVisible ? 'flex' : 'none';
+        if (isVisible) {
+          el.style.display = 'flex';
+          el.style.visibility = 'visible';
+          el.style.opacity = '1';
+        } else {
+          el.style.display = 'none';
+          el.style.visibility = 'hidden';
+          el.style.opacity = '0';
+        }
       } else {
         el.style.display = 'flex';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
       }
     });
   };
 
-  // Initialize MapLibre 3D Globe perfectly centered (pitch: 0)
+  // Initialize MapLibre 3D Globe perfectly centered (pitch: 0 permanently)
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -148,16 +159,17 @@ export const MapView: React.FC<MapViewProps> = ({
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: getGlobeStyle(isDarkMode),
-        center: [70.0, 25.0], // Centered vertically & horizontally
+        center: [65.0, 25.0], // Centered vertically & horizontally
         zoom: 2.8,
         minZoom: 2.8, // Keeps globe centered and prevents shrinking distortion
         maxZoom: 19,
         pitch: 0, // Flat upright 3D globe axis centered in viewport
+        bearing: 0,
         attributionControl: false,
       });
 
-      // Add navigation controls (zoom, rotate, pitch)
-      map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-left');
+      // Add navigation controls (zoom, rotate)
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-left');
 
       // Bind occlusion check on camera movement/render
       map.on('move', updateMarkersVisibility);
@@ -259,7 +271,7 @@ export const MapView: React.FC<MapViewProps> = ({
     updateMarkersVisibility();
   }, [stations, selectedStation]);
 
-  // Center Map on Country Select
+  // Center Map on Country Select (Pitch 0, slow calm speed)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -268,23 +280,29 @@ export const MapView: React.FC<MapViewProps> = ({
     map.flyTo({
       center: [preset.lng, preset.lat],
       zoom: preset.zoom,
-      pitch: activeCountry === 'ALL' ? 0 : 20,
+      pitch: 0, // Flat upright 3D globe axis permanently centered
+      bearing: 0,
+      speed: 0.45, // Smooth slow speed (Point 5)
+      curve: 1.4,
+      duration: 2400,
       essential: true,
-      duration: 1800,
     });
   }, [activeCountry]);
 
-  // Center Map on Selected Station
+  // Center Map on Selected Station (Slow, calm, smooth fly-to transition)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !selectedStation) return;
 
     map.flyTo({
       center: [selectedStation.lng, selectedStation.lat],
-      zoom: 14,
-      pitch: 25,
+      zoom: 13.5,
+      pitch: 0, // Keeps map flat and centered without dropping
+      bearing: 0,
+      speed: 0.4, // Slow, calm camera transition (Point 5)
+      curve: 1.4,
+      duration: 2600, // 2.6 seconds smooth motion
       essential: true,
-      duration: 1500,
     });
 
     const item = markersRef.current[selectedStation.id];
