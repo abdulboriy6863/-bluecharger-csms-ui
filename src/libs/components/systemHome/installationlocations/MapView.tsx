@@ -14,7 +14,7 @@ interface MapViewProps {
 
 // Center presets for regional navigation
 const COUNTRY_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  ALL: { lat: 25.0, lng: 45.0, zoom: 2.2 },
+  ALL: { lat: 25.0, lng: 45.0, zoom: 2.5 },
   KR: { lat: 36.3, lng: 127.8, zoom: 7.2 },
   UZ: { lat: 40.5, lng: 67.5, zoom: 6.5 },
   US: { lat: 37.78, lng: -122.41, zoom: 10.5 },
@@ -36,6 +36,8 @@ export const MapView: React.FC<MapViewProps> = ({
   // Generate MapLibre GL 3D Globe Style Specification
   const getGlobeStyle = (dark: boolean): maplibregl.StyleSpecification => {
     const tileSub = dark ? 'dark_all' : 'rastertiles/voyager';
+    const bgColor = dark ? '#030712' : '#ffffff';
+
     return {
       version: 8,
       projection: {
@@ -55,6 +57,13 @@ export const MapView: React.FC<MapViewProps> = ({
         },
       },
       layers: [
+        {
+          id: 'globe-bg-layer',
+          type: 'background',
+          paint: {
+            'background-color': bgColor,
+          },
+        },
         {
           id: 'carto-globe-layer',
           type: 'raster',
@@ -96,7 +105,7 @@ export const MapView: React.FC<MapViewProps> = ({
     return el;
   };
 
-  // Initialize MapLibre 3D Globe
+  // Initialize MapLibre 3D Globe with strict minZoom & bounds safety
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -105,7 +114,9 @@ export const MapView: React.FC<MapViewProps> = ({
         container: mapContainerRef.current,
         style: getGlobeStyle(isDarkMode),
         center: [45.0, 25.0],
-        zoom: 2.2,
+        zoom: 2.5,
+        minZoom: 2.0, // Prevents extreme zoom-out shrinking & marker detachment
+        maxZoom: 19,
         pitch: 15,
         attributionControl: false,
       });

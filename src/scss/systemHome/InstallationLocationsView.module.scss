@@ -205,7 +205,12 @@
   flex: 1;
   height: 100%;
   position: relative;
-  background-color: #030712; /* Deep space atmosphere background like Apple Maps */
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+
+  :global(.darkAppMode) & {
+    background-color: #030712;
+  }
 }
 
 .mapLibreCanvas {
