@@ -2,6 +2,15 @@
 @import "../core/mixins";
 
 // Main container page styles
+.page {
+  width: 100%;
+  padding: 24px;
+
+  @media (max-width: 760px) {
+    padding: 16px;
+  }
+}
+
 .dashboard {
   width: 100%;
   max-width: 1600px;

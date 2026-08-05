@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../../scss/systemHome/SolarDashboardPage.module.scss';
+import styles from '../../../../scss/systemHome/SolarDashboardSectionCard.module.scss';
 import { SolarDashboardSectionCard } from './SolarDashboardSectionCard';
 import { mockSolarDashboard } from '../../../../data/mockSolarDashboard';
 import { useI18n } from '../../../../i18n/I18nContext';
