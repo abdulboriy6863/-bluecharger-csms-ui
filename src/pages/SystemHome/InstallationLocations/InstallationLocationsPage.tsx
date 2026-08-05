@@ -16,14 +16,14 @@ export const InstallationLocationsPage: React.FC<InstallationLocationsPageProps>
   onOpenControlModal,
 }) => {
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+    <section style={{ width: '100%', padding: '16px 24px 24px 24px', boxSizing: 'border-box' }}>
       <InstallationLocationsView
         isDarkMode={isDarkMode}
         chargers={chargers}
         onSelectCharger={onSelectCharger}
         onOpenControlModal={onOpenControlModal}
       />
-    </div>
+    </section>
   );
 };
 
