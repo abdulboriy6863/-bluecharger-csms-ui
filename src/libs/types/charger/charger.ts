@@ -1,6 +1,6 @@
 export type ChargerStatus = 'Available' | 'Charging' | 'Reserved' | 'Faulted' | 'Offline';
 
-export type ConnectorType = 'CCS2' | 'CHAdeMO' | 'Type 2' | 'GB/T';
+export type ConnectorType = 'CCS2' | 'CHAdeMO' | 'Type 2' | 'GB/T' | 'NACS';
 
 export interface Connector {
   id: number;
