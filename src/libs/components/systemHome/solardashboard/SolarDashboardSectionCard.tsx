@@ -19,7 +19,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import styles from '../../../../scss/systemHome/SolarDashboardPageCard.module.scss';
+import styles from '../../../../scss/systemHome/SolarDashboardSectionCard.module.scss';
 import { useI18n } from '../../../../i18n/I18nContext';
 import type {
   SolarCarbonPoint,
