@@ -92,19 +92,22 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
               <stop offset="0%" stopColor="#f97316" />
               <stop offset="100%" stopColor="#ea580c" />
             </linearGradient>
-            <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
+            <filter id="glowEffect" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <filter id="node3DShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="12" stdDeviation="8" floodColor="#2e56a6" floodOpacity="0.18" />
             </filter>
           </defs>
 
-          {/* Background Paths */}
+          {/* Background Structural Paths */}
           <path d="M 250,75 L 250,215" className={styles.connectionPath} />
           <path d="M 285,240 L 385,240" className={styles.connectionPath} />
           <path d="M 220,270 L 140,375" className={styles.connectionPath} />
-          <path d="M 155,410 L 345,410" className={styles.connectionPath} />
+          <path d="M 280,270 L 360,375" className={styles.connectionPath} />
 
-          {/* Glowing Animated Paths */}
+          {/* Glowing Animated Particle Flow Lines */}
           <path
             d="M 250,75 L 250,215"
             className={`${styles.flowParticle} ${isPvActive ? styles.active : ''}`}
@@ -124,11 +127,56 @@ const SolarFlowCard: React.FC<SolarFlowCardProps> = ({ weather, flow, batterySoc
             filter="url(#glowEffect)"
           />
           <path
-            d="M 155,410 L 345,410"
+            d="M 280,270 L 360,375"
             className={`${styles.flowParticle} ${isLoadActive ? styles.active : ''}`}
             stroke="url(#loadGlow)"
             filter="url(#glowEffect)"
           />
+
+          {/* 3D Traveling Energy Spheres */}
+          {isPvActive && (
+            <g>
+              <circle r="7" fill="#fbbf24" filter="url(#glowEffect)">
+                <animateMotion path="M 250,75 L 250,215" dur="1.5s" repeatCount="indefinite" />
+              </circle>
+              <circle r="4" fill="#ffffff">
+                <animateMotion path="M 250,75 L 250,215" dur="1.5s" repeatCount="indefinite" />
+              </circle>
+            </g>
+          )}
+
+          {isGridActive && (
+            <g>
+              <circle r="7" fill="#3b82f6" filter="url(#glowEffect)">
+                <animateMotion path="M 285,240 L 385,240" dur="1.8s" repeatCount="indefinite" />
+              </circle>
+              <circle r="4" fill="#ffffff">
+                <animateMotion path="M 285,240 L 385,240" dur="1.8s" repeatCount="indefinite" />
+              </circle>
+            </g>
+          )}
+
+          {isBatteryActive && (
+            <g>
+              <circle r="7" fill="#10b981" filter="url(#glowEffect)">
+                <animateMotion path="M 220,270 L 140,375" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <circle r="4" fill="#ffffff">
+                <animateMotion path="M 220,270 L 140,375" dur="2s" repeatCount="indefinite" />
+              </circle>
+            </g>
+          )}
+
+          {isLoadActive && (
+            <g>
+              <circle r="7" fill="#f97316" filter="url(#glowEffect)">
+                <animateMotion path="M 280,270 L 360,375" dur="1.6s" repeatCount="indefinite" />
+              </circle>
+              <circle r="4" fill="#ffffff">
+                <animateMotion path="M 280,270 L 360,375" dur="1.6s" repeatCount="indefinite" />
+              </circle>
+            </g>
+          )}
         </svg>
 
         {/* PV Node */}
