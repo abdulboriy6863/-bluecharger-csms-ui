@@ -27,6 +27,20 @@ export const InstallationLocationsView: React.FC<InstallationLocationsViewProps>
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isWsConnected, setIsWsConnected] = useState<boolean>(true);
 
+  // Auto-collapse sidebar on mobile screen sizes on mount and resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsSidebarCollapsed(true);
+      } else {
+        setIsSidebarCollapsed(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Simulated Real-time WebSocket Telemetry updates (fluctuates active kW power for charging sessions)
   useEffect(() => {
     const interval = setInterval(() => {
