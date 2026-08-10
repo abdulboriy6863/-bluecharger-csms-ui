@@ -254,14 +254,14 @@
 .appleLayerSwitcher {
   position: absolute;
   top: 14px;
-  left: 14px;
+  right: 14px;
   z-index: 25;
 }
 
 .appleFloatingStack {
   position: absolute;
   bottom: 20px;
-  left: 14px;
+  right: 14px;
   z-index: 25;
   display: flex;
   flex-direction: column;
@@ -316,7 +316,7 @@
 .appleLayerMenu {
   position: absolute;
   top: 46px;
-  left: 0;
+  right: 0;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1292,3 +1292,189 @@
     grid-column: span 2;
   }
 }
+
+/* Map Zoom Scaling Styles */
+.mapLibreCanvas {
+  .radarLabelCapsule {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .holographicPillarLine {
+    transition: all 0.2s ease;
+  }
+  .radarPinBadge {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .radarTargetBase {
+    transition: all 0.2s ease;
+  }
+
+  // Low Zoom State: Clean continent/globe overview
+  &.zoom-low {
+    .radarLabelCapsule {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: scale(0.6) translateY(10px) !important;
+    }
+    .holographicPillarLine {
+      height: 0 !important;
+      opacity: 0 !important;
+    }
+    .radarPinBadge {
+      width: 10px !important;
+      height: 10px !important;
+      border-width: 1.5px !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+      
+      .radarIconWrapper, .radarPulseRing {
+        display: none !important;
+      }
+    }
+    .radarTargetBase {
+      transform: scale(0.5) !important;
+      opacity: 0 !important;
+    }
+  }
+
+  // Mid Zoom State: Standard pins
+  &.zoom-mid {
+    .radarLabelCapsule {
+      opacity: 0.95;
+    }
+    .holographicPillarLine {
+      height: 16px;
+    }
+    .radarPinBadge {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  // High Zoom State: Street level detail (make station markers subtle background points)
+  &.zoom-high {
+    .csmsRadarMarkerWrapper {
+      opacity: 0.35 !important;
+      pointer-events: none !important;
+      transform: scale(0.8) !important;
+      z-index: 1 !important;
+      
+      .radarLabelCapsule {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+/* Charger Marker Styles on Map */
+.csmsChargerMarkerWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  contain: layout paint;
+
+  &:hover {
+    z-index: 99;
+    transform: scale(1.15);
+  }
+}
+
+.chargerLabel {
+  font-size: 9px;
+  font-weight: 700;
+  color: #7A91BF;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+
+  :global(.darkAppMode) & {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(30, 41, 59, 0.85);
+    color: #cbd5e1;
+  }
+}
+
+.chargerPin {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  position: relative;
+  color: #ffffff;
+  
+  :global(.darkAppMode) & {
+    border-color: #0f172a;
+  }
+}
+
+.chargerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.chargerPulseRing {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2.5px solid currentColor;
+  animation: chargerPulseGlow 1.6s infinite ease-out;
+  z-index: 1;
+  opacity: 0;
+}
+
+@keyframes chargerPulseGlow {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Charger Specific Status Colors */
+.chargerAvailable {
+  background-color: #007aff !important;
+  color: #ffffff !important;
+}
+
+.chargerCharging {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+.chargerFaulted {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  animation: chargerFlicker 1.5s infinite ease-in-out;
+}
+
+.chargerOffline {
+  background-color: #64748b !important;
+  color: #ffffff !important;
+}
+
+.chargerReserved {
+  background-color: #8b5cf6 !important;
+  color: #ffffff !important;
+}
+
+@keyframes chargerFlicker {
+  0%, 100% { opacity: 0.95; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(0.94); }
+}
+
