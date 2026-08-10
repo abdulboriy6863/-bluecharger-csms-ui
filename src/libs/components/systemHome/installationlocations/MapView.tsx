@@ -3,6 +3,7 @@ import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Navigation, Layers, Plus, Minus, Sun, Moon, Globe, Play, Pause } from 'lucide-react';
 import type { Station } from '../../../../data/mockStations';
+import type { Charger } from '../../../types/charger/charger';
 import styles from '../../../../scss/systemHome/InstallationLocationsView.module.scss';
 
 interface MapViewProps {
@@ -11,6 +12,7 @@ interface MapViewProps {
   onSelectStation: (station: Station) => void;
   isDarkMode: boolean;
   activeCountry: string;
+  onSelectCharger?: (charger: Charger) => void;
 }
 
 export type MapMode = 'standard' | 'satellite' | 'dark';
@@ -45,18 +47,94 @@ export const MapView: React.FC<MapViewProps> = ({
   onSelectStation,
   isDarkMode,
   activeCountry,
+  onSelectCharger,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
 
   // Client-side state management (ID-based Map) preventing duplicate markers and object breakups
   const markersMapRef = useRef<Map<string, { marker: maplibregl.Marker; station: Station; el: HTMLElement }>>(new Map());
+  const chargerMarkersMapRef = useRef<Map<string, { marker: maplibregl.Marker; cp: any; el: HTMLElement }>>(new Map());
 
   const [mapMode, setMapMode] = useState<MapMode>(isDarkMode ? 'dark' : 'standard');
+  const [zoomClass, setZoomClass] = useState<'zoom-low' | 'zoom-mid' | 'zoom-high'>('zoom-mid');
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
   const isUserInteractingRef = useRef(false);
   const animFrameIdRef = useRef<number | null>(null);
+
+  // Calculate coordinates for offset chargers to show exact position clusters
+  const getChargerCoordinates = (stationLat: number, stationLng: number, index: number, total: number) => {
+    if (total <= 1) {
+      return { lat: stationLat, lng: stationLng };
+    }
+    const radius = 0.00025; // ~25 meters
+    const angle = (index * 2 * Math.PI) / total;
+    const latOffset = radius * Math.sin(angle);
+    const lngOffset = (radius * Math.cos(angle)) / Math.cos(stationLat * Math.PI / 180);
+    return {
+      lat: stationLat + latOffset,
+      lng: stationLng + lngOffset,
+    };
+  };
+
+  // Build Charger Marker DOM element
+  const createChargerMarkerElement = (cp: any, isDark: boolean) => {
+    const el = document.createElement('div');
+    el.className = `${styles.csmsChargerMarkerWrapper} ${isDark ? styles.nightModeMarker : styles.dayModeMarker}`;
+
+    let statusClass = '';
+    let iconSvg = '';
+
+    if (cp.status === 'Charging') {
+      statusClass = styles.chargerCharging;
+      iconSvg = `
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      `;
+    } else if (cp.status === 'Available') {
+      statusClass = styles.chargerAvailable;
+      iconSvg = `
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+        </svg>
+      `;
+    } else if (cp.status === 'Faulted') {
+      statusClass = styles.chargerFaulted;
+      iconSvg = `
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        </svg>
+      `;
+    } else if (cp.status === 'Offline') {
+      statusClass = styles.chargerOffline;
+      iconSvg = `
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+        </svg>
+      `;
+    } else if (cp.status === 'Reserved') {
+      statusClass = styles.chargerReserved;
+      iconSvg = `
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      `;
+    }
+
+    el.innerHTML = `
+      <div class="${styles.chargerLabel}">${cp.id}</div>
+      <div class="${styles.chargerPin} ${statusClass}">
+        ${cp.status === 'Charging' ? `<div class="${styles.chargerPulseRing}"></div>` : ''}
+        <div class="${styles.chargerIcon}">${iconSvg}</div>
+      </div>
+    `;
+
+    return el;
+  };
 
   // Sync navbar dark mode changes to map mode if satellite is not selected
   useEffect(() => {
@@ -251,6 +329,30 @@ export const MapView: React.FC<MapViewProps> = ({
         el.style.opacity = '1';
       }
     });
+
+    // Hide or show charger markers based on zoom visibility
+    chargerMarkersMapRef.current.forEach(({ marker, el }) => {
+      if (currentZoom >= 13.5) {
+        el.style.display = 'flex';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+      } else {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.opacity = '0';
+      }
+    });
+  };
+
+  const updateZoomClass = (map: maplibregl.Map) => {
+    const z = map.getZoom();
+    let nextClass: 'zoom-low' | 'zoom-mid' | 'zoom-high' = 'zoom-mid';
+    if (z < 4.5) {
+      nextClass = 'zoom-low';
+    } else if (z >= 13.5) {
+      nextClass = 'zoom-high';
+    }
+    setZoomClass(nextClass);
   };
 
   // Initialize MapLibre Canvas with 3D Globe & Continuous Auto-Rotation
@@ -277,6 +379,10 @@ export const MapView: React.FC<MapViewProps> = ({
 
       map.on('move', updateMarkersVisibility);
       map.on('render', updateMarkersVisibility);
+      map.on('zoom', () => {
+        updateZoomClass(map);
+        updateMarkersVisibility();
+      });
 
       mapInstanceRef.current = map;
     }
@@ -340,14 +446,16 @@ export const MapView: React.FC<MapViewProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Update Station Markers using ID-based Map State Management to prevent duplicates/breakups
+  // Update Station & Charger Markers using ID-based Map State Management to prevent duplicates/breakups
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
     const activeStationIds = new Set<string>();
+    const activeChargerIds = new Set<string>();
     const isDark = mapMode === 'dark' || (mapMode !== 'standard' && isDarkMode);
 
+    // 1. Manage Station Markers
     stations.forEach((station) => {
       activeStationIds.add(station.id);
       const isSelected = selectedStation?.id === station.id;
@@ -435,8 +543,72 @@ export const MapView: React.FC<MapViewProps> = ({
       }
     });
 
+    // 2. Manage Individual Charger Markers (only at high zoom)
+    if (zoomClass === 'zoom-high') {
+      stations.forEach((station) => {
+        const totalCps = station.chargers.length;
+        station.chargers.forEach((cp, index) => {
+          activeChargerIds.add(cp.id);
+          let existingCp = chargerMarkersMapRef.current.get(cp.id);
+          const offsetCoords = getChargerCoordinates(station.lat, station.lng, index, totalCps);
+
+          if (existingCp) {
+            const newEl = createChargerMarkerElement(cp, isDark);
+            existingCp.marker.getElement().innerHTML = newEl.innerHTML;
+            existingCp.marker.getElement().className = newEl.className;
+            existingCp.marker.setLngLat([offsetCoords.lng, offsetCoords.lat]);
+            existingCp.cp = cp;
+          } else {
+            const el = createChargerMarkerElement(cp, isDark);
+
+            // Charger click action: opens the full detail drawer
+            el.addEventListener('click', (e) => {
+              e.stopPropagation();
+              isUserInteractingRef.current = true;
+              if (onSelectCharger) {
+                const fullCharger: Charger = {
+                  id: cp.id,
+                  name: cp.name,
+                  stationId: station.id,
+                  stationName: station.name,
+                  region: station.region,
+                  status: cp.status,
+                  connectors: cp.connectors,
+                  manufacturer: cp.manufacturer,
+                  model: cp.model,
+                  firmwareVersion: cp.firmwareVersion,
+                  ocppVersion: cp.ocppVersion,
+                  ipAddress: cp.ipAddress,
+                  macAddress: '00:1E:C0:8A:4F:99',
+                  lastHeartbeat: cp.lastHeartbeat,
+                  lastStatusChange: 'Just now',
+                  todayEnergyKwh: cp.todayEnergyKwh,
+                  totalSessionsToday: cp.totalSessionsToday,
+                };
+                onSelectCharger(fullCharger);
+              }
+            });
+
+            const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+              .setLngLat([offsetCoords.lng, offsetCoords.lat])
+              .addTo(map);
+
+            chargerMarkersMapRef.current.set(cp.id, { marker, cp, el });
+          }
+        });
+      });
+    }
+
+    // Remove any obsolete or hidden chargers
+    chargerMarkersMapRef.current.forEach((val, id) => {
+      if (zoomClass !== 'zoom-high' || !activeChargerIds.has(id)) {
+        val.marker.remove();
+        chargerMarkersMapRef.current.delete(id);
+      }
+    });
+
     updateMarkersVisibility();
-  }, [stations, selectedStation, mapMode, isDarkMode]);
+  }, [stations, selectedStation, mapMode, isDarkMode, zoomClass]);
 
   // Center Map on Country Select
   useEffect(() => {
@@ -512,9 +684,9 @@ export const MapView: React.FC<MapViewProps> = ({
 
   return (
     <div className={styles.globeMapWrapper}>
-      <div ref={mapContainerRef} className={styles.mapLibreCanvas} />
+      <div ref={mapContainerRef} className={`${styles.mapLibreCanvas} ${styles[zoomClass]}`} />
 
-      {/* FLOATING LAYER SELECTOR (Top-Left) */}
+      {/* FLOATING LAYER SELECTOR (Top-Right) */}
       <div className={styles.appleLayerSwitcher}>
         <button
           className={`${styles.appleControlBtn} ${isLayerMenuOpen ? styles.appleControlActive : ''}`}

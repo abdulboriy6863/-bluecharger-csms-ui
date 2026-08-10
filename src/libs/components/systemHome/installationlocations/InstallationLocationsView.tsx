@@ -135,6 +135,7 @@ export const InstallationLocationsView: React.FC<InstallationLocationsViewProps>
           onSelectStation={setSelectedStation}
           isDarkMode={isDarkMode}
           activeCountry={activeCountry}
+          onSelectCharger={onSelectCharger}
         />
 
         <StationListSidebar
