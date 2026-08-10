@@ -161,6 +161,10 @@ export const App: React.FC = () => {
         />
       )}
 
+      {activeTab === 'overview' && systemHomePage === 'solar' && (
+        <SolarDashboardPage />
+      )}
+
       {activeTab === 'overview' && systemHomePage === 'locations' && (
         <InstallationLocationsPage
           isDarkMode={isDarkMode}
