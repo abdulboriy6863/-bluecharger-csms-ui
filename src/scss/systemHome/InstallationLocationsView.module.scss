@@ -1490,3 +1490,506 @@
   50% { opacity: 0.65; transform: scale(0.94); }
 }
 
+/* Operations Map Console Skin */
+.container {
+  height: calc(100vh - 118px);
+  min-height: 680px;
+  background:
+    linear-gradient(180deg, rgba(232, 240, 255, 0.96), rgba(248, 251, 255, 0.98) 42%, rgba(255, 255, 255, 1)),
+    radial-gradient(circle at 16% 0%, rgba(0, 191, 166, 0.14), transparent 34%);
+  border: 1px solid rgba(122, 145, 191, 0.28);
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(46, 86, 166, 0.12);
+
+  :global(.darkAppMode) & {
+    background:
+      linear-gradient(180deg, rgba(12, 22, 42, 0.98), rgba(18, 32, 56, 0.98)),
+      radial-gradient(circle at 18% 0%, rgba(0, 191, 166, 0.18), transparent 36%);
+    border-color: rgba(122, 145, 191, 0.22);
+  }
+}
+
+.statusCountersContainer {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(122, 145, 191, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  :global(.darkAppMode) & {
+    background: rgba(15, 28, 52, 0.78);
+    border-bottom-color: rgba(122, 145, 191, 0.18);
+  }
+}
+
+.statusGrid {
+  grid-template-columns: minmax(168px, 1.1fr) repeat(5, minmax(124px, 0.86fr)) minmax(190px, 1fr);
+  gap: 8px;
+}
+
+.statusCard,
+.wsControlCard {
+  min-height: 82px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.statusCard {
+  padding: 11px 12px 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(122, 145, 191, 0.22);
+  box-shadow: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: #7A91BF;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(46, 86, 166, 0.42);
+    box-shadow: 0 10px 22px rgba(46, 86, 166, 0.12);
+  }
+
+  :global(.darkAppMode) & {
+    background: rgba(24, 39, 68, 0.92);
+    border-color: rgba(122, 145, 191, 0.22);
+  }
+}
+
+.totalCard::before { background: #2E56A6; }
+.availableCard::before { background: #00BFA6; }
+.chargingCard::before { background: #2F80ED; }
+.faultedCard::before { background: #F43F5E; }
+.offlineCard::before { background: #7A91BF; }
+.reservedCard::before { background: #8B5CF6; }
+
+.activeFilter {
+  background: #ffffff !important;
+  border-color: rgba(46, 86, 166, 0.72) !important;
+  box-shadow: inset 0 0 0 1px rgba(46, 86, 166, 0.2), 0 12px 26px rgba(46, 86, 166, 0.14);
+
+  :global(.darkAppMode) & {
+    background: rgba(31, 51, 88, 0.98) !important;
+  }
+}
+
+.cardTitle,
+.wsTitle {
+  color: #7A91BF;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.cardMainValue {
+  margin-top: 4px;
+  font-size: 25px;
+  letter-spacing: 0;
+  color: #2E56A6;
+}
+
+.cardSubText {
+  color: #7A91BF;
+  font-size: 11px;
+}
+
+.totalBadge {
+  border-radius: 4px;
+  background: rgba(46, 86, 166, 0.1);
+}
+
+.wsControlCard {
+  padding: 12px;
+  background:
+    linear-gradient(135deg, rgba(46, 86, 166, 1), rgba(0, 191, 166, 0.92));
+  border: 0;
+  box-shadow: 0 12px 28px rgba(46, 86, 166, 0.22);
+}
+
+.wsTitle {
+  color: #ffffff;
+}
+
+.refreshBtn {
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.26);
+  }
+}
+
+.mainBody {
+  gap: 14px;
+  padding: 14px;
+  background: transparent;
+}
+
+.globeMapWrapper {
+  border-radius: 8px;
+  border: 1px solid rgba(122, 145, 191, 0.22);
+  background: #eaf2ff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.74), 0 14px 32px rgba(46, 86, 166, 0.12);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(46, 86, 166, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46, 86, 166, 0.055) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mix-blend-mode: multiply;
+  }
+
+  :global(.darkAppMode) & {
+    background: #06101f;
+    border-color: rgba(122, 145, 191, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 14px 36px rgba(0, 0, 0, 0.36);
+  }
+}
+
+.appleLayerSwitcher {
+  top: 16px;
+  left: 16px;
+  right: auto;
+}
+
+.appleFloatingStack {
+  right: 16px;
+  bottom: 16px;
+  flex-direction: row;
+}
+
+.appleControlBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #416CA6;
+  border: 1px solid rgba(122, 145, 191, 0.32);
+  box-shadow: 0 8px 18px rgba(46, 86, 166, 0.12);
+
+  &:hover {
+    transform: translateY(-1px);
+    color: #2E56A6;
+    border-color: rgba(46, 86, 166, 0.46);
+  }
+}
+
+.appleControlActive,
+.activeOption {
+  background: #2E56A6 !important;
+  border-color: #2E56A6 !important;
+}
+
+.appleLayerMenu {
+  top: 44px;
+  left: 0;
+  right: auto;
+  min-width: 154px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(122, 145, 191, 0.28);
+}
+
+.appleLayerOption {
+  border-radius: 6px;
+  color: #416CA6;
+}
+
+.sidebarWrapper {
+  width: 372px;
+  border-left: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(122, 145, 191, 0.22);
+  box-shadow: 0 14px 32px rgba(46, 86, 166, 0.11);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  :global(.darkAppMode) & {
+    background: rgba(16, 29, 53, 0.9);
+    border-color: rgba(122, 145, 191, 0.18);
+  }
+}
+
+.sidebarContent {
+  padding: 16px;
+}
+
+.collapseToggleBtn {
+  left: -34px;
+  width: 34px;
+  height: 38px;
+  border-radius: 8px 0 0 8px;
+  border-color: rgba(122, 145, 191, 0.28);
+  color: #416CA6;
+}
+
+.sidebarHeader {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(122, 145, 191, 0.18);
+}
+
+.sidebarTitle {
+  color: #2E56A6;
+  font-size: 18px;
+}
+
+.stationCountBadge,
+.cardCountryBadge,
+.countryFlagBadge,
+.popupCountryBadge {
+  border-radius: 4px;
+  background: #2E56A6;
+}
+
+.countrySelectorRow,
+.searchBox {
+  border-radius: 6px;
+  background: #f8fbff;
+  border: 1px solid rgba(122, 145, 191, 0.24);
+  box-shadow: none;
+}
+
+.countrySelect,
+.searchInput {
+  color: #416CA6;
+}
+
+.stationList {
+  gap: 10px;
+  padding-right: 2px;
+}
+
+.stationCard {
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(122, 145, 191, 0.2);
+  box-shadow: 0 8px 18px rgba(46, 86, 166, 0.06);
+
+  &:hover {
+    border-color: rgba(46, 86, 166, 0.46);
+    transform: translateX(-3px);
+  }
+
+  :global(.darkAppMode) & {
+    background: rgba(23, 38, 66, 0.96);
+  }
+}
+
+.selectedCard {
+  background: linear-gradient(135deg, rgba(232, 240, 255, 1), rgba(255, 255, 255, 1)) !important;
+  border-color: rgba(46, 86, 166, 0.76) !important;
+  box-shadow: inset 4px 0 0 #2E56A6, 0 12px 24px rgba(46, 86, 166, 0.14);
+}
+
+.cardTopRow {
+  align-items: flex-start;
+}
+
+.cardStationName {
+  color: #2E56A6;
+  font-size: 14px;
+}
+
+.statusBadge {
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(122, 145, 191, 0.1);
+  color: #416CA6;
+}
+
+.cardAddress {
+  margin-top: 8px;
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.operatorTag {
+  border-radius: 4px;
+  color: #416CA6;
+  background: rgba(232, 240, 255, 0.82);
+}
+
+.cpMetric,
+.kwMetric {
+  color: #2E56A6;
+}
+
+.overlayContainer {
+  left: 28px;
+  bottom: 28px;
+  max-width: 560px;
+}
+
+.overlayCard {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(122, 145, 191, 0.26);
+  box-shadow: 0 18px 44px rgba(46, 86, 166, 0.18);
+}
+
+.overlayHeader {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(122, 145, 191, 0.18);
+}
+
+.stationTitle {
+  font-size: 18px;
+  color: #2E56A6;
+}
+
+.telemetryGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  gap: 8px;
+  background: transparent;
+}
+
+.telemetryCard {
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(248, 251, 255, 0.92);
+  border: 1px solid rgba(122, 145, 191, 0.18);
+}
+
+.telemetryValue {
+  color: #2E56A6;
+}
+
+.chargerItemCard {
+  border-radius: 8px;
+  border-color: rgba(122, 145, 191, 0.22);
+  box-shadow: 0 8px 18px rgba(46, 86, 166, 0.06);
+}
+
+.connectorsList {
+  gap: 6px;
+}
+
+.connectorPill {
+  border-radius: 6px;
+  background: rgba(248, 251, 255, 0.9);
+  border: 1px solid rgba(122, 145, 191, 0.18);
+}
+
+.controlActionBtn,
+.detailActionBtn,
+.popupInspectBtn,
+.applePopupBtn {
+  border-radius: 6px;
+  background: #2E56A6;
+  box-shadow: none;
+}
+
+.detailActionBtn {
+  background: #416CA6;
+}
+
+.csmsRadarMarkerWrapper {
+  filter: drop-shadow(0 8px 14px rgba(46, 86, 166, 0.22));
+}
+
+.radarLabelCapsule {
+  border-radius: 4px;
+  padding: 4px 7px;
+  border-width: 1px;
+}
+
+.krStatusBadge {
+  border-radius: 3px;
+}
+
+.holographicPillarLine {
+  height: 22px;
+  width: 1px;
+}
+
+.radarPinBadge {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  transform: rotate(45deg);
+
+  .radarIconWrapper,
+  .radarPulseRing {
+    transform: rotate(-45deg);
+  }
+}
+
+.radarTargetBase {
+  width: 24px;
+  height: 8px;
+  border-width: 1px;
+  border-radius: 50%;
+  opacity: 0.78;
+}
+
+.radarTargetCore {
+  width: 8px;
+  height: 3px;
+}
+
+.chargerLabel {
+  border-radius: 4px;
+  color: #416CA6;
+}
+
+.chargerPin {
+  border-radius: 7px;
+}
+
+.appleMapPopup {
+  width: 286px;
+}
+
+.customApplePopup {
+  :global(.maplibregl-popup-content) {
+    border-radius: 8px;
+    border: 1px solid rgba(122, 145, 191, 0.24);
+    box-shadow: 0 16px 36px rgba(46, 86, 166, 0.18);
+  }
+}
+
+@media (max-width: 1100px) {
+  .mainBody {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .sidebarWrapper {
+    width: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    min-height: 720px;
+  }
+
+  .mainBody {
+    padding: 8px;
+  }
+
+  .sidebarWrapper {
+    border-radius: 8px 0 0 8px;
+  }
+
+  .overlayContainer {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+}
